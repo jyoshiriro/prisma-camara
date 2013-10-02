@@ -15,7 +15,8 @@ environments {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://localhost:3306/hackathon"
             username = "root"
-            password = "123456"
+            password = "admin"
+//            password = "123456"
         }
     }
     test {
