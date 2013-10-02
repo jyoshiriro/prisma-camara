@@ -1,3 +1,4 @@
+import hackathon2013.AtualizarDeputadosService;
 import hackathon2013.Deputado
 import hackathon2013.Parametro
 
@@ -24,6 +25,7 @@ class BootStrap {
     }
 	
 	def atualizarTodos() {
-		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla("url_biografia_deputado")
+		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
+		AtualizarDeputadosService.URL_ATUALIZACAO=Parametro.findBySigla('url_listagem_deputados')
 	}
 }

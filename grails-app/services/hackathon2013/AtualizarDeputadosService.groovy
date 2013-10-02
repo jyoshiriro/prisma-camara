@@ -9,12 +9,12 @@ class AtualizarDeputadosService {
 	static String URL_ATUALIZACAO='http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados'
 
 	/**
-	 * Atualizar a tabela de Deputados. Os que estiverem na tabela e n„o chegarem no XML s„o marcados com "ativo=false"
-	 * @param xmlr Conte˙do XML recebido do WebService da Camara
+	 * Atualizar a tabela de Deputados. Os que estiverem na tabela e n√£o chegarem no XML s√£o marcados com "ativo=false"
+	 * @param xmlr Conte√∫do XML recebido do WebService da Camara
 	 */
 	private void atualizar(GPathResult xmlr) {
 		
-		def idsRecebidos = [] // coleta os Ids recebidos para saber quais deputados n„o s„o mais ativos 
+		def idsRecebidos = [] // coleta os Ids recebidos para saber quais deputados n√£o s√£o mais ativos 
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")
 		xmlr.deputado.each{ dep->
 			
@@ -25,10 +25,10 @@ class AtualizarDeputadosService {
 			
 			Deputado deputado = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
 			
-			if (deputado) { // j· existe o deputado, atualize os dados
+			if (deputado) { // j√° existe o deputado, atualize os dados
 				deputado.properties=atributos
 				log.debug("Deputado ${ideCadastroA} atualizado")
-			} else { // ainda n„o existe. Persista agora
+			} else { // ainda n√£o existe. Persista agora
 				deputado = new Deputado(atributos)
 				deputado.save()
 				log.debug("Deputado ${ideCadastroA} salvo no banco")

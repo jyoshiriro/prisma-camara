@@ -34,7 +34,7 @@ class AtualizarController {
 			RestResponse resposta = respostaTmp as RestResponse
 			return resposta.xml
 		} else {
-			def msg = "Não foi possível recuperar o XML da resposta para ${url}: ${respostaTmp.text}"
+			def msg = "NÃ£o foi possÃ­vel recuperar o XML da resposta para ${url}: ${respostaTmp.text}"
 			log.error(msg)
 			throw new Exception(msg)
 		}
