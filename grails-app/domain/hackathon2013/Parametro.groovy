@@ -7,8 +7,9 @@ class Parametro {
 	String descricao
 	
 	static constraints = {
-		descricao nullable:true 
+		sigla(maxSize:30)
+		valor(maxSize:512)
+		descricao(maxSize:1024,nullable:true)
 	}
-	
 	
 }

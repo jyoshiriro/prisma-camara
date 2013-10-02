@@ -2,12 +2,17 @@ package hackathon2013
 
 class OrientacaoBancada {
 	
-	String bancada
+	String sigla
 	String orientacao
 	
 	Votacao votacao
 	
 	static mapping = {
 		votacao(cascade:'all')
+	}
+	
+	static constraints = {
+		sigla(maxSize:30)
+		orientacao(maxSize:20)
 	}
 }

@@ -10,4 +10,9 @@ class FrequenciaSessao {
 	static mapping = {
 		frequencia(cascade:'all')
 	}
+	
+	static constraints = {
+		descricao(maxSize:50)
+		frequencia(maxSize:12)
+	}
 }

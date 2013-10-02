@@ -9,4 +9,9 @@ class Comissao {
 	
 	static belongsTo = [Deputado]
 	
+	static constraints = {
+		nome(maxSize:512)
+		sigla(maxSize:30)
+	}
+	
 }

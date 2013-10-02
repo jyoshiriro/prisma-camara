@@ -9,4 +9,8 @@ class Voto {
 	static mapping = {
 		votacao(cascade:'all')
 	}
+	
+	static constraints = {
+		voto(maxSize:16)
+	}
 }

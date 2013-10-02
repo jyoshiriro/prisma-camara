@@ -13,4 +13,9 @@ class Votacao {
 	static mapping = {
 		proposicao(cascade:'all')
 	}
+	
+	static constraints = {
+		resumo(maxSize:512)
+		objVotacao(maxSize:256)
+	}
 }
