@@ -6,14 +6,18 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarDeputadosService extends AtualizadorEntidade {
 	
-	static String URL='http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados'
-
+	@Override
+	public String getSiglaDeParametro() {
+		// 'http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados'
+		return 'url_listagem_deputados';
+	}
+	
 	/**
 	 * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
 	 */
 	private void atualizar() {
 		
-		GPathResult xmlr = getXML(URL)
+		GPathResult xmlr = getXML(getUrlAtualizacao(null))
 		
 		def chavesRecebidos = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")

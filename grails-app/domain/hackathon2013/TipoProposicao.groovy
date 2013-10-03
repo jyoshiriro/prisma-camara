@@ -7,6 +7,10 @@ class TipoProposicao {
 	boolean ativo
 	String genero
 	
+	static mapping = {
+		cache(true)
+	}
+	
 	static constraints = {
 		sigla(maxSize:8)
 		descricao(maxSize:70)

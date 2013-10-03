@@ -7,8 +7,7 @@ class Votacao {
 	
 	Proposicao proposicao
 	
-	List<OrientacaoBancada> orientacoesBancada	
-	List<Voto> votos	
+	static hasMany = [orientacoesBancada:OrientacaoBancada,votos:Voto]
 	
 	static mapping = {
 		proposicao(cascade:'all')

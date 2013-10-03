@@ -8,6 +8,7 @@ class AtualizarController {
 	def atualizarDeputadosService
 	def atualizarTiposProposicoesService
 	def atualizarProposicoesService
+	def atualizarVotacoesProposicoesService
 
     def index() {
 		

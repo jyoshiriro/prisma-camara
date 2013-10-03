@@ -1,33 +1,39 @@
 package hackathon2013
 
+import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
 @Log4j
 class AtualizarProposicoesService extends AtualizadorEntidade {
 
-    public static String URL=""
-//	static String URL="http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero=&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=&ano=:ano&sigla=:sigla"
+	@Override
+	public String getSiglaDeParametro() {
+		// "http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero= &datApresentacaoIni= &datApresentacaoFim= &autor= &parteNomeAutor= &siglaPartidoAutor= &siglaUFAutor= &generoAutor= &codEstado= &codOrgaoEstado= &emTramitacao= &ano=${ano}&sigla=${sigla}"
+		return 'url_listagem_proposicoes';
+	}
 
 	/**
-	 * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
+	 * Atualizar a tabela de Proposicões. 
 	 */
 	private void atualizar() {
 
-		def tipos = ['PL','PEC'] //TipoProposicao.list().collect{it.sigla}
-		def anos = 2012..2013 // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
 		
-		for (tipo in tipos) {
-			for (ano in anos) {
+		def tipos = TipoProposicao.list().collect{it.sigla} //['PL','PEC']
+		def anos = [2012,2013] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
+		
+		l1:for (tipo in tipos) {
+			l2:for (ano in anos) {
 				
-				def urlT = URL.replace(":ano", ano.toString()).replace(":sigla",tipo)
+				def urlT = getUrlAtualizacao([ano:ano.toString(),sigla:tipo])
+				
 				GPathResult xmlr = null
 				try {
 					xmlr = getXML(urlT)
 				} catch (Exception e) {
 //					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 					println("A url ${urlT} não retornou XML válido: ${e.message}")
-					continue;
+					continue l2;
 				}
 				
 				log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
@@ -35,14 +41,12 @@ class AtualizarProposicoesService extends AtualizadorEntidade {
 				xmlr.proposicao.each{ prop->
 					
 					def idA = prop.id.toString().trim()
-					
 					TipoProposicao tipoP = TipoProposicao.findBySigla(prop.tipoProposicao.sigla.toString())
-		
-					/*prop.id?.toString()?.toInteger()
-					prop.tipo?.toString()?.toInteger()
-					prop.ano?.toString()?.toInteger(), Date.parse('d/M/yyyy',prop.dataApresentacao.toString()), prop.situacao.descricao?.toString(), prop.apreciacao.txtApreciacao.toString(), prop.txtEmenta.toString(), prop.txtExplicacaoEmenta.toString(), prop.ultimoDespacho.txtDespacho?.toString(), Date.parse('d/M/yyyy',prop.ultimoDespacho.datDespacho?.toString())]*/
 					
-					def atributos = [idProposicao:prop.id?.toString()?.toInteger(), tipoProposicao:tipoP, numero: prop.tipo?.toString()?.toInteger(), ano:prop.ano?.toString()?.toInteger(), dataApresentacao: Date.parse('d/M/yyyy',prop.dataApresentacao.toString()), situacao: prop.situacao.descricao?.toString(), txtApreciacao: prop.apreciacao.txtApreciacao.toString(), txtEmenta: prop.txtEmenta.toString(), txtExplicacaoEmenta: prop.txtExplicacaoEmenta.toString(),txtUltimoDespacho: prop.ultimoDespacho.txtDespacho?.toString(), ultimoDespacho: Date.parse('d/M/yyyy',prop.ultimoDespacho.datDespacho?.toString())]
+					def atributos = [idProposicao:prop.id?.toString()?.toInteger(), tipoProposicao:tipoP, numero: prop.numero?.toString()?.toInteger(), ano:prop.ano?.toString()?.toInteger(), dataApresentacao: Date.parse('d/M/yyyy',prop.datApresentacao.toString()), situacao: prop.situacao.descricao?.toString(), txtApreciacao: prop.apreciacao.txtApreciacao.toString(), txtEmenta: prop.txtEmenta.toString(), txtExplicacaoEmenta: prop.txtExplicacaoEmenta.toString(),txtUltimoDespacho: prop.ultimoDespacho.txtDespacho?.toString()]
+					
+					if (prop.ultimoDespacho.datDespacho.toString()) 
+						atributos+=[ultimoDespacho: Date.parse('d/M/yyyy',prop.ultimoDespacho.datDespacho?.toString())]
 					
 					Deputado autor = Deputado.findByIdeCadastro(prop.autor1.idecadastro?.toString())
 					if (autor) {
@@ -50,8 +54,6 @@ class AtualizarProposicoesService extends AtualizadorEntidade {
 					} else {
 						atributos+=[nomeAutor:prop.autor1.txtNomeAutor?.toString()]
 					}
-					
-					// TODO: Votações da Proposição!
 					
 					Proposicao entidade = Proposicao.where {idProposicao==idA}.find()
 					
@@ -61,13 +63,20 @@ class AtualizarProposicoesService extends AtualizadorEntidade {
 					} else { // ainda não existe. Persista agora
 						entidade = new Proposicao(atributos)
 						entidade.save()
-						log.debug("Tipo de proposição ${idA} salvo no banco")
+						
+						if (entidade.errors.errorCount>0) {
+							log.error("Proposição ${idA} NÃO foi salva devido a erros: ${entidade.errors}")
+						} else {
+							log.debug("Proposição ${idA} salvo no banco")
+						}
 					}
 					
 				}
 			} // for de anos
 		} // for de tipos
 		
-		log.debug("${chavesRecebidas} Tipos de proposição marcados como inativos")
 	}
+
+	
+
 }

@@ -1,7 +1,4 @@
 import groovy.util.logging.Log4j
-import hackathon2013.AtualizarDeputadosService
-import hackathon2013.AtualizarProposicoesService;
-import hackathon2013.AtualizarTiposProposicoesService
 import hackathon2013.Deputado
 import hackathon2013.Parametro
 
@@ -33,9 +30,9 @@ class BootStrap {
 		if (Parametro.count()==0) {
 			throw new Exception("Não há nenhum registro na tabela de Parâmetros! Tente executar o SQL com os registros iniciais (insert-inicial-parametro.sql)")
 		}
-		AtualizarDeputadosService.URL=Parametro.findBySigla('url_listagem_deputados').valor
-		AtualizarTiposProposicoesService.URL=Parametro.findBySigla('url_listagem_tipos_proposicoes').valor
-		AtualizarProposicoesService.URL=Parametro.findBySigla('url_listagem_proposicoes').valor
+//		AtualizarDeputadosService.URL=Parametro.findBySigla('url_listagem_deputados').valor
+//		AtualizarTiposProposicoesService.URL=Parametro.findBySigla('url_listagem_tipos_proposicoes').valor
+//		AtualizarProposicoesService.URL=Parametro.findBySigla('url_listagem_proposicoes').valor
 		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
 		
 	}

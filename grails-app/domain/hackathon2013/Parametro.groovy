@@ -6,6 +6,10 @@ class Parametro {
 	String valor
 	String descricao
 	
+	static mapping = {
+		cache(true)
+	}	
+	
 	static constraints = {
 		sigla(maxSize:30)
 		valor(maxSize:512)

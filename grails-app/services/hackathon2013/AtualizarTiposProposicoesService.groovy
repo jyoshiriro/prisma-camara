@@ -6,14 +6,18 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarTiposProposicoesService extends AtualizadorEntidade {
 
-    static String URL='http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarSiglasTipoProposicao'
-
+	@Override
+	public String getSiglaDeParametro() {
+		// 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarSiglasTipoProposicao'
+		return 'url_listagem_tipos_proposicoes';
+	}
+	
 	/**
 	 * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
 	 */
 	private void atualizar() {
 		
-		GPathResult xmlr = getXML(URL)
+		GPathResult xmlr = getXML(getUrlAtualizacao(null))
 		
 		def chavesRecebidas = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
 		log.debug("${xmlr.childNodes().size()} tipos de proposições chegaram no XML")
