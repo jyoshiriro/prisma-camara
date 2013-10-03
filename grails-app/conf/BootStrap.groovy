@@ -1,12 +1,15 @@
-import hackathon2013.AtualizarDeputadosService;
+import groovy.util.logging.Log4j
+import hackathon2013.AtualizarDeputadosService
+import hackathon2013.AtualizarTiposProposicoesService
 import hackathon2013.Deputado
 import hackathon2013.Parametro
 
+@Log4j
 class BootStrap {
 
     def init = { servletContext ->
 		// atualizacao de parametros
-		atualizarTodos();
+		atualizarTodos()
 		
 		// tarefas quartz iniciando
 		
@@ -20,12 +23,17 @@ class BootStrap {
 		
 		// acompanhamento dos gastos dos deputados: todo sábado, 6h (PERGUNTAR A FREQUENCIA DE ATUALIZAÇÃO DISSO)
     }
+	
     def destroy = {
    		// tarefas quartz morrendo
     }
 	
 	def atualizarTodos() {
+		if (Parametro.count()==0) {
+			throw new Exception("Não há nenhum registro na tabela de Parâmetros! Tente executar o SQL com os registros iniciais (insert-inicial-parametro.sql)")
+		}
+		AtualizarDeputadosService.URL=Parametro.findBySigla('url_listagem_deputados').valor
+		AtualizarTiposProposicoesService.URL=Parametro.findBySigla('url_listagem_tipos_proposicoes').valor
 		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
-		AtualizarDeputadosService.URL_ATUALIZACAO=Parametro.findBySigla('url_listagem_deputados')
 	}
 }

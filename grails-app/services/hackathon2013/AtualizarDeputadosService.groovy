@@ -4,15 +4,16 @@ import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
 @Log4j
-class AtualizarDeputadosService {
+class AtualizarDeputadosService extends AtualizadorEntidade {
 	
-	static String URL_ATUALIZACAO='http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados'
+	static String URL='http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados'
 
 	/**
 	 * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
-	 * @param xmlr Conteúdo XML recebido do WebService da Camara
 	 */
-	private void atualizar(GPathResult xmlr) {
+	private void atualizar() {
+		
+		GPathResult xmlr = getXML(URL)
 		
 		def idsRecebidos = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")
@@ -25,7 +26,7 @@ class AtualizarDeputadosService {
 			
 			Deputado deputado = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
 			
-			if (deputado) { // já existe o deputado, atualize os dados
+			if (deputado) { // já existe o registro, atualize os dados
 				deputado.properties=atributos
 				log.debug("Deputado ${ideCadastroA} atualizado")
 			} else { // ainda não existe. Persista agora

@@ -4,7 +4,7 @@ class TipoProposicao {
 
 	String sigla
 	String descricao
-	boolean ativa
+	boolean ativo
 	String genero
 	
 	static constraints = {
