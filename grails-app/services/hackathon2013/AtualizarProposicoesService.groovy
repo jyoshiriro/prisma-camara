@@ -6,7 +6,8 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarProposicoesService extends AtualizadorEntidade {
 
-    static String URL="http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero=&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=&ano=:ano&sigla=:sigla"
+    public static String URL=""
+//	static String URL="http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero=&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=&ano=:ano&sigla=:sigla"
 
 	/**
 	 * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
@@ -18,8 +19,16 @@ class AtualizarProposicoesService extends AtualizadorEntidade {
 		
 		for (tipo in tipos) {
 			for (ano in anos) {
+				
 				def urlT = URL.replace(":ano", ano.toString()).replace(":sigla",tipo)
-				GPathResult xmlr = getXML(urlT)
+				GPathResult xmlr = null
+				try {
+					xmlr = getXML(urlT)
+				} catch (Exception e) {
+//					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
+					println("A url ${urlT} não retornou XML válido: ${e.message}")
+					continue;
+				}
 				
 				log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
 				
@@ -27,11 +36,13 @@ class AtualizarProposicoesService extends AtualizadorEntidade {
 					
 					def idA = prop.id.toString().trim()
 					
-					chavesRecebidas+=idA
-		
 					TipoProposicao tipoP = TipoProposicao.findBySigla(prop.tipoProposicao.sigla.toString())
 		
-					def atributos = [idProposicao:prop.id.toString().toInteger(), tipoProposicao:tipoP, numero: prop.tipo.toString().toInteger(), ano:prop.ano.toString().toInteger, dataApresentacao: Date.parse('d/M/yyyy',prop.dataApresentacao.toString()), situacao: prop.situacao.descricao?.toString(), txtApreciacao: prop.apreciacao.txtApreciacao.toString(), txtEmenta: prop.txtEmenta.toString(), txtExplicacaoEmenta: prop.txtExplicacaoEmenta.toString(),txtUltimoDespacho: prop.ultimoDespacho.txtDespacho?.toString(), ultimoDespacho: Date.parse('d/M/yyyy',prop.ultimoDespacho,datDespacho?.toString())]
+					/*prop.id?.toString()?.toInteger()
+					prop.tipo?.toString()?.toInteger()
+					prop.ano?.toString()?.toInteger(), Date.parse('d/M/yyyy',prop.dataApresentacao.toString()), prop.situacao.descricao?.toString(), prop.apreciacao.txtApreciacao.toString(), prop.txtEmenta.toString(), prop.txtExplicacaoEmenta.toString(), prop.ultimoDespacho.txtDespacho?.toString(), Date.parse('d/M/yyyy',prop.ultimoDespacho.datDespacho?.toString())]*/
+					
+					def atributos = [idProposicao:prop.id?.toString()?.toInteger(), tipoProposicao:tipoP, numero: prop.tipo?.toString()?.toInteger(), ano:prop.ano?.toString()?.toInteger(), dataApresentacao: Date.parse('d/M/yyyy',prop.dataApresentacao.toString()), situacao: prop.situacao.descricao?.toString(), txtApreciacao: prop.apreciacao.txtApreciacao.toString(), txtEmenta: prop.txtEmenta.toString(), txtExplicacaoEmenta: prop.txtExplicacaoEmenta.toString(),txtUltimoDespacho: prop.ultimoDespacho.txtDespacho?.toString(), ultimoDespacho: Date.parse('d/M/yyyy',prop.ultimoDespacho.datDespacho?.toString())]
 					
 					Deputado autor = Deputado.findByIdeCadastro(prop.autor1.idecadastro?.toString())
 					if (autor) {
