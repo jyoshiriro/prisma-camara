@@ -15,32 +15,32 @@ class AtualizarTiposProposicoesService extends AtualizadorEntidade {
 		
 		GPathResult xmlr = getXML(URL)
 		
-		def siglasRecebidas = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
+		def chavesRecebidas = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
 		log.debug("${xmlr.childNodes().size()} tipos de proposições chegaram no XML")
 		
 		xmlr.sigla.each{ tipo->
 			
 			def tipoSiglaA = tipo.@tipoSigla.toString().trim()
 			
-			siglasRecebidas+=tipoSiglaA
+			chavesRecebidas+=tipoSiglaA
 			
 			def atributos = [sigla:tipoSiglaA,descricao:tipo.@descricao.toString(), ativo:tipo.@ativa.toString().toLowerCase().toBoolean(), genero:tipo.@genero.toString()]
 			
-			TipoProposicao tipoProposicao = TipoProposicao.where {sigla==tipoSiglaA && ativo}.find()
+			TipoProposicao entidade = TipoProposicao.where {sigla==tipoSiglaA && ativo}.find()
 			
-			if (tipoProposicao) { // já existe o registro, atualize os dados
-				tipoProposicao.properties=atributos
+			if (entidade) { // já existe o registro, atualize os dados
+				entidade.properties=atributos
 				log.debug("Tipo de proposição ${tipoSiglaA} atualizado")
 			} else { // ainda não existe. Persista agora
-				tipoProposicao = new TipoProposicao(atributos)
-				tipoProposicao.save()
+				entidade = new TipoProposicao(atributos)
+				entidade.save()
 				log.debug("Tipo de proposição ${tipoSiglaA} salvo no banco")
 			}
 			
 		}
 		
-		TipoProposicao.executeUpdate("update TipoProposicao set ativo=false where sigla not in (:ids)",[ids:siglasRecebidas])
+		TipoProposicao.executeUpdate("update TipoProposicao set ativo=false where sigla not in (:ids)",[ids:chavesRecebidas])
 			
-		log.debug("${siglasRecebidas} Tipos de proposição marcados como inativos")
+		log.debug("${chavesRecebidas} Tipos de proposição marcados como inativos")
 	}
 }

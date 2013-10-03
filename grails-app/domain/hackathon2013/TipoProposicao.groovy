@@ -9,7 +9,7 @@ class TipoProposicao {
 	
 	static constraints = {
 		sigla(maxSize:8)
-		descricao(maxSize:50)
+		descricao(maxSize:70)
 		genero(maxSize:1)
 	}
 }

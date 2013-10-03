@@ -15,30 +15,30 @@ class AtualizarDeputadosService extends AtualizadorEntidade {
 		
 		GPathResult xmlr = getXML(URL)
 		
-		def idsRecebidos = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
+		def chavesRecebidos = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")
 		xmlr.deputado.each{ dep->
 			
 			def ideCadastroA = dep.ideCadastro.toInteger()
-			idsRecebidos+=ideCadastroA
+			chavesRecebidos+=ideCadastroA
 			
 			def atributos = [ideCadastro: ideCadastroA, condicao: dep.condicao.toString(), matricula: dep.matricula.toInteger(), nome: dep.nome.toString(), nomeParlamentar: dep.nomeParlamentar.toString(),  sexo: dep.sexo.toString(), uf:dep.uf.toString(), partido: dep.partido.toString(), fone: dep.fone.toString(), email:dep.email.toString(), ativo:true]
 			
-			Deputado deputado = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
+			Deputado entidade = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
 			
-			if (deputado) { // já existe o registro, atualize os dados
-				deputado.properties=atributos
+			if (entidade) { // já existe o registro, atualize os dados
+				entidade.properties=atributos
 				log.debug("Deputado ${ideCadastroA} atualizado")
 			} else { // ainda não existe. Persista agora
-				deputado = new Deputado(atributos)
-				deputado.save()
+				entidade = new Deputado(atributos)
+				entidade.save()
 				log.debug("Deputado ${ideCadastroA} salvo no banco")
 			}
 			
 		}
 		
-		Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:idsRecebidos])
+		Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:chavesRecebidos])
 			
-		log.debug("${idsRecebidos} deputados marcados como inativos")
+		log.debug("${chavesRecebidos} deputados marcados como inativos")
 	}
 }

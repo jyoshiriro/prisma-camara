@@ -13,7 +13,9 @@ abstract class AtualizadorEntidade {
 	}
 	
 	protected GPathResult getXML(String url, Map parametros) {
+		
 		def respostaTmp = rest.get(url)
+		
 		if (respostaTmp instanceof RestResponse) {
 			RestResponse resposta = respostaTmp as RestResponse
 			return resposta.xml
