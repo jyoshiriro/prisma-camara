@@ -37,7 +37,8 @@ class AtualizarDeputadosService extends AtualizadorEntidade {
 			
 		}
 		
-		def inativos = Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:idsRecebidos])
+		Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:idsRecebidos])
+			
 		log.debug("${idsRecebidos} deputados marcados como inativos")
 	}
 }
