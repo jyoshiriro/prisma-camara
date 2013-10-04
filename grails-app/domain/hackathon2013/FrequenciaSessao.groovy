@@ -2,6 +2,7 @@ package hackathon2013
 
 class FrequenciaSessao {
 	
+	Date inicio
 	String descricao
 	String frequencia
 	

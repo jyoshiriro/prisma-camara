@@ -48,5 +48,7 @@ class AtualizarTipoProposicaoService extends AtualizadorEntidade {
 		
 		if (inativos)	
 			log.debug("${chavesRecebidas} Tipos de proposição marcados como inativos")
+		
+		log.debug("Atualização de Tipos de Proposições concluída com sucesso")
 	}
 }

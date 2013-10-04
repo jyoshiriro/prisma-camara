@@ -79,7 +79,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 				}
 			} // for de anos
 		} // for de tipos
-		
+		log.debug("Atualização de Proposições concluída com sucesso")
 	}
 
 }

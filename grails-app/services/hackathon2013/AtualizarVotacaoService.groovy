@@ -149,6 +149,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 			}
 		} // for de proposicoes
 		
+		log.debug("Atualização de Votações de Proposições concluída com sucesso")
 	}
 
 	

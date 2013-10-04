@@ -88,5 +88,7 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 		
 		if (inativos)	
 			log.debug("${chavesRecebidos} deputados marcados como inativos")
+			
+		log.debug("Atualização de Deputados concluída com sucesso")
 	}
 }
