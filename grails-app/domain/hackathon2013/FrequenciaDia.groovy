@@ -8,7 +8,7 @@ class FrequenciaDia {
 		
 	Deputado deputado
 	
-	List<FrequenciaSessao> frequenciasSessao
+	static hasMany = [frequenciasSessao:FrequenciaSessao]
 	
 	static mapping = {
 		deputado(cascade:'all')
@@ -16,6 +16,6 @@ class FrequenciaDia {
 	
 	static constraints = {
 		frequenciaDia(maxSize:12)
-		justificativa(maxSize:1024)
+		justificativa(maxSize:1024, nullable:true)
 	}
 }
