@@ -4,7 +4,7 @@ import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
 @Log4j
-class AtualizarTiposProposicoesService extends AtualizadorEntidade {
+class AtualizarTipoProposicaoService extends AtualizadorEntidade {
 
 	@Override
 	public String getSiglaDeParametro() {
@@ -43,8 +43,9 @@ class AtualizarTiposProposicoesService extends AtualizadorEntidade {
 			
 		}
 		
-		TipoProposicao.executeUpdate("update TipoProposicao set ativo=false where sigla not in (:ids)",[ids:chavesRecebidas])
-			
-		log.debug("${chavesRecebidas} Tipos de proposição marcados como inativos")
+		int inativos = TipoProposicao.executeUpdate("update TipoProposicao set ativo=false where sigla not in (:ids)",[ids:chavesRecebidas])
+		
+		if (inativos)	
+			log.debug("${chavesRecebidas} Tipos de proposição marcados como inativos")
 	}
 }

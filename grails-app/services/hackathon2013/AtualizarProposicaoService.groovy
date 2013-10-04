@@ -5,7 +5,7 @@ import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
 @Log4j
-class AtualizarProposicoesService extends AtualizadorEntidade {
+class AtualizarProposicaoService extends AtualizadorEntidade {
 
 	@Override
 	public String getSiglaDeParametro() {

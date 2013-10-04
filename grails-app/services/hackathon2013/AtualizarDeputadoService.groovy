@@ -4,7 +4,7 @@ import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
 @Log4j
-class AtualizarDeputadosService extends AtualizadorEntidade {
+class AtualizarDeputadoService extends AtualizadorEntidade {
 	
 	@Override
 	public String getSiglaDeParametro() {
@@ -41,8 +41,9 @@ class AtualizarDeputadosService extends AtualizadorEntidade {
 			
 		}
 		
-		Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:chavesRecebidos])
-			
-		log.debug("${chavesRecebidos} deputados marcados como inativos")
+		def inativos = Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:chavesRecebidos])
+		
+		if (inativos)	
+			log.debug("${chavesRecebidos} deputados marcados como inativos")
 	}
 }

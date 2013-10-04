@@ -5,7 +5,7 @@ import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
 @Log4j
-class AtualizarVotacoesProposicoesService extends AtualizadorEntidade {
+class AtualizarVotacaoService extends AtualizadorEntidade {
 
 	@Override
 	public String getSiglaDeParametro() {
@@ -30,8 +30,7 @@ class AtualizarVotacoesProposicoesService extends AtualizadorEntidade {
 			try {
 				xmlr = getXML(urlT)
 			} catch (Exception e) {
-//					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
-				println("A url ${urlT} não retornou XML válido: ${e.message}")
+				log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 				continue;
 			}
 			log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
@@ -40,6 +39,7 @@ class AtualizarVotacoesProposicoesService extends AtualizadorEntidade {
 				
 				def dataHotaS = "${vot.@Data} ${vot.@Hora}"  
 				def dataHoraA = Date.parse('d/M/yyyy HH:mm',dataHotaS)
+				
 				def atributos = [resumo:vot.@Resumo.toString(), dataHoraVotacao:dataHoraA, objVotacao:vot.@ObjVotacao.toString()]
 				atributos+=[proposicao:proposicaoA]
 				
