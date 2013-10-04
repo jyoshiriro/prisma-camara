@@ -18,8 +18,8 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 	 */
 	def atualizar() {
 
-		def proposicoes = Proposicao.list()
-		l1:for (proposicaoA in proposicoes) {
+		def proposicoes = Proposicao.findAllByNumero(1992) // Proposicao.list()
+		for (proposicaoA in proposicoes) {
 			
 			def pTipo = proposicaoA.tipoProposicao.sigla
 			def pNumero = proposicaoA.numero

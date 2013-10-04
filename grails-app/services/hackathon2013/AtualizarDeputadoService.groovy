@@ -23,6 +23,7 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")
 		xmlr.deputado.each{ dep->
 			
+			
 			def ideCadastroA = dep.ideCadastro.toInteger()
 			chavesRecebidos+=ideCadastroA
 			
@@ -42,7 +43,45 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 				entidade.save()
 				log.debug("Deputado ${ideCadastroA} salvo no banco")
 			}
+
+			// comissões como titular
+			def comissoesTitular = dep.childNodes()[13].childNodes()[0].childNodes()
+			for (ct in comissoesTitular) {
+				
+				def nomeA=ct.attributes.nome.trim()
+				def siglaA=ct.attributes.sigla.trim()
+				Comissao comissao = Comissao.findBySigla(siglaA)
+				
+				if (!comissao) {
+					comissao = new Comissao(nome: nomeA, sigla: siglaA)
+					comissao.save()
+					log.debug("Comissão ${siglaA} salva no banco")
+				}
+				if (entidade.comissoesTitular.findIndexOf {it.sigla==siglaA}<0) {
+					entidade.addToComissoesTitular(comissao)
+					log.debug("Deputado ${ideCadastroA} com nova Comissão como Titular: ${siglaA}")
+				}
+			}
 			
+			// comissões como suplente
+			def comissoesSuplente = dep.childNodes()[13].childNodes()[1].childNodes()
+			for (ct in comissoesSuplente) {
+				
+				def nomeA=ct.attributes.nome.trim()
+				def siglaA=ct.attributes.sigla.trim()
+				Comissao comissao = Comissao.findBySigla(siglaA)
+				if (!comissao) {
+					comissao = new Comissao(nome: nomeA, sigla: siglaA)
+					comissao.save()
+					log.debug("Comissão ${siglaA} salva no banco")
+				}
+				if (entidade.comissoesSuplente.findIndexOf {it.sigla==siglaA}<0) {
+					entidade.addToComissoesSuplente(comissao)
+					log.debug("Deputado ${ideCadastroA} com nova Comissão como Suplente: ${siglaA}")
+				}
+			}
+
+	
 		}
 		
 		def inativos = Deputado.executeUpdate("update Deputado set ativo=false where ideCadastro not in (:ids)",[ids:chavesRecebidos])

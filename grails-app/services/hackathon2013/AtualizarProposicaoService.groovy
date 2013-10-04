@@ -40,6 +40,11 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 				
 				xmlr.proposicao.each{ prop->
 					
+					// WA
+//					if (prop.numero?.toString()!='1992')
+//						return false
+					// WA
+					
 					def idA = prop.id.toString().trim()
 					TipoProposicao tipoP = TipoProposicao.findBySigla(prop.tipoProposicao.sigla.toString())
 					
