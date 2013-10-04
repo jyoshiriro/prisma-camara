@@ -88,4 +88,10 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+	
+	environments {
+		development {
+			debug  'hackathon2013'
+		}
+    }
 }
