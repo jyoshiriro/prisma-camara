@@ -10,6 +10,7 @@ class AtualizarController {
 	def atualizarProposicaoService
 	def atualizarVotacaoService
 	def atualizarFrequenciaDiaService
+	def atualizarDespesaService
 
 	def index() {
 
@@ -18,7 +19,8 @@ class AtualizarController {
 	def executar() {
 		try {
 			String id = params.id
-			this."atualizar${id.capitalize()}Service".atualizar()
+			def nomeServico = "atualizar${id.capitalize()}Service"
+			this."${nomeServico}".atualizar()
 			def entidadeM = message(code:"${id}.label")
 			flash.message="Cadastro de ${entidadeM} atualizado com Sucesso"
 		} catch (Exception e) {
@@ -26,6 +28,7 @@ class AtualizarController {
 			flash.error="Erro: ${e.message}"
 		}
 		redirect(action:'index')
+		
 	}
 
 }

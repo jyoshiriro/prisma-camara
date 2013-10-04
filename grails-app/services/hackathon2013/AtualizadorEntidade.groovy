@@ -15,6 +15,14 @@ abstract class AtualizadorEntidade {
 	abstract def atualizar();
 	
 	/**
+	 * Recuperar a URL de atualização da entidade sem usar parâmetros para compo-la
+	 * @return A String com a URL e seus parâmetros preenchidos, se for o caso
+	 */
+	String getUrlAtualizacao() {
+		getUrlAtualizacao(null)
+	}
+	
+	/**
 	 * Recuperar a URL de atualização da entidade
 	 * @param parametrosValores {@link Map} com os parâmetros a serem substituidos (opcional)
 	 * @return A String com a URL e seus parâmetros preenchidos, se for o caso
@@ -28,11 +36,31 @@ abstract class AtualizadorEntidade {
 		return template.toString();
 	}
 
+	
+	/**
+	 * Constroi um {@link GPathResult} a partir de uma String com o conteúdo de um XML
+	 * @param texto Conteúdo do XML
+	 * @return
+	 */
+	protected GPathResult getXMLDeTexto(String texto) {
+		return new XmlSlurper().parseText(texto)
+	}
 
+	/**
+	 * Constroi um {@link GPathResult} a partir de um conteúdo obtido de uma URL
+	 * @param texto URL a ser acessada
+	 * @return
+	 */
 	protected GPathResult getXML(String url) {
 		getXML(url, null)
 	}
 	
+	/**
+	 * Constroi um {@link GPathResult} a partir de um conteúdo obtido de uma URL
+	 * @param texto URL a ser acessada
+	 * @param parametros Parâmetros a serem passados junto a URL
+	 * @return
+	 */
 	protected GPathResult getXML(String url, Map parametros) {
 		
 		def respostaTmp = rest.get(url)
