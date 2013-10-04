@@ -3,6 +3,9 @@ package hackathon2013
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
+/**
+ * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
+ */
 @Log4j
 class AtualizarDeputadoService extends AtualizadorEntidade {
 	
@@ -12,10 +15,7 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 		return 'url_listagem_deputados';
 	}
 	
-	/**
-	 * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
-	 */
-	private void atualizar() {
+	def atualizar() {
 		
 		GPathResult xmlr = getXML(getUrlAtualizacao(null))
 		

@@ -12,6 +12,7 @@ abstract class AtualizadorEntidade {
 	RestBuilder rest = new RestBuilder()
 	
 	abstract String getSiglaDeParametro();
+	abstract def atualizar();
 	
 	/**
 	 * Recuperar a URL de atualização da entidade

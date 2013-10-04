@@ -16,9 +16,9 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 	/**
 	 * Atualizar as tabela de Voto, Votacao e OrientacaoBancada
 	 */
-	private void atualizar() {
+	def atualizar() {
 
-		def proposicoes = Proposicao.where{ano=='2007' && numero==1992}.list(max:1) // Proposicao.list()
+		def proposicoes = Proposicao.list()
 		l1:for (proposicaoA in proposicoes) {
 			
 			def pTipo = proposicaoA.tipoProposicao.sigla
@@ -34,7 +34,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 				log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 				continue;
 			}
-			log.debug("${xmlr.childNodes().size()} votações da proposição ${desc} chegaram no XML")
+			log.debug("Votações da proposição ${desc} chegaram no XML...")
 			
 			xmlr.Votacoes.Votacao.eachWithIndex{ vot, i->
 				

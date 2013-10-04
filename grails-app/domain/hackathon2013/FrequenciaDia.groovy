@@ -15,7 +15,7 @@ class FrequenciaDia {
 	}
 	
 	static constraints = {
-		frequenciaDia(maxSize:12)
+		frequenciaDia(maxSize:30)
 		justificativa(maxSize:1024, nullable:true)
 	}
 }

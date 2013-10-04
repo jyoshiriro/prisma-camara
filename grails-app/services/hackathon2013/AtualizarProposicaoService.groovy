@@ -4,6 +4,10 @@ import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
+
+/**
+ * Atualizar a tabela de Proposicões. 
+ */
 @Log4j
 class AtualizarProposicaoService extends AtualizadorEntidade {
 
@@ -13,10 +17,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 		return 'url_listagem_proposicoes';
 	}
 
-	/**
-	 * Atualizar a tabela de Proposicões. 
-	 */
-	private void atualizar() {
+	def atualizar() {
 
 		
 		def tipos = ['PL']// TipoProposicao.list().collect{it.sigla} //['PL','PEC']

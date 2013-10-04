@@ -3,6 +3,10 @@ package hackathon2013
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
+
+/**
+ * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
+ */
 @Log4j
 class AtualizarTipoProposicaoService extends AtualizadorEntidade {
 
@@ -12,10 +16,7 @@ class AtualizarTipoProposicaoService extends AtualizadorEntidade {
 		return 'url_listagem_tipos_proposicoes';
 	}
 	
-	/**
-	 * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
-	 */
-	private void atualizar() {
+	def atualizar() {
 		
 		GPathResult xmlr = getXML(getUrlAtualizacao(null))
 		

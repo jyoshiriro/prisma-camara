@@ -9,13 +9,15 @@ class AtualizarController {
 	def atualizarTipoProposicaoService
 	def atualizarProposicaoService
 	def atualizarVotacaoService
+	def atualizarFrequenciaDiaService
 
 	def index() {
 
 	}
 
-	def executar(String id) {
+	def executar() {
 		try {
+			String id = params.id
 			this."atualizar${id.capitalize()}Service".atualizar()
 			def entidadeM = message(code:"${id}.label")
 			flash.message="Cadastro de ${entidadeM} atualizado com Sucesso"
