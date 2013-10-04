@@ -34,7 +34,7 @@ class AtualizarTipoProposicaoService extends AtualizadorEntidade {
 			
 			if (entidade) { // já existe o registro, atualize os dados
 				entidade.properties=atributos
-				log.debug("Tipo de proposição ${tipoSiglaA} atualizado")
+				log.debug("Tipo de proposição ${tipoSiglaA} possivelmente atualizado")
 			} else { // ainda não existe. Persista agora
 				entidade = new TipoProposicao(atributos)
 				entidade.save()

@@ -31,8 +31,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 				try {
 					xmlr = getXML(urlT)
 				} catch (Exception e) {
-//					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
-					println("A url ${urlT} não retornou XML válido: ${e.message}")
+					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 					continue l2;
 				}
 				

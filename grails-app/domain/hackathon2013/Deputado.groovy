@@ -23,14 +23,17 @@ class Deputado {
 	static transients = ['urlBiografia']
 	
 	static constraints = {
-		condicao(maxSize:20)
+		condicao(maxSize:20, nullable:true)
 		nome(maxSize:60)
 		nomeParlamentar(maxSize:40)
-		sexo(maxSize:10)
+		sexo(maxSize:10, nullable:true)
 		uf(maxSize:2)
 		partido(maxSize:30)
-		fone(maxSize:20)
-		email(maxSize:60)
+		fone(maxSize:20, nullable:true)
+		email(maxSize:60, nullable:true)
+		
+		ideCadastro(nullable:true) 
+		matricula(nullable:true)
 	}
 	
 	String getUrlBiografia() {

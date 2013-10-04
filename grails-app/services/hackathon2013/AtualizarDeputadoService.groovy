@@ -29,10 +29,14 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 			def atributos = [ideCadastro: ideCadastroA, condicao: dep.condicao.toString(), matricula: dep.matricula.toInteger(), nome: dep.nome.toString(), nomeParlamentar: dep.nomeParlamentar.toString(),  sexo: dep.sexo.toString(), uf:dep.uf.toString(), partido: dep.partido.toString(), fone: dep.fone.toString(), email:dep.email.toString(), ativo:true]
 			
 			Deputado entidade = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
+			if (!entidade) {
+				// tenta pegar por "apelido", partido e uf, pois pode ter sido cadastrado no momento de registro de votos (isso não vem normalizado no XML de votações)
+				entidade = Deputado.where{nomeParlamentar==dep.nomeParlamentar?.toString()?.trim() && partido==dep.partido?.toString()?.trim() && uf==dep.uf?.toString()?.trim()}.find()
+			}
 			
 			if (entidade) { // já existe o registro, atualize os dados
 				entidade.properties=atributos
-				log.debug("Deputado ${ideCadastroA} atualizado")
+				log.debug("Deputado ${ideCadastroA} possivelmente atualizado")
 			} else { // ainda não existe. Persista agora
 				entidade = new Deputado(atributos)
 				entidade.save()
