@@ -33,7 +33,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		zipFile.close()
 		zipFileT.delete()*/
 		
-		String contXml = new File('C:\\Users\\Administrador\\Documents\\yoshi\\partiubrasilia\\workspace\\testesG\\testeCota.xml').text
+		String contXml = new File('/home/yoshiriro/workspaces/hackathon2013/testesG/testeCota.xml').text
 		
 /*		def xmlFile = new File("${nTmp}.zml")
 		xmlFile<<zipFile.getInputStream(zipFile.entries().nextElement()).text
@@ -68,7 +68,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 				log.debug("Deputado ${nomeA}(${partidoA}/${ufA}) não existia na base. Salvo como 'inativo'")
 			}
 			
-			def atributos = [txtDescricao:despesa.txtDescricao.toString().trim(), txtBeneficiario:despesa.txtBeneficiario.toString().trim(),txtCNPJCPF:despesa.txtCNPJCPF.toString().trim(), numParcela:despesa.numParcela.toString().toInteger(),valorLiquido:despesa.vlrLiquido.toString()?.toDouble(), txtNumero:despesa.txtNumero.toString().trim()]
+			def atributos = [txtDescricao:despesa.txtDescricao.toString().trim(), txtBeneficiario:despesa.txtBeneficiario.toString().trim(),txtCNPJCPF:despesa.txtCNPJCPF.toString().trim(), numParcela:despesa.numParcela.toString().toInteger(),valor:despesa.vlrDocumento.toString()?.toDouble(), txtNumero:despesa.txtNumero.toString().trim()]
 			Date dataEmissao = Date.parse("yyyy-MM-dd'T00:00:00'",despesa.datEmissao.toString().trim())
 			atributos+=[dataEmissao:dataEmissao]
 			
