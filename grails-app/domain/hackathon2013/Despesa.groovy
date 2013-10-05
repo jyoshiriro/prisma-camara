@@ -7,8 +7,9 @@ class Despesa {
 	String txtCNPJCPF
 	String txtNumero
 	Date dataEmissao
-	Double valorLiquido
+	Double valor
 	Integer numParcela 
+	boolean enviado = false
 	
 	Deputado deputado
 	

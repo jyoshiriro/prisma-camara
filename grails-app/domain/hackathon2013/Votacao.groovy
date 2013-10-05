@@ -4,6 +4,7 @@ class Votacao {
 	String resumo
 	Date dataHoraVotacao
 	String objVotacao
+	boolean enviado = false
 	
 	Proposicao proposicao
 	

@@ -9,7 +9,7 @@ class FrequenciaSessao {
 	FrequenciaDia frequenciaDia
 	
 	static mapping = {
-		frequencia(cascade:'all')
+		frequenciaDia(cascade:'all')
 	}
 	
 	static constraints = {
