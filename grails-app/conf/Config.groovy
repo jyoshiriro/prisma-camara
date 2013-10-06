@@ -65,7 +65,7 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://www.localhost.com:8080/"
     }
 }
 
@@ -90,8 +90,18 @@ log4j = {
            'net.sf.ehcache.hibernate'
 	
 	environments {
-		development {
+		development {grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'
 			debug  'hackathon2013'
 		}
     }
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'hackathon2013.Usuario'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'hackathon2013.UsuarioPerfil'
+grails.plugins.springsecurity.authority.className = 'hackathon2013.Perfil'
+
+grails.plugins.springsecurity.facebook.domain.classname='hackathon2013.UsuarioFacebook'
+grails.plugins.springsecurity.facebook.appId='553101868095758'
+grails.plugins.springsecurity.facebook.secret='532ea25e4511b3533a02588a75fae299'
+grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'

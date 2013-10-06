@@ -64,5 +64,8 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.1'
 		
         compile ":rest-client-builder:1.0.3"
+		
+		compile "org.grails.plugins:spring-security-facebook:0.15"
+		
     }
 }
