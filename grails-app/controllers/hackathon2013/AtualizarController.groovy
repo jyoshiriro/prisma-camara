@@ -13,7 +13,17 @@ class AtualizarController {
 	def atualizarDespesaService
 
 	def index() {
-
+		[deputadosA:Deputado.countByAtivo(true),
+		 deputadosI:Deputado.countByAtivo(false),
+		 tiposProp:TipoProposicao.countByAtivo(true),
+		 proposicoes:Proposicao.countBySituacaoNot('Arquivada'),
+		 proximaFrequencia:(new Date()-3)]
+	}
+	
+	def vai() {
+		Proposicao p = Proposicao.get(5473)
+		p.delete()
+		render('foi!')
 	}
 
 	def executar() {
