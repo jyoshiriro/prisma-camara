@@ -63,7 +63,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			
 			Deputado deputadoA = Deputado.findByMatricula(matriculaA)
 			if (!deputadoA) {
-				deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, partido:partidoA, uf:ufA, ativo:false)
+				deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)
 				deputadoA.save()
 				log.debug("Deputado ${nomeA}(${partidoA}/${ufA}) não existia na base. Salvo como 'inativo'")
 			}

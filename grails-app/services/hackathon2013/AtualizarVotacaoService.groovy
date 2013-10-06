@@ -14,11 +14,19 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 	}
 
 	/**
-	 * Atualizar as tabela de Voto, Votacao e OrientacaoBancada
+	 * Atualizar as tabela de Voto, Votacao e OrientacaoBancada.
+	 * A atualização recupera somente votos de Proposições que são acompanhadas por 1 ou mais usuários 
 	 */
 	def atualizar() {
 
-		def proposicoes = Proposicao.findAllByNumero(1992) // Proposicao.list()
+		def proposicoes = []
+/*		for (usuario in Usuario.list()) {
+			proposicoes.addAll(usuario.proposicoes)
+		}
+*///		proposicoes = Proposicao.findAllByNumero(1992)
+		proposicoes = Proposicao.list(max:20,offset:130)
+		log.debug("Um total de ${proposicoes.size()} terão votos verificados")
+		
 		for (proposicaoA in proposicoes) {
 			
 			def pTipo = proposicaoA.tipoProposicao.sigla
@@ -31,12 +39,12 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 			try {
 				xmlr = getXML(urlT)
 			} catch (Exception e) {
-				log.error("A url ${urlT} não retornou XML válido: ${e.message}")
+				log.error("A url ${urlT} não retornou XML válido ou não continha votação: ${e.message}")
 				continue;
 			}
 			log.debug("Votações da proposição ${desc} chegaram no XML...")
 			
-			xmlr.Votacoes.Votacao.eachWithIndex{ vot, i->
+			for (vot in xmlr.Votacoes.Votacao) { 
 				
 				def dataHotaS = "${vot.@Data} ${vot.@Hora}"  
 				def dataHoraA = Date.parse('d/M/yyyy HH:mm',dataHotaS)
@@ -58,6 +66,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					
 					if (entidade.errors.errorCount>0) {
 						log.error("Votações da Proposição ${desc} NÃO foram salvas devido a erros: ${entidade.errors}")
+						continue
 					} else {
 						log.debug("Novas Votações da Proposição ${desc} e suas Orientações e Votos salvas no banco")
 					}
@@ -67,7 +76,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 				def votos = []
 				
 				// Orientações de bancadas
-				vot.childNodes()[0].childNodes().each{ ob ->
+				for (ob in vot.childNodes()[0].childNodes()) { 
 					
 					def siglaA=ob.attributes.Sigla.trim()
 					def orientacaoA=ob.attributes.orientacao.trim()
@@ -80,6 +89,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 						} catch (Exception e) {
 							log.error("Erro ao tantar salvar Orientação de bancada (${siglaA} - votação ${desc}) no banco: ${e.message}")
 							e.printStackTrace()
+							continue
 						}
 					} 
 					// o voto mudou na nova leitura?
@@ -90,7 +100,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 				}
 				
 				// Votos dos deputados
-				vot.childNodes()[1].childNodes().each{ ob ->
+				for (ob in vot.childNodes()[1].childNodes()) {
 				
 					def nomeA=ob.attributes.Nome.trim().toUpperCase()
 					def partidoA=ob.attributes.Partido.trim()
@@ -98,9 +108,9 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					def votoA=ob.attributes.Voto.trim()
 					
 					// SE não for econtrado o Deputado, salve no banco como "ativo=false"
-					Deputado deputadoA = Deputado.where {nomeParlamentar==nomeA && partido==partidoA && uf==ufA}.find()
+					Deputado deputadoA = Deputado.where {nomeParlamentar==nomeA && partido.sigla==partidoA && uf==ufA}.find()
 					if (!deputadoA) {
-						deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, partido:partidoA, uf:ufA, ativo:false)
+						deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)
 						deputadoA.save()
 						log.debug("Deputado ${nomeA}(${partidoA}/${ufA}) não existia na base. Salvo como 'inativo'")
 					}
@@ -114,6 +124,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 						} catch (Exception e) {
 							log.error("Erro ao tantar salvar Voto (${deputadoA.nomeParlamentar} - votação ${desc}) no banco: ${e.message}")
 							e.printStackTrace()
+							continue
 						}
 					} 
 					// o voto mudou na nova leitura?

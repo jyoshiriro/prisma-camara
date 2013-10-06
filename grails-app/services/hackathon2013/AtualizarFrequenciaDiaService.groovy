@@ -25,7 +25,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 	
     def atualizar() {
 		if (!dataAtualizacao) {
-			dataAtualizacao = (new Date()-2).clearTime()
+			dataAtualizacao = (new Date()-4).clearTime()
 		}
 		
 		def urlT = getUrlAtualizacao([data:dataAtualizacao.format("dd/MM/yyyy")])
@@ -35,13 +35,18 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		} catch (Exception e) {
 			log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 		}
-		log.debug("Frequências dos deputados em ${dataAtualizacao} chegaram no XML...")
+		
+		log.debug("Chegaram ${xmlr.parlamentares.childNodes()?.size()} frequências dos deputados chegaram no XML de ${urlT}...")
 
 		xmlr.parlamentares.parlamentar.eachWithIndex{ parlemantar, i->
 			
 			def atributos = [dia:dataAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
 			
-			Deputado deputadoA = Deputado.where {matricula==parlemantar.carteiraParlamentar.toString()}.find()
+			Deputado deputadoA = Deputado.where {matricula==parlemantar.carteiraParlamentar.toString().toInteger()}.find()
+			if (!deputadoA) {
+				deputadoA = new Deputado(nome:parlemantar.nomeParlamentar.toString(),nomeParlamentar:parlemantar.nomeParlamentar.toString(),siglaPartido:parlemantar.siglaPartido.toString(),matricula:parlemantar.carteiraParlamentar.toString().toInteger(),uf:parlemantar.siglaUF.toString(),ativo:false)
+				deputadoA.save()
+			}
 			atributos+=[deputado:deputadoA]
 			
 			FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==dataAtualizacao}.find()
@@ -54,9 +59,9 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 				entidade.save()
 				
 				if (entidade.errors.errorCount>0) {
-					log.error("Frequência de deputado ${deputadoA.nomeParlamentar} em ${entidade.dia} NÃO foi salva devido a erros: ${entidade.errors}")
+					log.error("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} NÃO foi salva devido a erros: ${entidade?.errors}")
 				} else {
-					log.debug("Frequência de deputado ${deputadoA.nomeParlamentar} em ${entidade.dia} salva no banco")
+					log.debug("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} salva no banco")
 				}
 			}
 	

@@ -21,18 +21,18 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 		
 		def chavesRecebidos = [] // coleta os Ids recebidos para saber quais deputados não são mais ativos 
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")
-		xmlr.deputado.each{ dep->
-			
-			
+		
+		for (dep in xmlr.deputado) {
+			 
 			def ideCadastroA = dep.ideCadastro.toInteger()
 			chavesRecebidos+=ideCadastroA
 			
-			def atributos = [ideCadastro: ideCadastroA, condicao: dep.condicao.toString(), matricula: dep.matricula.toInteger(), nome: dep.nome.toString(), nomeParlamentar: dep.nomeParlamentar.toString(),  sexo: dep.sexo.toString(), uf:dep.uf.toString(), partido: dep.partido.toString(), fone: dep.fone.toString(), email:dep.email.toString(), ativo:true]
+			def atributos = [ideCadastro: ideCadastroA, condicao: dep.condicao.toString(), matricula: dep.matricula.toInteger(), nome: dep.nome.toString(), nomeParlamentar: dep.nomeParlamentar.toString(),  sexo: dep.sexo.toString(), uf:dep.uf.toString(), siglaPartido: dep.partido.toString(), fone: dep.fone.toString(), email:dep.email.toString(), ativo:true]
 			
 			Deputado entidade = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
 			if (!entidade) {
 				// tenta pegar por "apelido", partido e uf, pois pode ter sido cadastrado no momento de registro de votos (isso não vem normalizado no XML de votações)
-				entidade = Deputado.where{nomeParlamentar==dep.nomeParlamentar?.toString()?.trim() && partido==dep.partido?.toString()?.trim() && uf==dep.uf?.toString()?.trim()}.find()
+				entidade = Deputado.where{nomeParlamentar==dep.nomeParlamentar?.toString()?.trim() && partido.sigla==dep.partido?.toString()?.trim() && uf==dep.uf?.toString()?.trim()}.find()
 			}
 			
 			if (entidade) { // já existe o registro, atualize os dados

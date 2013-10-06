@@ -13,14 +13,14 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 
 	@Override
 	public String getSiglaDeParametro() {
-		// "http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero= &datApresentacaoIni= &datApresentacaoFim= &autor= &parteNomeAutor= &siglaPartidoAutor= &siglaUFAutor= &generoAutor= &codEstado= &codOrgaoEstado= &emTramitacao= &ano=${ano}&sigla=${sigla}"
+		// "http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero=&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=&ano=${ano}&sigla=${sigla}"
 		return 'url_listagem_proposicoes';
 	}
 
 	def atualizar() {
 
 		
-		def tipos = ['PL']// TipoProposicao.list().collect{it.sigla} //['PL','PEC']
+		def tipos = ['PEC']// TipoProposicao.list().collect{it.sigla} //['PL','PEC']
 		def anos = [2007] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
 		
 		l1:for (tipo in tipos) {
@@ -38,17 +38,36 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 				
 				log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
 				
-				xmlr.proposicao.each{ prop->
+				for (prop in xmlr.proposicao) { 
 					
 					// WA
 //					if (prop.numero?.toString()!='1992')
 //						return false
 					// WA
+					// Se a proposição estiver arquivada, não será cadastrada no banco
+					def situacaoA = prop.situacao.descricao?.toString()
 					
+					def siglaA = prop.tipoProposicao.sigla.toString()
+					def numeroA = prop.numero?.toString()?.toInteger()
+					def anoA = prop.ano?.toString()
+					def desc = "${siglaA} ${numeroA}/${anoA}"
+					
+					if (situacaoA.toLowerCase().equals("arquivada")) {
+						def tipoPropA = TipoProposicao.findBySigla(siglaA)
+						Proposicao proposicaoT = Proposicao.findByNumeroAndAnoAndTipoProposicao(numeroA,anoA,tipoPropA)
+						if (proposicaoT) {
+							proposicaoT.delete()
+							log.debug("Proposição ${desc} agora está arquivada e foi excluída do banco.")
+						} else {
+							log.debug("Proposição ${desc} já está arquivada e não será salva.")
+							continue
+						}
+					}
+					 
 					def idA = prop.id.toString().trim()
-					TipoProposicao tipoP = TipoProposicao.findBySigla(prop.tipoProposicao.sigla.toString())
+					TipoProposicao tipoP = TipoProposicao.findBySigla(siglaA)
 					
-					def atributos = [idProposicao:prop.id?.toString()?.toInteger(), tipoProposicao:tipoP, numero: prop.numero?.toString()?.toInteger(), ano:prop.ano?.toString()?.toInteger(), dataApresentacao: Date.parse('d/M/yyyy',prop.datApresentacao.toString()), situacao: prop.situacao.descricao?.toString(), txtApreciacao: prop.apreciacao.txtApreciacao.toString(), txtEmenta: prop.txtEmenta.toString(), txtExplicacaoEmenta: prop.txtExplicacaoEmenta.toString(),txtUltimoDespacho: prop.ultimoDespacho.txtDespacho?.toString()]
+					def atributos = [idProposicao:prop.id?.toString()?.toInteger(), tipoProposicao:tipoP, numero: numeroA, ano:anoA, dataApresentacao: Date.parse('d/M/yyyy',prop.datApresentacao.toString()), situacao: situacaoA, txtApreciacao: prop.apreciacao.txtApreciacao.toString(), txtEmenta: prop.txtEmenta.toString(), txtExplicacaoEmenta: prop.txtExplicacaoEmenta.toString(),txtUltimoDespacho: prop.ultimoDespacho.txtDespacho?.toString()]
 					
 					if (prop.ultimoDespacho.datDespacho.toString()) 
 						atributos+=[ultimoDespacho: Date.parse('d/M/yyyy',prop.ultimoDespacho.datDespacho?.toString())]
@@ -64,15 +83,15 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 					
 					if (entidade) { // já existe o registro, atualize os dados
 						entidade.properties=atributos
-						log.debug("Tipo de proposição ${idA} atualizado")
+						log.debug("Tipo de proposição ${desc} atualizado")
 					} else { // ainda não existe. Persista agora
 						entidade = new Proposicao(atributos)
 						entidade.save()
 						
 						if (entidade.errors.errorCount>0) {
-							log.error("Proposição ${idA} NÃO foi salva devido a erros: ${entidade.errors}")
+							log.error("Proposição ${desc} NÃO foi salva devido a erros: ${entidade.errors}")
 						} else {
-							log.debug("Proposição ${idA} salvo no banco")
+							log.debug("Proposição ${desc} salva no banco")
 						}
 					}
 					
