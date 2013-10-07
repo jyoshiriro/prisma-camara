@@ -54,7 +54,7 @@ grails.spring.bean.packages = []
 grails.web.disable.multipart=false
 
 // request parameters to mask when logging exceptions
-grails.exceptionresolver.params.exclude = ['password']
+grails.exceptionresolver.params.exclude = ['password','senha']
 
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
@@ -75,6 +75,7 @@ log4j = {
     //
     appenders {
         console name:'stdout', layout:pattern(conversionPattern: '%d{dd/MM HH:mm} - %m [%c{2}] %n')
+        console name:'stderr', layout:pattern(conversionPattern: '%d{dd/MM HH:mm} - %m [%c{2}] %n')
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
