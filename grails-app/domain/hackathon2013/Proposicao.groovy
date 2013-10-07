@@ -13,15 +13,16 @@ class Proposicao {
 	String txtExplicacaoEmenta // será truncado em 144 caracteres
 	String txtApreciacao // será truncado em 144 caracteres
 	
-	TipoProposicao tipoProposicao
 	Deputado autor
+	TipoProposicao tipoProposicao
+	
 	String nomeAutor // em registros antigos não há relação, apenas o nome do autor  // será truncado em 200 caracteres
 
 	Date ultimoDespacho	
 	String txtUltimoDespacho // será truncado em 144 caracteres
 	String situacao
 	
-	List<Votacao> votacoes
+	static hasMany = [votacoes:Votacao]
 	
 	static transients = ['PRIMEIRO_ANO']
 	
