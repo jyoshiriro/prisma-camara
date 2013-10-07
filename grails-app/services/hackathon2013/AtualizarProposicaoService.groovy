@@ -38,7 +38,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 				
 				log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
 				
-				for (prop in xmlr.proposicao) { 
+				l3:for (prop in xmlr.proposicao) { 
 					
 					// WA
 //					if (prop.numero?.toString()!='1992')
@@ -60,7 +60,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 							log.debug("Proposição ${desc} agora está arquivada e foi excluída do banco.")
 						} else {
 							log.debug("Proposição ${desc} já está arquivada e não será salva.")
-							continue
+							continue l3;
 						}
 					}
 					 
@@ -79,22 +79,25 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 						atributos+=[nomeAutor:prop.autor1.txtNomeAutor?.toString()]
 					}
 					
-					Proposicao entidade = Proposicao.where {idProposicao==idA}.find()
-					
-					if (entidade) { // já existe o registro, atualize os dados
-						entidade.properties=atributos
-						log.debug("Tipo de proposição ${desc} atualizado")
-					} else { // ainda não existe. Persista agora
-						entidade = new Proposicao(atributos)
-						entidade.save()
+					Proposicao.withNewTransaction { tx ->
+						Proposicao entidade = Proposicao.where {idProposicao==idA}.find()
 						
-						if (entidade.errors.errorCount>0) {
-							log.error("Proposição ${desc} NÃO foi salva devido a erros: ${entidade.errors}")
-						} else {
-							log.debug("Proposição ${desc} salva no banco")
+						if (entidade) { // já existe o registro, atualize os dados
+							entidade.properties=atributos
+							log.debug("Tipo de proposição ${desc} atualizado")
+						} else { // ainda não existe. Persista agora
+							entidade = new Proposicao(atributos)
+							entidade.save()
+							
+							if (entidade.errors.errorCount>0) {
+								log.error("Proposição ${desc} NÃO foi salva devido a erros: ${entidade.errors}")
+							} else {
+								log.debug("Proposição ${desc} salva no banco")
+							}
 						}
+						
 					}
-					
+					print 'okok'
 				}
 			} // for de anos
 		} // for de tipos

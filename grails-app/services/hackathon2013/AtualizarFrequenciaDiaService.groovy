@@ -9,8 +9,6 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 
-	private Date dataAtualizacao
-
 	@Override
 	public String getSiglaDeParametro() {
 		// "http://www.camara.gov.br/SitCamaraWS/sessoesreunioes.asmx/ListarPresencasDia?numLegislatura=&numMatriculaParlamentar=&siglaPartido=&siglaUF=&data=${data}"
@@ -18,27 +16,42 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		return 'url_frequecias_dia';
 	}
 	
-	def atualizar(Date dataAtualizacao) {
-		this.dataAtualizacao=dataAtualizacao
-		atualizar()	
-	}	
+	private Date getUltimaData() {
+		def ultimoDiaS = Parametro.findBySigla('ultimo_dia_frequencia')?.valor
+		try {
+			Date proximaData = ultimoDiaS?(Date.parse("dd/MM/yyyy", ultimoDiaS)):(new Date())
+			proximaData
+		} catch (Exception e) {
+			new Date()
+		}
+	}
+	
 	
     def atualizar() {
-		if (!dataAtualizacao) {
-			dataAtualizacao = (new Date()-4).clearTime()
-		}
 		
-		def urlT = getUrlAtualizacao([data:dataAtualizacao.format("dd/MM/yyyy")])
+		Date dataAtualizacao = getUltimaData()
+		
+		def urlT = null
 		GPathResult xmlr = null
 		try {
-			xmlr = getXML(urlT)
+			def quant = 0
+			while (!quant) {
+				dataAtualizacao--
+				urlT = getUrlAtualizacao([data:dataAtualizacao.format("dd/MM/yyyy")])
+				xmlr = getXML(urlT)
+				quant = xmlr.childNodes()?.size()
+			}
+			dataAtualizacao.clearTime()
+			Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
+			pData.valor=dataAtualizacao.format('dd/MM/yyyy')
+			
 		} catch (Exception e) {
 			log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 		}
 		
 		log.debug("Chegaram ${xmlr.parlamentares.childNodes()?.size()} frequências dos deputados chegaram no XML de ${urlT}...")
 
-		xmlr.parlamentares.parlamentar.eachWithIndex{ parlemantar, i->
+		for (parlemantar in xmlr.parlamentares.parlamentar) { 
 			
 			def atributos = [dia:dataAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
 			
@@ -55,9 +68,10 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 				entidade.properties=atributos
 				log.debug("Frequência de deputado ${deputadoA.nomeParlamentar} em ${entidade.dia} possivelmente atualizada")
 			} else { // ainda não existe. Persista agora
-				entidade = new FrequenciaDia(atributos)
-				entidade.save()
-				
+				FrequenciaDia.withNewTransaction { tx ->
+					entidade = new FrequenciaDia(atributos)
+					entidade.save()
+				}
 				if (entidade.errors.errorCount>0) {
 					log.error("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} NÃO foi salva devido a erros: ${entidade?.errors}")
 				} else {
@@ -80,8 +94,10 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 					log.debug("Frequencia da Sessão ${descricaoA} provavelmente atualizada no banco")
 				} else {
 					atributosS+=[frequenciaDia:entidade]
-					fSessao = new FrequenciaSessao(atributosS)
-					fSessao.save()
+					FrequenciaSessao.withNewTransaction { tx ->
+						fSessao = new FrequenciaSessao(atributosS)
+						fSessao.save()
+					}
 					log.debug("Frequencia da Sessão ${descricaoA} salva no banco")
 				}
 			}
