@@ -3,7 +3,7 @@ dataSource {
     driverClassName = "com.mysql.jdbc.Driver"
 }
 hibernate {
-    cache.use_second_level_cache = true
+    cache.use_second_level_cache = false
     cache.use_query_cache = false
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
 	hibernate.dialect='org.hibernate.dialect.MySQL5InnoDBDialect' 
@@ -15,8 +15,21 @@ environments {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://localhost:3306/hackathon"
             username = "root"
-            password = "admin"
-//            password = "123456"
+//            password = "admin"
+            password = "123456"
+			
+            pooled = true
+			properties {
+				defaultTransactionIsolation=2
+				maxActive = 10
+				minEvictableIdleTimeMillis=1800000
+				timeBetweenEvictionRunsMillis=1800000
+				numTestsPerEvictionRun=3
+				testOnBorrow=true
+				testWhileIdle=true
+				testOnReturn=true
+				validationQuery="SELECT 1"
+			 }
         }
     }
     test {
@@ -44,5 +57,9 @@ environments {
                validationQuery="SELECT 1"
             }
         }
+		hibernate {
+			cache.use_second_level_cache = true
+			cache.use_query_cache = true
+		}
     }
 }
