@@ -1,5 +1,8 @@
 package hackathon2013
 
+import org.hibernate.TransactionException;
+import org.springframework.transaction.TransactionSystemException;
+
 import groovy.util.logging.Log4j
 
 @Log4j
@@ -33,6 +36,10 @@ class AtualizarController {
 			this."${nomeServico}".atualizar()
 			def entidadeM = message(code:"${id}.label")
 			flash.message="Cadastro de ${entidadeM} atualizado com Sucesso"
+		} catch(TransactionException et) {
+			
+		} catch(TransactionSystemException et) {
+			
 		} catch (Exception e) {
 			e.printStackTrace()
 			flash.error="Erro: ${e.message}"
