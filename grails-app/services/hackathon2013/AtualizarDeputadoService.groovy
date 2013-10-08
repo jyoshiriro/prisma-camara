@@ -1,5 +1,7 @@
 package hackathon2013
 
+import org.springframework.transaction.support.DefaultTransactionStatus;
+
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
@@ -23,6 +25,7 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 		log.debug("${xmlr.childNodes().size()} deputados chegaram no XML")
 		
 		for (dep in xmlr.deputado) {
+			Deputado.withNewTransaction { tx->
 			 
 			def ideCadastroA = dep.ideCadastro.toInteger()
 			chavesRecebidos+=ideCadastroA
@@ -80,7 +83,7 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 					log.debug("Deputado ${ideCadastroA} com nova Comissão como Suplente: ${siglaA}")
 				}
 			}
-
+			}
 	
 		}
 		

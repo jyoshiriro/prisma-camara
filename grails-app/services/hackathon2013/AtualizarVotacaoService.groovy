@@ -1,5 +1,7 @@
 package hackathon2013
 
+import org.hibernate.SessionFactory;
+
 import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
@@ -7,6 +9,8 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarVotacaoService extends AtualizadorEntidade {
 
+	SessionFactory sessionFactory
+	
 	@Override
 	public String getSiglaDeParametro() {
 		// "http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ObterVotacaoProposicao?tipo=${tipo}&numero=${numero}&ano=${ano}"
@@ -28,7 +32,8 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 		log.debug("Um total de ${proposicoes.size()} terão votos verificados")
 		
 		for (proposicaoA in proposicoes) {
-			
+//			def tx = Votacao.withNewTransaction { tx ->
+				
 			def pTipo = proposicaoA.tipoProposicao.sigla
 			def pNumero = proposicaoA.numero
 			def pAno = proposicaoA.ano
@@ -40,66 +45,40 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 				xmlr = getXML(urlT)
 			} catch (Exception e) {
 				log.error("A url ${urlT} não retornou XML válido ou não continha votação: ${e.message}")
-				continue;
+				return false;
 			}
 			log.debug("Votações da proposição ${desc} chegaram no XML...")
 			
-			for (vot in xmlr.Votacoes.Votacao) { 
+			// pegando só o último voto (que é o mais recente)
+			Integer idUltimo = xmlr.Votacoes.childNodes().size()-1
+			def vot = xmlr.Votacoes.childNodes()[idUltimo]
+			
+			def dataHotaS = "${vot.attributes.Data} ${vot.attributes.Hora}"  
+			def dataHoraA = Date.parse('d/M/yyyy HH:mm',dataHotaS)
+			
+			def atributos = [resumo:vot.attributes.Resumo, dataHoraVotacao:dataHoraA, objVotacao:vot.attributes.ObjVotacao]
+			atributos+=[proposicao:proposicaoA]
+			
+			Votacao entidade = Votacao.where {proposicao==proposicaoA && dataHoraVotacao==dataHoraA}.find()
+			boolean votacaoExistente = (entidade)
+			if (entidade) { // já existe o registro, atualize os dados
+				entidade.properties=atributos
+				log.debug("Votação da proposição ${desc} e suas Orientações e Votos possivelmente atualizados")
+			} else { // ainda não existe. Persista agora
 				
-				def dataHotaS = "${vot.@Data} ${vot.@Hora}"  
-				def dataHoraA = Date.parse('d/M/yyyy HH:mm',dataHotaS)
+				entidade = new Votacao(atributos)
+				entidade.save()
 				
-				def atributos = [resumo:vot.@Resumo.toString(), dataHoraVotacao:dataHoraA, objVotacao:vot.@ObjVotacao.toString()]
-				atributos+=[proposicao:proposicaoA]
-				
-				Votacao entidade = Votacao.where {proposicao==proposicaoA && dataHoraVotacao==dataHoraA}.find()
-				
-				if (entidade) { // já existe o registro, atualize os dados
-					entidade.properties=atributos
-					log.debug("Votação da proposição ${desc} e suas Orientações e Votos possivelmente atualizados")
-				} else { // ainda não existe. Persista agora
-					Votacao.withNewTransaction { tx ->
-						entidade = new Votacao(atributos)
-						entidade.save()
-					}
-					
-					if (entidade.errors.errorCount>0) {
-						log.error("Votações da Proposição ${desc} NÃO foram salvas devido a erros: ${entidade.errors}")
-						continue
-					} else {
-						log.debug("Novas Votações da Proposição ${desc} e suas Orientações e Votos salvas no banco")
-					}
+				if (entidade.errors.errorCount>0) {
+					log.error("Votações da Proposição ${desc} NÃO foram salvas devido a erros: ${entidade.errors}")
+					continue
+				} else {
+					log.debug("Novas Votações da Proposição ${desc} e suas Orientações e Votos salvas no banco")
 				}
 				
-				def orientacoesBancada = []
-				def votos = []
-				
-				// Orientações de bancadas
-				for (ob in vot.childNodes()[0].childNodes()) { 
-					
-					def siglaA=ob.attributes.Sigla.trim()
-					def orientacaoA=ob.attributes.orientacao.trim()
-					OrientacaoBancada oBancada = OrientacaoBancada.where{votacao==entidade && sigla==siglaA}.find()
-					if (!oBancada) {
-						try {
-							OrientacaoBancada.withNewTransaction { tx ->
-								oBancada = new OrientacaoBancada(sigla: siglaA, orientacao: orientacaoA, votacao: entidade)
-								oBancada.save()
-							}
-							log.debug("Orientação de bancada (${siglaA} - votação ${desc}) salva no banco")
-						} catch (Exception e) {
-							log.error("Erro ao tantar salvar Orientação de bancada (${siglaA} - votação ${desc}) no banco: ${e.message}")
-							e.printStackTrace()
-							continue
-						}
-					} 
-					// o voto mudou na nova leitura?
-					if (oBancada?.orientacao!=orientacaoA)
-						oBancada.orientacao=orientacaoA
-						
-					orientacoesBancada+=oBancada
-				}
-				
+			}
+			
+			if (!votacaoExistente) {
 				// Votos dos deputados
 				for (ob in vot.childNodes()[1].childNodes()) {
 				
@@ -109,28 +88,20 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					def votoA=ob.attributes.Voto.trim()
 					
 					// SE não for econtrado o Deputado, salve no banco como "ativo=false"
-					Deputado deputadoA = null 
-					
-					try {
-						deputadoA = Deputado.where {nomeParlamentar==nomeA && partido.sigla==partidoA && uf==ufA}.find()
-					} catch (Exception e) {
-						e.printStackTrace()
-					}
+					Deputado deputadoA = Deputado.where {nomeParlamentar==nomeA && partido.sigla==partidoA && uf==ufA}.list(max:1)?.get(0)
+							
 					if (!deputadoA) {
-						Deputado.withNewTransaction { tx ->
-							deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)
-							deputadoA.save()
-						}
+						deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)
+						deputadoA.save()
 						log.debug("Deputado ${nomeA}(${partidoA}/${ufA}) não existia na base. Salvo como 'inativo'")
 					}
-					
+							
 					Voto voto = Voto.where{votacao==entidade && deputado==deputadoA}.find()
 					if (!voto) {
 						try {
-							Voto.withNewTransaction { tx ->
-								voto = new Voto(deputado:deputadoA, votacao: entidade, voto:votoA)
-								voto.save()
-							}
+							
+							voto = new Voto(deputado:deputadoA, votacao: entidade, voto:votoA)
+							voto.save()
 							log.debug("Voto (${deputadoA.nomeParlamentar} - votação ${desc}) salvo no banco")
 						} catch (Exception e) {
 							log.error("Erro ao tantar salvar Voto (${deputadoA.nomeParlamentar} - votação ${desc}) no banco: ${e.message}")
@@ -142,38 +113,15 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					if (voto?.voto!=votoA)
 						voto.voto=votoA
 						
-					votos+=voto
 				}
-				
-				// caso a lista que chegue tenha menos elementos que os votos anteriormente registrados
-				// - orientações
-				entidade.orientacoesBancada.findAll{!orientacoesBancada.contains(it)}.each { obExcluir ->
-					try {
-						OrientacaoBancada.withNewTransaction { tx ->
-							obExcluir.delete()
-						}
-						log.debug("Orientação de bancada (${obExcluir.sigla} - votação ${desc}) removida no banco")
-					} catch (Exception e) {
-						log.debug("Erro ao excluir Orientação de bancada (${obExcluir.sigla} - votação ${desc}) do banco: ${e.message}")
-						e.printStackTrace()
-					}
-				}
-				// - votos
-				entidade.votos.findAll{!votos.contains(it)}.each { votoExcluir ->
-				try {
-					Voto.withNewTransaction { tx ->
-						votoExcluir.delete()
-					}
-					log.debug("Voto (${votoExcluir.id} - votação ${desc}) removido no banco")
-				} catch (Exception e) {
-					log.debug("Erro ao excluir Voto (${votoExcluir.id} - votação ${desc}) do banco: ${e.message}")
-					e.printStackTrace()
-				}
-				}
-
-				
 			}
-		} // for de proposicoes
+			
+			def session = sessionFactory?.currentSession
+			session?.transaction?.commit()
+			session?.transaction?.begin()
+			
+		} // for de proposições
+						
 		
 		log.debug("Atualização de Votações de Proposições concluída com sucesso")
 	}

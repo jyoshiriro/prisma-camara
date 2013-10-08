@@ -34,6 +34,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		def urlT = null
 		GPathResult xmlr = null
 		try {
+			
 			def quant = 0
 			while (!quant) {
 				dataAtualizacao--
@@ -43,7 +44,14 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			}
 			dataAtualizacao.clearTime()
 			Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
-			pData.valor=dataAtualizacao.format('dd/MM/yyyy')
+			if (pData)
+				pData.valor=dataAtualizacao.format('dd/MM/yyyy')
+			else {
+				Parametro.withNewTransaction { tx ->
+					pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: dataAtualizacao.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
+					pData.save()
+				}
+			}
 			
 		} catch (Exception e) {
 			log.error("A url ${urlT} não retornou XML válido: ${e.message}")
@@ -52,6 +60,8 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		log.debug("Chegaram ${xmlr.parlamentares.childNodes()?.size()} frequências dos deputados chegaram no XML de ${urlT}...")
 
 		for (parlemantar in xmlr.parlamentares.parlamentar) { 
+			
+			Deputado.withNewTransaction { tx ->
 			
 			def atributos = [dia:dataAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
 			
@@ -68,10 +78,8 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 				entidade.properties=atributos
 				log.debug("Frequência de deputado ${deputadoA.nomeParlamentar} em ${entidade.dia} possivelmente atualizada")
 			} else { // ainda não existe. Persista agora
-				FrequenciaDia.withNewTransaction { tx ->
-					entidade = new FrequenciaDia(atributos)
-					entidade.save()
-				}
+				entidade = new FrequenciaDia(atributos)
+				entidade.save()
 				if (entidade.errors.errorCount>0) {
 					log.error("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} NÃO foi salva devido a erros: ${entidade?.errors}")
 				} else {
@@ -94,12 +102,12 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 					log.debug("Frequencia da Sessão ${descricaoA} provavelmente atualizada no banco")
 				} else {
 					atributosS+=[frequenciaDia:entidade]
-					FrequenciaSessao.withNewTransaction { tx ->
-						fSessao = new FrequenciaSessao(atributosS)
-						fSessao.save()
-					}
+					fSessao = new FrequenciaSessao(atributosS)
+					fSessao.save()
 					log.debug("Frequencia da Sessão ${descricaoA} salva no banco")
 				}
+			}
+			
 			}
 		}
 		dataAtualizacao=null

@@ -19,13 +19,14 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 
 	def atualizar() {
 
-		
 		def tipos = ['PEC']// TipoProposicao.list().collect{it.sigla} //['PL','PEC']
 		def anos = [2007] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
 		
 		l1:for (tipo in tipos) {
 			l2:for (ano in anos) {
 				
+			def tx = Proposicao.withNewTransaction { tx ->
+					
 				def urlT = getUrlAtualizacao([ano:ano.toString(),sigla:tipo])
 				
 				GPathResult xmlr = null
@@ -33,7 +34,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 					xmlr = getXML(urlT)
 				} catch (Exception e) {
 					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
-					continue l2;
+					return 'l2';
 				}
 				
 				log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
@@ -79,26 +80,28 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 						atributos+=[nomeAutor:prop.autor1.txtNomeAutor?.toString()]
 					}
 					
-					Proposicao.withNewTransaction { tx ->
-						Proposicao entidade = Proposicao.where {idProposicao==idA}.find()
+					
+					Proposicao entidade = Proposicao.where {idProposicao==idA}.find()
+					
+					if (entidade) { // já existe o registro, atualize os dados
+						entidade.properties=atributos
+						log.debug("Tipo de proposição ${desc} atualizado")
+					} else { // ainda não existe. Persista agora
+						entidade = new Proposicao(atributos)
+						entidade.save()
 						
-						if (entidade) { // já existe o registro, atualize os dados
-							entidade.properties=atributos
-							log.debug("Tipo de proposição ${desc} atualizado")
-						} else { // ainda não existe. Persista agora
-							entidade = new Proposicao(atributos)
-							entidade.save()
-							
-							if (entidade.errors.errorCount>0) {
-								log.error("Proposição ${desc} NÃO foi salva devido a erros: ${entidade.errors}")
-							} else {
-								log.debug("Proposição ${desc} salva no banco")
-							}
+						if (entidade.errors.errorCount>0) {
+							log.error("Proposição ${desc} NÃO foi salva devido a erros: ${entidade.errors}")
+						} else {
+							log.debug("Proposição ${desc} salva no banco")
 						}
-						
 					}
-					print 'okok'
+					
 				}
+			}
+			
+			if (tx=='l2') continue l2
+			
 			} // for de anos
 		} // for de tipos
 		log.debug("Atualização de Proposições concluída com sucesso")
