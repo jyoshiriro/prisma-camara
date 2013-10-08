@@ -44,6 +44,8 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.22'
         runtime 'org.quartz-scheduler:quartz:2.2.1'
+		compile 'org.springframework.social:spring-social-core:1.0.1.RELEASE'
+		compile 'org.springframework.social:spring-social-facebook:1.0.1.RELEASE'
 		
     }
 

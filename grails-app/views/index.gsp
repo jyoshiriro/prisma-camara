@@ -121,8 +121,12 @@
 				<sec:ifNotGranted roles="ROLE_USER">
 					<facebookAuth:connect />
 				</sec:ifNotGranted>
+				<br/>
+				<br/>
 				<sec:ifAllGranted roles="ROLE_USER">
-					Welcome <sec:username/>! (<g:link uri="/j_spring_security_logout">Logout</g:link>)
+					Bem-vindo <sec:username/>! (<g:link uri="/j_spring_security_logout">Logout</g:link>)
+					<br/>
+					<g:link class="create" controller="facebookPost" action="timeline">Minha Timeline</g:link>
 				</sec:ifAllGranted>
 			</div>
 		</div>
