@@ -16,39 +16,42 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		return 'url_frequecias_dia';
 	}
 	
-	private Date getUltimaData() {
+	private Date getUltimaAtualizacao() {
 		def ultimoDiaS = Parametro.findBySigla('ultimo_dia_frequencia')?.valor
+		Date proximaData = null
 		try {
-			Date proximaData = ultimoDiaS?(Date.parse("dd/MM/yyyy", ultimoDiaS)):(new Date())
-			proximaData
+			proximaData = Date.parse("dd/MM/yyyy", ultimoDiaS)
 		} catch (Exception e) {
-			new Date()
+			proximaData = (new Date()-30) // caso ocorra algum problema ou seja a primeira vez, a data máxima a ser buscada é de 30 dias atrás
 		}
+		return proximaData.clearTime()
 	}
 	
 	
     def atualizar() {
 		
-		Date dataAtualizacao = getUltimaData()
+		Date ultimaAtualizacao = getUltimaAtualizacao()
+		Date proximaAtualizacao = new Date().clearTime()
 		
 		def urlT = null
 		GPathResult xmlr = null
 		try {
 			
 			def quant = 0
-			while (!quant) {
-				dataAtualizacao--
-				urlT = getUrlAtualizacao([data:dataAtualizacao.format("dd/MM/yyyy")])
+			while (!quant && proximaAtualizacao>ultimaAtualizacao) {
+				urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
 				xmlr = getXML(urlT)
 				quant = xmlr.childNodes()?.size()
+				proximaAtualizacao--
 			}
-			dataAtualizacao.clearTime()
+			proximaAtualizacao++
 			Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
-			if (pData)
-				pData.valor=dataAtualizacao.format('dd/MM/yyyy')
+			if (pData) {
+				pData.valor=proximaAtualizacao.format('dd/MM/yyyy')
+			}
 			else {
 				Parametro.withNewTransaction { tx ->
-					pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: dataAtualizacao.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
+					pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: proximaAtualizacao.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
 					pData.save()
 				}
 			}
@@ -63,7 +66,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			
 			Deputado.withNewTransaction { tx ->
 			
-			def atributos = [dia:dataAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
+			def atributos = [dia:proximaAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
 			
 			Deputado deputadoA = Deputado.where {matricula==parlemantar.carteiraParlamentar.toString().toInteger()}.find()
 			if (!deputadoA) {
@@ -72,7 +75,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			}
 			atributos+=[deputado:deputadoA]
 			
-			FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==dataAtualizacao}.find()
+			FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==proximaAtualizacao}.find()
 			
 			if (entidade) { // já existe o registro, atualize os dados
 				entidade.properties=atributos
@@ -110,7 +113,6 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			
 			}
 		}
-		dataAtualizacao=null
 		log.debug("Atualização de Frequencias de Deputados concluída com sucesso")
     }
 
