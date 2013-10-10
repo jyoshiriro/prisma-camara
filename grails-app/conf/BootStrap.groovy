@@ -1,5 +1,4 @@
 import groovy.util.logging.Log4j
-import hackathon2013.Deputado
 import hackathon2013.Parametro
 
 @Log4j
@@ -33,7 +32,7 @@ class BootStrap {
 //		AtualizarDeputadosService.URL=Parametro.findBySigla('url_listagem_deputados').valor
 //		AtualizarTiposProposicoesService.URL=Parametro.findBySigla('url_listagem_tipos_proposicoes').valor
 //		AtualizarProposicoesService.URL=Parametro.findBySigla('url_listagem_proposicoes').valor
-		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
+//		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
 		
 	}
 }
