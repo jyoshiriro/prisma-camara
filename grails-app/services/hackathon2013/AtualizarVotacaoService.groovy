@@ -45,7 +45,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 				xmlr = getXML(urlT)
 			} catch (Exception e) {
 				log.error("A url ${urlT} não retornou XML válido ou não continha votação: ${e.message}")
-				return false;
+				continue;
 			}
 			log.debug("Votações da proposição ${desc} chegaram no XML...")
 			
@@ -88,7 +88,8 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					def votoA=ob.attributes.Voto.trim()
 					
 					// SE não for econtrado o Deputado, salve no banco como "ativo=false"
-					Deputado deputadoA = Deputado.where {nomeParlamentar==nomeA && partido.sigla==partidoA && uf==ufA}.list(max:1)?.get(0)
+					def ld = Deputado.where {nomeParlamentar==nomeA && partido.sigla==partidoA && uf==ufA}.list(max:1)
+					Deputado deputadoA = ld?ld.get(0):null
 							
 					if (!deputadoA) {
 						deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)

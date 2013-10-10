@@ -30,7 +30,7 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 			def ideCadastroA = dep.ideCadastro.toInteger()
 			chavesRecebidos+=ideCadastroA
 			
-			def atributos = [ideCadastro: ideCadastroA, condicao: dep.condicao.toString(), matricula: dep.matricula.toInteger(), nome: dep.nome.toString(), nomeParlamentar: dep.nomeParlamentar.toString(),  sexo: dep.sexo.toString(), uf:dep.uf.toString(), siglaPartido: dep.partido.toString(), fone: dep.fone.toString(), email:dep.email.toString(), ativo:true]
+			def atributos = [ideCadastro: ideCadastroA, condicao: dep.condicao.toString(), matricula: dep.matricula.toInteger(), nome: dep.nome.toString().toUpperCase(), nomeParlamentar: dep.nomeParlamentar.toString().toUpperCase(),  sexo: dep.sexo.toString(), uf:dep.uf.toString(), siglaPartido: dep.partido.toString(), fone: dep.fone.toString(), email:dep.email.toString(), ativo:true]
 			
 			Deputado entidade = Deputado.where {ideCadastro==ideCadastroA && ativo}.find()
 			if (!entidade) {

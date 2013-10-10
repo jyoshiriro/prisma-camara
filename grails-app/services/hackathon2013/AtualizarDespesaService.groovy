@@ -57,7 +57,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			
 			def matriculaA = despesa.nuCarteiraParlamentar.toString().trim().toInteger()
 			
-			def nomeA = despesa.txNomeParlamentar.toString().trim()
+			def nomeA = despesa.txNomeParlamentar.toString().trim().toUpperCase()
 			def partidoA = despesa.sgPartido.toString().trim()
 			def ufA = despesa.sgUF.toString().trim()
 			

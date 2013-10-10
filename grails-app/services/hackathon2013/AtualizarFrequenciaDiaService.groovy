@@ -36,7 +36,6 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		def urlT = null
 		GPathResult xmlr = null
 		try {
-			
 			def quant = 0
 			while (!quant && proximaAtualizacao>ultimaAtualizacao) {
 				urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
@@ -45,16 +44,6 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 				proximaAtualizacao--
 			}
 			proximaAtualizacao++
-			Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
-			if (pData) {
-				pData.valor=proximaAtualizacao.format('dd/MM/yyyy')
-			}
-			else {
-				Parametro.withNewTransaction { tx ->
-					pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: proximaAtualizacao.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
-					pData.save()
-				}
-			}
 			
 		} catch (Exception e) {
 			log.error("A url ${urlT} não retornou XML válido: ${e.message}")
@@ -70,7 +59,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			
 			Deputado deputadoA = Deputado.where {matricula==parlemantar.carteiraParlamentar.toString().toInteger()}.find()
 			if (!deputadoA) {
-				deputadoA = new Deputado(nome:parlemantar.nomeParlamentar.toString(),nomeParlamentar:parlemantar.nomeParlamentar.toString(),siglaPartido:parlemantar.siglaPartido.toString(),matricula:parlemantar.carteiraParlamentar.toString().toInteger(),uf:parlemantar.siglaUF.toString(),ativo:false)
+				deputadoA = new Deputado(nome:parlemantar.nomeParlamentar.toString().toUpperCase(),nomeParlamentar:parlemantar.nomeParlamentar.toString().toUpperCase(),siglaPartido:parlemantar.siglaPartido.toString(),matricula:parlemantar.carteiraParlamentar.toString().toInteger(),uf:parlemantar.siglaUF.toString(),ativo:false)
 				deputadoA.save()
 			}
 			atributos+=[deputado:deputadoA]
@@ -113,6 +102,15 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			
 			}
 		}
+		Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
+		if (pData) {
+			pData.valor=proximaAtualizacao.format('dd/MM/yyyy')
+		}
+		else {
+			pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: proximaAtualizacao.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
+			pData.save()
+		}
+
 		log.debug("Atualização de Frequencias de Deputados concluída com sucesso")
     }
 
