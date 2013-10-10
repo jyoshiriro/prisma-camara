@@ -11,7 +11,6 @@
 	</li>
 	
 	<li><g:link action="executar" id="frequenciaDia">Frequências de Deputados</g:link>
-	(Dia a ser analisado: ${proximaFrequencia.format('dd/MM/yyyy')})
 	</li>
 	
 	<li><g:link action="executar" id="tipoProposicao">Tipos de Proposições</g:link>
