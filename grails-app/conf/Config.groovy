@@ -11,6 +11,8 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+grails.config.locations = [ "classpath:local-config.properties", "file:${userHome}/.grails/s2fb-config.properties"]
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -103,8 +105,6 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'hackathon2013
 grails.plugins.springsecurity.authority.className = 'hackathon2013.Perfil'
 
 grails.plugins.springsecurity.facebook.domain.classname='hackathon2013.UsuarioFacebook'
-grails.plugins.springsecurity.facebook.appId='553101868095758'
-grails.plugins.springsecurity.facebook.secret='532ea25e4511b3533a02588a75fae299'
 grails.plugins.springsecurity.facebook.permissions = 'read_stream, email, publish_actions'
 grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'
 
