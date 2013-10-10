@@ -1,10 +1,14 @@
-package hackathon2013
+package br.org.prismaCamara.servicos.atualizacoes
 
 import org.hibernate.SessionFactory;
 
 import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
+import hackathon2013.Deputado;
+import hackathon2013.Proposicao;
+import hackathon2013.Votacao;
+import hackathon2013.Voto;
 
 @Log4j
 class AtualizarVotacaoService extends AtualizadorEntidade {

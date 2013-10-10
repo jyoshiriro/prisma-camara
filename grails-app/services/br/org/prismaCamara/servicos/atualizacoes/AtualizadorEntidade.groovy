@@ -1,4 +1,4 @@
-package hackathon2013
+package br.org.prismaCamara.servicos.atualizacoes
 
 import java.util.Map;
 
@@ -6,6 +6,7 @@ import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
 import groovy.text.SimpleTemplateEngine
 import groovy.util.slurpersupport.GPathResult
+import hackathon2013.Parametro;
 
 abstract class AtualizadorEntidade {
 	

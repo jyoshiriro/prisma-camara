@@ -1,9 +1,11 @@
-package hackathon2013
+package br.org.prismaCamara.servicos.atualizacoes
 
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
+import hackathon2013.Comissao;
+import hackathon2013.Deputado;
 
 /**
  * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"

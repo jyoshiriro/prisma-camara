@@ -1,7 +1,11 @@
-package hackathon2013
+package br.org.prismaCamara.servicos.atualizacoes
 
 import groovy.util.logging.Log4j;
 import groovy.util.slurpersupport.GPathResult
+import hackathon2013.Deputado;
+import hackathon2013.FrequenciaDia;
+import hackathon2013.FrequenciaSessao;
+import hackathon2013.Parametro;
 
 /**
  * Atualização de frequências de todos os Deputados no (dia atual-2) ou de determinada data

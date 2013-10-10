@@ -1,8 +1,11 @@
-package hackathon2013
+package br.org.prismaCamara.servicos.atualizacoes
 
 import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
+import hackathon2013.Deputado;
+import hackathon2013.Proposicao;
+import hackathon2013.TipoProposicao;
 
 
 /**
