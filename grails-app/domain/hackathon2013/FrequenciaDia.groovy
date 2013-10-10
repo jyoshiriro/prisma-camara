@@ -13,6 +13,7 @@ class FrequenciaDia {
 	
 	static mapping = {
 		deputado(cascade:'all')
+		frequenciasSessao(sort:'inicio')
 	}
 	
 	static constraints = {

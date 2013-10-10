@@ -5,8 +5,6 @@ import groovy.util.logging.Log4j;
 @Log4j
 class Deputado {
 	
-	static String URL_BIOGRAFIAS = "http://www.camara.leg.br/internet/Deputado/dep_Detalhe.asp?id="
-	
 	Integer ideCadastro
 	String condicao
 	Integer matricula
@@ -23,7 +21,7 @@ class Deputado {
 	
 	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia]
 	
-	static transients = ['urlBiografia','siglaPartido']
+	static transients = ['siglaPartido','descricao','urlDetalhes','ultimaFrequencia']
 	
 	static constraints = {
 		condicao(maxSize:20, nullable:true)
@@ -38,8 +36,20 @@ class Deputado {
 		matricula(nullable:true)
 	}
 	
-	String getUrlBiografia() {
-		"${URL_BIOGRAFIAS}${ideCadastro}"
+	def beforeValidate() {
+		
+		// alguns nomes vêm com "-sigla/uf" ao final. Ex: JOSÉ RUELA-PX/SP
+		
+		def fimPartido = "${partido.sigla}/${uf}"
+		def idFimNome = nome.indexOf(fimPartido)
+		def idFimNomeParlamentar = nomeParlamentar.indexOf(fimPartido)
+
+		if (idFimNome>=0)
+			nome=nome.substring(0,idFimNome-1)
+		if (idFimNomeParlamentar>=0)
+			nomeParlamentar=nomeParlamentar.substring(0,idFimNomeParlamentar-1)
+			
+		def x = 0	
 	}
 	
 	public String getSiglaPartido() {
@@ -47,6 +57,7 @@ class Deputado {
 	}
 	
 	public void setSiglaPartido(String siglaPartido) {
+		siglaPartido = siglaPartido?.trim()
 		this.siglaPartido=siglaPartido
 		Partido nPartido = Partido.findBySigla(siglaPartido)
 		if (!nPartido) {
@@ -56,4 +67,18 @@ class Deputado {
 		}
 		partido=nPartido
 	}
+	
+	public String getDescricao() {
+		"${nomeParlamentar} (${partido.sigla}/${uf})"
+	}
+	
+	public String getUrlDetalhes() {
+		"${Parametro.findBySigla('url_biografia_deputado').valor}${ideCadastro}"
+	}
+	
+	public FrequenciaDia getUltimaFrequencia() {
+		frequenciasDia?.first()
+	}
+	
+	
 }

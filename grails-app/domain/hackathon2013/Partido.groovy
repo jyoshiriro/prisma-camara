@@ -12,5 +12,9 @@ class Partido {
 		cache(true)
 	}
 	
+	void setSigla(String sigla) {
+		this.sigla=sigla.trim()
+	}
+	
 	
 }

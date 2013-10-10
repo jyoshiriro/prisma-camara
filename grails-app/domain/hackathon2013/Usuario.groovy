@@ -1,5 +1,7 @@
 package hackathon2013
 
+import br.org.prismaCamara.mensagens.Postagem;
+
 class Usuario {
 
 	transient springSecurityService
@@ -12,6 +14,7 @@ class Usuario {
 	boolean passwordExpired
 
 	String nome
+	String tipoRede
 	boolean receberBiografias = true
 	
 	static hasMany = [partidos:Partido,deputados:Deputado,proposicoes:Proposicao]
@@ -20,6 +23,7 @@ class Usuario {
 		username blank: false, unique: true
 		password blank: false
 		nome(maxSize:50, nullable:true)
+		tipoRede(nullable:true, inList:Postagem.TIPOS)
 	}
 
 	static mapping = {
