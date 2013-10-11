@@ -14,6 +14,8 @@ class Discurso {
 	
 	Deputado deputado
 	
+	static transients = ['urlDetalhes']
+	
 	static constraints = {
 		codigo(maxSize:16)
 		cdFaseSessao(maxSize:5)
@@ -24,5 +26,9 @@ class Discurso {
 	static mapping = {
 		deputado(cascade:'all')
 	}
-	
+
+	public String getUrlDetalhes() {
+		// TODO: não é assim. Serão necessárias substituições de vários parâmetros
+		"${Parametro.findBySigla('url_discurso_deputado_dia').valor}${deputado.ideCadastro}"
+	}
 }

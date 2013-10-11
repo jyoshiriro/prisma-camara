@@ -15,11 +15,12 @@ class Deputado {
 	String siglaPartido
 	String fone
 	String email
+	Date ultimoDiaGasto
 	Boolean ativo
 	
 	Partido partido
 	
-	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia,discursos:Discurso]
+	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia,discursos:Discurso, despesas:Despesa]
 	
 	static transients = ['siglaPartido','descricao','urlDetalhes','ultimaFrequencia']
 	
@@ -31,9 +32,14 @@ class Deputado {
 		uf(maxSize:2)
 		fone(maxSize:20, nullable:true)
 		email(maxSize:60, nullable:true)
+		ultimoDiaGasto(nullable:true) 
 		
 		ideCadastro(nullable:true) 
 		matricula(nullable:true)
+	}
+	
+	static mapping = {
+		despesas(sort:'dataEmissao')
 	}
 	
 	def beforeValidate() {

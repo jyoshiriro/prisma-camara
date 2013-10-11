@@ -9,9 +9,15 @@ class Comissao {
 	
 	static belongsTo = [Deputado]
 	
+	static transients = ['descricao']
+	
 	static constraints = {
 		nome(maxSize:512)
 		sigla(maxSize:30)
+	}
+	
+	String getDescricao() {
+		"$nome - $sigla"
 	}
 	
 }
