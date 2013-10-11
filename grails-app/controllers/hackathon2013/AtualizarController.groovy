@@ -1,9 +1,11 @@
 package hackathon2013
 
-import org.hibernate.TransactionException;
-import org.springframework.transaction.TransactionSystemException;
-
 import groovy.util.logging.Log4j
+
+import org.hibernate.TransactionException
+import org.springframework.transaction.TransactionSystemException
+
+import br.org.prismaCamara.servicos.atualizacoes.AtualizarDiscursoService;
 
 @Log4j
 class AtualizarController {
@@ -14,13 +16,18 @@ class AtualizarController {
 	def atualizarVotacaoService
 	def atualizarFrequenciaDiaService
 	def atualizarDespesaService
+	def atualizarDiscursoService
 
-	def index() {
+	def getMapaAux() {
 		[deputadosA:Deputado.countByAtivo(true),
-		 deputadosI:Deputado.countByAtivo(false),
-		 tiposProp:TipoProposicao.countByAtivo(true),
-		 proposicoes:Proposicao.countBySituacaoNot('Arquivada'),
-		 proximaFrequencia:(new Date()-3)]
+			deputadosI:Deputado.countByAtivo(false),
+			tiposProp:TipoProposicao.countByAtivo(true),
+			proposicoes:Proposicao.countBySituacaoNot('Arquivada'),
+			proximaFrequencia:(new Date()-3)]
+	}
+	
+	def index() {
+		return mapaAux
 	}
 	
 	def vai() {
@@ -36,6 +43,7 @@ class AtualizarController {
 			this."${nomeServico}".atualizar()
 			def entidadeM = message(code:"${id}.label")
 			flash.message="Cadastro de ${entidadeM} atualizado com Sucesso"
+			
 		} catch(TransactionException et) {
 			
 		} catch(TransactionSystemException et) {
@@ -44,7 +52,7 @@ class AtualizarController {
 			e.printStackTrace()
 			flash.error="Erro: ${e.message}"
 		}
-		redirect(action:'index')
+		render(view:'index', model:mapaAux)
 		
 	}
 
