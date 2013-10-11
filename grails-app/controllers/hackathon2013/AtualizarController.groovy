@@ -17,6 +17,8 @@ class AtualizarController {
 	def atualizarFrequenciaDiaService
 	def atualizarDespesaService
 	def atualizarDiscursoService
+	
+	def limparDespesaService
 
 	def getMapaAux() {
 		[deputadosA:Deputado.countByAtivo(true),
@@ -43,6 +45,25 @@ class AtualizarController {
 			this."${nomeServico}".atualizar()
 			def entidadeM = message(code:"${id}.label")
 			flash.message="Cadastro de ${entidadeM} atualizado com Sucesso"
+		} catch(TransactionException et) {
+			
+		} catch(TransactionSystemException et) {
+			
+		} catch (Exception e) {
+			e.printStackTrace()
+			flash.error="Erro: ${e.message}"
+		}
+		render(view:'index', model:mapaAux)
+	}
+
+	
+	def limpar() {
+		try {
+			String id = params.id
+			def nomeServico = "limpar${id.capitalize()}Service"
+			this."${nomeServico}".limpar()
+			def entidadeM = message(code:"${id}.label")
+			flash.message="Cadastro de ${entidadeM} LIMPO com Sucesso"
 			
 		} catch(TransactionException et) {
 			
@@ -53,7 +74,5 @@ class AtualizarController {
 			flash.error="Erro: ${e.message}"
 		}
 		render(view:'index', model:mapaAux)
-		
 	}
-
 }
