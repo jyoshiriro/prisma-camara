@@ -1,10 +1,17 @@
 import groovy.util.logging.Log4j
 import hackathon2013.Parametro
+import hackathon2013.Perfil;
+import hackathon2013.Usuario;
+import hackathon2013.UsuarioPerfil;
+
 
 @Log4j
 class BootStrap {
 
     def init = { servletContext ->
+		
+		inicializarSpringSecurity()
+		
 		// atualizacao de parametros
 		atualizarTodos()
 		
@@ -18,7 +25,7 @@ class BootStrap {
 		
 		// acompanhamento das frequencias dos deputados: todo dia, 22h
 		
-		// acompanhamento dos gastos dos deputados: todo sábado, 6h (PERGUNTAR A FREQUENCIA DE ATUALIZAÇÃO DISSO)
+		// acompanhamento dos gastos dos deputados: todo sábado, 6h (PERGUNTAR A FREQUENCIA DE ATUALIZAÇÃO DISSO)99
     }
 	
     def destroy = {
@@ -35,4 +42,18 @@ class BootStrap {
 //		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
 		
 	}
+	
+	def inicializarSpringSecurity() {
+		def perfilAdministrador = Perfil.findOrSaveByAuthority('ROLE_ADMIN')
+		def perfilUsuario = Perfil.findOrSaveByAuthority('ROLE_USER')
+		
+		String username = 'admininistrador'
+		
+		if (!Usuario.findByUsername(username)) {
+		   def testeUsuario = new Usuario(username: username, enabled: true, password: 'admin')
+		   testeUsuario.save()
+		   UsuarioPerfil.create tesetUsuario, perfilAdministrador, true
+		}
+	}
+	
 }
