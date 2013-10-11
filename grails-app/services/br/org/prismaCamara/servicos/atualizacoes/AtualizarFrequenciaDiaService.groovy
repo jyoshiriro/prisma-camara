@@ -33,7 +33,6 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 	
 	
     def atualizar() {
-		
 		Date ultimaAtualizacao = getUltimaAtualizacao()
 		Date proximaAtualizacao = new Date().clearTime()
 		
@@ -41,16 +40,27 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		GPathResult xmlr = null
 		try {
 			def quant = 0
+			def limite = 35
 			while (!quant && proximaAtualizacao>ultimaAtualizacao) {
 				urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
-				xmlr = getXML(urlT)
-				quant = xmlr.childNodes()?.size()
+				try {
+					xmlr = getXML(urlT)
+					quant = xmlr.childNodes()?.size()
+				} catch (Exception e) {
+					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
+				}
 				proximaAtualizacao--
+				if (--limite<0)  {
+					def msg = "Mais de 35 tentativas não conseguiram recuperar um XML válido de Atualização de Frequencias"
+					log.error(msg)
+					throw new Exception(msg)
+				}
 			}
 			proximaAtualizacao++
 			
 		} catch (Exception e) {
 			log.error("A url ${urlT} não retornou XML válido: ${e.message}")
+			throw e;
 		}
 		
 		log.debug("Chegaram ${xmlr.parlamentares.childNodes()?.size()} frequências dos deputados chegaram no XML de ${urlT}...")
