@@ -1,4 +1,4 @@
-package br.org.prismaCamara.taglibs
+package br.org.prismaCamara.taglibs.postagens
 
 import br.org.prismaCamara.mensagens.Postagem;
 import hackathon2013.Deputado;

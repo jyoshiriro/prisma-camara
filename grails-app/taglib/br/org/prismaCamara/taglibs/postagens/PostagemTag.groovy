@@ -1,4 +1,4 @@
-package br.org.prismaCamara.taglibs
+package br.org.prismaCamara.taglibs.postagens
 
 abstract class PostagemTag {
 
