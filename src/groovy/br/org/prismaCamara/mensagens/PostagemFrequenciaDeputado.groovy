@@ -1,6 +1,7 @@
 package br.org.prismaCamara.mensagens
 
-import br.org.prismaCamara.taglibs.FrequenciaDeputadoTagLib
+import br.org.prismaCamara.taglibs.postagens.FrequenciaDeputadoTagLib;
+import br.org.prismaCamara.taglibs.postagens.GastoDeputadoTagLib
 import hackathon2013.FrequenciaDia;
 
 import java.util.Map;

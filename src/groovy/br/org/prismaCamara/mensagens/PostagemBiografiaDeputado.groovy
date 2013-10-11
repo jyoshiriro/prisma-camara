@@ -1,14 +1,22 @@
 package br.org.prismaCamara.mensagens
 
 import hackathon2013.Deputado
-import br.org.prismaCamara.taglibs.BiografiaDeputadoTagLib
+import br.org.prismaCamara.taglibs.postagens.BiografiaDeputadoTagLib;
 
 class PostagemBiografiaDeputado extends Postagem {
 	
 	private Deputado getDeputadoAleatorio() {
+		def foi = false
 		def quantAtivos = Deputado.countByAtivo(true)
-		def id = new Random().nextInt(quantAtivos.toInteger())-1
-		def deputado = Deputado.list(max:1,offset:id).first()
+		
+		def idd = new Random().nextInt(quantAtivos.toInteger())-1
+		def deputado = Deputado.list(max:1,offset:idd).first()
+		/*def deputado = null
+		while (!foi) {
+		def idd = new Random().nextInt(quantAtivos.toInteger())-1
+		deputado = Deputado.list(max:1,offset:idd).first()
+		foi = true//(deputado.comissoesTitular || deputado.comissoesSuplente)
+		}*/
 		deputado
 	}
 
