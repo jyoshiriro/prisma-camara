@@ -5,17 +5,26 @@
 	}
 </style>
 
+<g:set var="sDeputados">
+	<g:select name="idDeputado" value="${params.idDeputado}" from="${Deputado.findAllByAtivo(true,[sort:'nomeParlamentar'])}" optionKey="id" optionValue="descricao"/>
+</g:set>
+	
 <h2>Mensagens deseja ver agora?</h2>
 <ul>
 	<li><g:link action="biografiaDeputado">Biografia aleatória de Deputado</g:link> 
 	</li>
 	<li>
 	<g:form action="frequenciaDeputado" method="get">
-		Qual ID no banco? <g:select name="idDeputado" value="${params.idDeputado}" from="${Deputado.findAllByAtivo(true,[sort:'nomeParlamentar'])}" optionKey="id" optionValue="descricao"/>
+		${sDeputados}
 		<input type="submit" value="Última Frequência de Deputado"/> 
-	</g:form> 
+	</g:form>
 	</li>
-
+	<li>
+	<g:form action="gastoDeputado" method="get">
+		${sDeputados}
+		<input type="submit" value="Últimos Gastos de Deputado"/> 
+	</g:form>
+	</li>
 </ul>
 
 <pre>${flash.postagem}</pre>

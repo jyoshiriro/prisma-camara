@@ -1,6 +1,17 @@
-<g:set var="prefix" value="${dep.sexo?(dep.sexo.startsWith('f')?'A':'O'):'O(A)'}"/>
-${prefix} Deputad${prefix.toLowerCase()} ${dep.descricao} participa de 
-&bull; ${dep.comissoesTitular.size()} comissões como titular e de
-&bull; ${dep.comissoesSuplente.size()} comissões como suplente. 
+Você conheçe <g:deputadoPrefix dep="${dep}" minusculo="true"/>?
 
-Saiba mais em ${dep.urlDetalhes}.
+Nome completo: ${dep.nome}.
+<g:if test="${dep.comissoesTitular || dep.comissoesSuplente}">
+É membro de Comissões:
+
+ &bull; ${dep.comissoesTitular.size()?:'Nenhuma'} como Titular
+   <g:each in="${dep.comissoesTitular}" var="c">- ${c.descricao}
+   </g:each>
+ &bull; ${dep.comissoesSuplente.size()?:'Nenhuma'} como Suplente 
+   <g:each in="${dep.comissoesSuplente}" var="c">- ${c.descricao}
+   </g:each></g:if>
+  <g:else>
+Não faz parte de nenhuma comissão.
+  </g:else>
+
+Mais detalhes em ${dep.urlDetalhes}.
