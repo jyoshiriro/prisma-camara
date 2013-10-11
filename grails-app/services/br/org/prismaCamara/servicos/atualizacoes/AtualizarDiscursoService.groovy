@@ -20,7 +20,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade
 	
 	@Override
 	public Object atualizar() {
-		Date proximaAtualizacao = (new Date()-14).clearTime() // tirar esse "-14" depois
+		Date proximaAtualizacao = (new Date()-15).clearTime() // tirar esse "-15" depois
 		
 		def urlT = null
 		GPathResult xmlr = null
@@ -60,6 +60,13 @@ class AtualizarDiscursoService extends AtualizadorEntidade
 				for (discurso in faseSessao.childNodes()[2].childNodes()) {
 					
 					def orador = discurso.childNodes()[0]
+					def siglaA = orador.childNodes()[2].text().trim()
+					
+					// verificando se é um Deputado (há casos em que o orador não pe Deputado)
+					if (!siglaA) {
+						log.debug('Orador que não é Deputado - Este discurso não será salvo')
+						continue
+					}
 					
 					Deputado.withNewTransaction { tx ->
 	
@@ -71,13 +78,13 @@ class AtualizarDiscursoService extends AtualizadorEntidade
 							nomeDeputadoA = nomeDeputadoA.indexOf(ch)>0?nomeDeputadoA.substring(0,nomeDeputadoA.indexOf(ch)):nomeDeputadoA
 						}
 						nomeDeputadoA = nomeDeputadoA.trim().toUpperCase()
-						def siglaA = orador.childNodes()[2].text().trim()
 						def ufA = orador.childNodes()[3].text().trim()
 						
 						def deputadoA = Deputado.where {nomeParlamentar==nomeDeputadoA && uf==ufA && partido.sigla==siglaA}.find() 
 						if (!deputadoA) {
 							deputadoA = new Deputado(nome:nomeDeputadoA,nomeParlamentar:nomeDeputadoA,siglaPartido:siglaA,uf:ufA,ativo:false)
 							deputadoA.save()
+							log.debug("Deputado ${deputadoA.descricao} não estava na base. Salvo como 'inativo'")
 						}
 						
 						def numeroOrador = orador.childNodes()[0].text().toInteger()

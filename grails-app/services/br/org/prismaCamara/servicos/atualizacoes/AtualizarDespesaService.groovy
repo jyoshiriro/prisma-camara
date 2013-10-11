@@ -7,6 +7,8 @@ import hackathon2013.Despesa;
 
 import java.util.zip.ZipFile
 
+import org.junit.After;
+
 
 /**
  * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
@@ -14,6 +16,7 @@ import java.util.zip.ZipFile
 @Log4j
 class AtualizarDespesaService extends AtualizadorEntidade {
 
+	def usuarioService
 	@Override
 	public String getSiglaDeParametro() {
 		// 'http://www.camara.gov.br/cotas/AnoAtual.zip'
@@ -35,7 +38,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		zipFile.close()
 		zipFileT.delete()*/
 		
-		String contXml = new File('/home/yoshiriro/workspaces/hackathon2013/testesG/testeCota.xml').text
+		String contXml = new File('/home/yoshiriro/Documents/workspace/hackathon/prisma-camara/testeCota2.xml').text
 		
 /*		def xmlFile = new File("${nTmp}.zml")
 		xmlFile<<zipFile.getInputStream(zipFile.entries().nextElement()).text
@@ -54,7 +57,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		for (despesa in xmlr.DESPESAS.DESPESA) {
 			
 			// WA
-			if (++iTemp>20) break;
+			if (++iTemp>100) break;
 			// WA
 			
 			def matriculaA = despesa.nuCarteiraParlamentar.toString().trim().toInteger()
@@ -63,26 +66,38 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			def partidoA = despesa.sgPartido.toString().trim()
 			def ufA = despesa.sgUF.toString().trim()
 			
+			Date dataEmissao = Date.parse("yyyy-MM-dd'T00:00:00'",despesa.datEmissao.toString().trim())
+			
 			Deputado deputadoA = Deputado.findByMatricula(matriculaA)
 			if (!deputadoA) {
-				deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)
+				// o novo deputado 'nasce' com a data de último gasto como sendo a da Iteração-1dia 
+				deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ultimoDiaGasto:(dataEmissao-1), ativo:false)
 				deputadoA.save()
-				log.debug("Deputado ${nomeA}(${partidoA}/${ufA}) não existia na base. Salvo como 'inativo'")
+				log.debug("Deputado ${deputadoA.descricao}) não existia na base. Salvo como 'inativo', então nenhum gasto dele será salvo por enquanto.")
+				// se ele não existia, nenhum usuário o acompanha
+				continue
+			} else {
+				if (!usuarioService.isDeputadoObservado(deputadoA)) {
+					log.debug("Deputado ${deputadoA.descricao}) não está sendo observado por nenhum usuário. Despesa ignorada.")
+					continue
+				}
+				if (!deputadoA.ultimoDiaGasto) {
+					deputadoA.ultimoDiaGasto=(dataEmissao-1)
+				}
 			}
 			
 			def atributos = [txtDescricao:despesa.txtDescricao.toString().trim(), txtBeneficiario:despesa.txtBeneficiario.toString().trim(),txtCNPJCPF:despesa.txtCNPJCPF.toString().trim(), numParcela:despesa.numParcela.toString().toInteger(),valor:despesa.vlrDocumento.toString()?.toDouble(), txtNumero:despesa.txtNumero.toString().trim()]
-			Date dataEmissao = Date.parse("yyyy-MM-dd'T00:00:00'",despesa.datEmissao.toString().trim())
 			atributos+=[dataEmissao:dataEmissao]
 			
-			Despesa entidade = Despesa.findByTxtNumeroAndDeputado(despesa.txtNumero.toString().trim(),deputadoA)
-			if (entidade) { // já existe o registro, atualize os dados
-				entidade.properties=atributos
-				log.debug("Despesa ${entidade.id} possivelmente atualizada")
-			} else { // ainda não existe. Persista agora
-				atributos+=[deputado:deputadoA, dataEmissao:dataEmissao]
-				entidade = new Despesa(atributos)
-				entidade.save()
-				log.debug("Despesa ${entidade.id} salva no banco")
+			// esse 'ultimoDiaGasto' de Deputado é atualizado em PostagemGastoDeputado
+			def isMaisRecente = dataEmissao.after(deputadoA.ultimoDiaGasto)
+			if (isMaisRecente) { // só persiste a despesa se for mais recente que a última data de atualização
+				if (Despesa.countByDeputadoAndDataEmissao(deputadoA,dataEmissao)==0) { 
+					atributos+=[deputado:deputadoA, dataEmissao:dataEmissao]
+					Despesa entidade = new Despesa(atributos)
+					entidade.save()
+					log.debug("Despesa ${entidade.id} salva no banco")
+				}
 			}
 		}
 		
