@@ -4,7 +4,7 @@
 	}
 </style>
 
-<h2>Qual entidade deseja atualizar agora?</h2>
+<h2>Qual entidade deseja Atualizar agora?</h2>
 <ul>
 	<li><g:link action="executar" id="deputado">Deputados</g:link> 
 	(Ativos: ${deputadosA}. Inativos: ${deputadosI}. Total: ${deputadosA+deputadosI})
@@ -23,7 +23,14 @@
 	
 	<li><g:link action="executar" id="votacao">Votações de Proposições</g:link></li>
 	
+	<li><g:link action="executar" id="discurso">Discursos de Deputados</g:link></li>
+	
 	<li><g:link action="executar" id="despesa">Gastos dos Deputados (Ano Atual)</g:link></li>
+</ul>
+
+<h2 style="color:maroon;">Qual entidade deseja Limpar agora?</h2>
+<ul>
+	<li><g:link action="limpar" id="despesa">Gastos dos Deputados</g:link></li>
 </ul>
 
 ${flash.message}
