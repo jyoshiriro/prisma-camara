@@ -19,7 +19,7 @@ class Deputado {
 	
 	Partido partido
 	
-	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia]
+	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia,discursos:Discurso]
 	
 	static transients = ['siglaPartido','descricao','urlDetalhes','ultimaFrequencia']
 	
