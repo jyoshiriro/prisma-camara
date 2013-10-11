@@ -1,16 +1,13 @@
 package br.org.prismaCamara.servicos.atualizacoes
 
-import java.util.Map;
-
 import grails.plugins.rest.client.RestBuilder
-import grails.plugins.rest.client.RestResponse
 import groovy.text.SimpleTemplateEngine
 import groovy.util.slurpersupport.GPathResult
-import hackathon2013.Parametro;
+import hackathon2013.Parametro
+
+import org.springframework.web.util.UriUtils
 
 abstract class AtualizadorEntidade {
-	
-	RestBuilder rest = new RestBuilder()
 	
 	abstract String getSiglaDeParametro();
 	abstract def atualizar();
@@ -29,8 +26,7 @@ abstract class AtualizadorEntidade {
 	 * @return A String com a URL e seus parâmetros preenchidos, se for o caso
 	 */
 	String getUrlAtualizacao(parametrosValores) {
-		
-		def texto = Parametro.findBySigla(getSiglaDeParametro()).valor.replace('=&','= &')
+		def texto = Parametro.findBySigla(getSiglaDeParametro()).valor
 		
 		Writable template = new SimpleTemplateEngine().createTemplate(texto).make(parametrosValores)
 		
@@ -63,16 +59,15 @@ abstract class AtualizadorEntidade {
 	 * @return
 	 */
 	protected GPathResult getXML(String url, Map parametros) {
-		
-		def respostaTmp = rest.get(url)
-		
-		if (respostaTmp instanceof RestResponse) {
-			RestResponse resposta = respostaTmp as RestResponse
-			return resposta.xml
-		} else {
-			def msg = "Não foi possível recuperar o XML da resposta para ${url}: ${respostaTmp.text}"
+		try {
+			url = UriUtils.encodeQuery(url, 'UTF-8')
+			def xml = new XmlSlurper().parseText(url.toURL().text)
+			return xml 
+		} catch(e) {
+			def msg = "Não foi possível recuperar o XML da resposta para ${url}: ${e.message}"
 			log.error(msg)
 			throw new Exception(msg)
 		}
+		
 	}
 }
