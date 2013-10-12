@@ -9,5 +9,5 @@ INSERT INTO hackathon.parametro (id,version,descricao,sigla,valor) VALUES (8,0,'
 INSERT INTO hackathon.parametro (id,version,descricao,sigla,valor) VALUES (9,0,'URL do site da Camara com os discursos de certo Deputado em certo dia', 'url_discurso_deputado_dia', 'http://www.camara.gov.br/internet/sitaqweb/TextoHTML.asp?etapa=${etapa}&nuSessao=${nuSessao}&nuQuarto=${nuQuarto}&nuOrador=${nuOrador}&nuInsercao=${nuInsercao}&dtHorarioQuarto=${horario}&sgFaseSessao=${cdFaseSessao}&Data=${data}&txApelido=${nomeParlamentar}
 ');
 INSERT INTO hackathon.parametro (id,version,descricao,sigla,valor) VALUES (10,0,'URL do site da Camara com Informações Gerais dos discursos em certo dia', 'url_formacoes_discursos_dia', 'http://www.camara.gov.br/internet/sitaqweb/discursodireto.asp?nuSessao=${nuSessao}');
-INSERT INTO hackathon.parametro (id,version,descricao,sigla,valor) VALUES (11,0,'URL do site da Camara com Informações sobre os Gastos de certo Deputado', 'url_gastos_site', 'http://www.camara.gov.br/cota-parlamentar/consulta-cota-parlamentar?ideDeputado=${ideDeputado}');
+INSERT INTO hackathon.parametro (id,version,descricao,sigla,valor) VALUES (11,0,'URL do site da Camara com Informações sobre os Gastos de certo Deputado', 'url_gastos_site', 'http://www.camara.gov.br/cota-parlamentar/consulta-cota-parlamentar?ideDeputado=');
 
