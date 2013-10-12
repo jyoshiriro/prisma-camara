@@ -103,8 +103,13 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'hackathon2013.Usuario'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'hackathon2013.UsuarioPerfil'
 grails.plugins.springsecurity.authority.className = 'hackathon2013.Perfil'
+grails.plugins.springsecurity.auth.loginFormUrl = '/'
 
 grails.plugins.springsecurity.facebook.domain.classname='hackathon2013.UsuarioFacebook'
 grails.plugins.springsecurity.facebook.permissions = 'read_stream, email, publish_actions'
 grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'
+
+grails.plugins.springsecurity.facebook.filter.redirect.failureHandler='redirectFailureHandlerPrismaCamara'
+grails.plugins.springsecurity.facebook.filter.redirect.successHandler='redirectSuccessHandlerPrismaCamara'
+
 

@@ -1,6 +1,9 @@
 class UrlMappings {
 
 	static mappings = {
+		
+		"/painel" (controller: 'painel', view: 'index')
+		
 		"/$controller/$action?/$id?"{
 			constraints {
 				// apply constraints here
