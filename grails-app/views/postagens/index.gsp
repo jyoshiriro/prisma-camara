@@ -16,13 +16,27 @@
 	<li>
 	<g:form action="frequenciaDeputado" method="get">
 		${sDeputados}
-		<input type="submit" value="Última Frequência de Deputado"/> 
+		<input type="submit" value="Última Frequência"/> 
 	</g:form>
 	</li>
 	<li>
 	<g:form action="gastoDeputado" method="get">
 		${sDeputados}
-		<input type="submit" value="Últimos Gastos de Deputado"/> 
+		<input type="submit" value="Últimos Gastos"/> 
+	</g:form>
+	</li>
+	<li>
+	<g:form action="discursoDeputado" method="get">
+		${sDeputados}
+		<input type="submit" value="Últimos Discursos"/> 
+	</g:form>
+	</li>
+	<li>
+	<g:form action="votacaoProposicao" method="get">
+		<g:select name="idProposicao" value="${params.idProposicao}" 
+		from="${proposicoes}" 
+		optionKey="id" optionValue="descricao"/>
+		<input type="submit" value="Últimos Votos"/> 
 	</g:form>
 	</li>
 </ul>
