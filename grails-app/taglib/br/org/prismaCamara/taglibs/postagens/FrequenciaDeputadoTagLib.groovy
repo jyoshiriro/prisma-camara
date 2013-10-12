@@ -18,5 +18,6 @@ class FrequenciaDeputadoTagLib extends PostagemTag {
 		return mensagem
 		
 	}
+	
 }
  
