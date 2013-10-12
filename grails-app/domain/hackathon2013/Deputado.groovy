@@ -16,6 +16,7 @@ class Deputado {
 	String fone
 	String email
 	Date ultimoDiaGasto
+	Date ultimoDiaDiscurso
 	Boolean ativo
 	
 	Partido partido
@@ -33,6 +34,7 @@ class Deputado {
 		fone(maxSize:20, nullable:true)
 		email(maxSize:60, nullable:true)
 		ultimoDiaGasto(nullable:true) 
+		ultimoDiaDiscurso(nullable:true) 
 		
 		ideCadastro(nullable:true) 
 		matricula(nullable:true)
@@ -40,6 +42,7 @@ class Deputado {
 	
 	static mapping = {
 		despesas(sort:'dataEmissao')
+		discursos(sort:'horaInicio')
 	}
 	
 	def beforeValidate() {

@@ -1,5 +1,7 @@
 package hackathon2013
 
+import groovy.text.SimpleTemplateEngine
+
 class Discurso {
 
 	String codigo
@@ -28,7 +30,18 @@ class Discurso {
 	}
 
 	public String getUrlDetalhes() {
-		// TODO: não é assim. Serão necessárias substituições de vários parâmetros
-		"${Parametro.findBySigla('url_discurso_deputado_dia').valor}${deputado.ideCadastro}"
+
+// http://www.camara.gov.br/internet/sitaqweb/TextoHTML.asp
+// ?etapa=${etapa}&nuSessao=${nuSessao}&nuQuarto=${nuQuarto}&nuOrador=${nuOrador}&nuInsercao=${nuInsercao}
+// &dtHorarioQuarto=${horario}&sgFaseSessao=${cdFaseSessao}&Data=${data}&txApelido=${nomeParlamentar}
+
+		def texto = Parametro.findBySigla('url_discurso_deputado_dia').valor
+		def valores = [etapa:numeroSessao,nuSessao:codigo,nuQuarto:numeroQuarto,nuOrador:numeroOrador,nuInsercao:numeroInsercao,horario:horaInicio,cdFaseSessao:cdFaseSessao,data:data.format('dd/MM/yyyy'),nomeParlamentar:deputado.nomeParlamentar] 
+		Writable template = new SimpleTemplateEngine().createTemplate(texto).make(valores)
+		template.toString()
 	}
 }
+
+
+
+

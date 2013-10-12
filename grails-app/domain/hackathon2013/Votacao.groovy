@@ -8,10 +8,11 @@ class Votacao {
 	
 	Proposicao proposicao
 	
-	static hasMany = [orientacoesBancada:OrientacaoBancada,votos:Voto]
+	static hasMany = [votos:Voto]
 	
 	static mapping = {
 		proposicao(cascade:'all')
+		votos(cascade:'all',sort:'deputado')
 	}
 	
 	static constraints = {

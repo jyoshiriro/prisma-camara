@@ -22,9 +22,11 @@ class Proposicao {
 	String txtUltimoDespacho // será truncado em 144 caracteres
 	String situacao
 	
+	Date ultimaVotacao
+
 	static hasMany = [votacoes:Votacao]
 	
-	static transients = ['PRIMEIRO_ANO']
+	static transients = ['PRIMEIRO_ANO','descricao','urlDetalhes']
 	
 	static mapping = {
 		autor(cascade:'all')
@@ -42,6 +44,10 @@ class Proposicao {
 
 		autor(nullable:true)
 		nomeAutor(nullable:true , maxSize:200)
+	}
+	
+	public String getDescricao() {
+		"${tipoProposicao.sigla} ${numero}/${ano}"
 	}
 	
 	void setNomeAutor(String nomeAutor) {
@@ -62,6 +68,16 @@ class Proposicao {
 	
 	void setTxtApreciacao(String txtApreciacao) {
 		this.txtApreciacao=txtApreciacao?.size()>144?txtApreciacao[0..143]:txtApreciacao
+	}
+	
+	// garantindo que a "ultimaVotacao" nunca fique vazia, sendo pelo menos igual a data de sua apresentação
+	def beforeValidate() {
+		ultimaVotacao=ultimaVotacao?:dataApresentacao
+	}
+	
+	def getUrlDetalhes() {
+		//http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=377011
+		"${Parametro.findBySigla('url_proposicao_site').valor}${idProposicao}"
 	}
 		
 }
