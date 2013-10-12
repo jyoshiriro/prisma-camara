@@ -30,9 +30,10 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 		def proposicoes = []
 /*		for (usuario in Usuario.list()) {
 			proposicoes.addAll(usuario.proposicoes)
-		}
-*///		proposicoes = Proposicao.findAllByNumero(1992)
-		proposicoes = Proposicao.list()//Proposicao.list(max:20,offset:130)
+		}*/
+		
+		proposicoes = Proposicao.findAllByNumeroInList([190,300])
+//		proposicoes = Proposicao.list(max:70,offset:130)
 		log.debug("Um total de ${proposicoes.size()} terão votos verificados")
 		
 		for (proposicaoA in proposicoes) {
@@ -60,32 +61,28 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 			def dataHotaS = "${vot.attributes.Data} ${vot.attributes.Hora}"  
 			def dataHoraA = Date.parse('d/M/yyyy HH:mm',dataHotaS)
 			
-			def atributos = [resumo:vot.attributes.Resumo, dataHoraVotacao:dataHoraA, objVotacao:vot.attributes.ObjVotacao]
-			atributos+=[proposicao:proposicaoA]
-			
-			Votacao entidade = Votacao.where {proposicao==proposicaoA && dataHoraVotacao==dataHoraA}.find()
-			boolean votacaoExistente = (entidade)
-			if (entidade) { // já existe o registro, atualize os dados
-				entidade.properties=atributos
-				log.debug("Votação da proposição ${desc} e suas Orientações e Votos possivelmente atualizados")
+			boolean existeNovaVotacao = proposicaoA.ultimaVotacao.before(dataHoraA)
+			if (!existeNovaVotacao) { // não há nova votação além da última já registrada
+				log.debug("Última votação da proposição ${desc} já registrada e postada. Votação Ignorada")
+				continue
 			} else { // ainda não existe. Persista agora
 				
-				entidade = new Votacao(atributos)
+				proposicaoA.ultimaVotacao=dataHoraA
+				def atributos = [resumo:vot.attributes.Resumo, dataHoraVotacao:dataHoraA, objVotacao:vot.attributes.ObjVotacao, proposicao:proposicaoA]
+				
+				Votacao entidade = new Votacao(atributos)
 				entidade.save()
 				
 				if (entidade.errors.errorCount>0) {
 					log.error("Votações da Proposição ${desc} NÃO foram salvas devido a erros: ${entidade.errors}")
 					continue
 				} else {
-					log.debug("Novas Votações da Proposição ${desc} e suas Orientações e Votos salvas no banco")
+					log.debug("Novas Votações da Proposição ${desc} e seus Votos salvos no banco")
 				}
-				
-			}
-			
-			if (!votacaoExistente) {
-				// Votos dos deputados
+
+				// Votos individuais dos Deputados			
 				for (ob in vot.childNodes()[1].childNodes()) {
-				
+					
 					def nomeA=ob.attributes.Nome.trim().toUpperCase()
 					def partidoA=ob.attributes.Partido.trim()
 					def ufA=ob.attributes.UF.trim()
@@ -98,13 +95,12 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					if (!deputadoA) {
 						deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)
 						deputadoA.save()
-						log.debug("Deputado ${nomeA}(${partidoA}/${ufA}) não existia na base. Salvo como 'inativo'")
+						log.debug("Deputado ${deputadoA.descricao}) não existia na base. Salvo como 'inativo'")
 					}
 							
 					Voto voto = Voto.where{votacao==entidade && deputado==deputadoA}.find()
 					if (!voto) {
 						try {
-							
 							voto = new Voto(deputado:deputadoA, votacao: entidade, voto:votoA)
 							voto.save()
 							log.debug("Voto (${deputadoA.nomeParlamentar} - votação ${desc}) salvo no banco")
@@ -113,11 +109,10 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 							e.printStackTrace()
 							continue
 						}
-					} 
+					}
 					// o voto mudou na nova leitura?
 					if (voto?.voto!=votoA)
 						voto.voto=votoA
-						
 				}
 			}
 			

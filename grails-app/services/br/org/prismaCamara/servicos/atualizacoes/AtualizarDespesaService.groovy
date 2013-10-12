@@ -38,7 +38,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		zipFile.close()
 		zipFileT.delete()*/
 		
-		String contXml = new File('/home/yoshiriro/Documents/workspace/hackathon/prisma-camara/testeCota2.xml').text
+		String contXml = new File('/home/yoshiriro/workspaces/hackathon2013/prisma-camara/testeCota2.xml').text
 		
 /*		def xmlFile = new File("${nTmp}.zml")
 		xmlFile<<zipFile.getInputStream(zipFile.entries().nextElement()).text

@@ -22,8 +22,8 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 
 	def atualizar() {
 
-		def tipos = ['PEC','PL']// TipoProposicao.list().collect{it.sigla} //['PL','PEC']
-		def anos = [2004,2005,2006] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
+		def tipos = ['PEC']// TipoProposicao.list().collect{it.sigla} //['PL','PEC']
+		def anos = [2007,2008] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
 		
 		l1:for (tipo in tipos) {
 			l2:for (ano in anos) {
