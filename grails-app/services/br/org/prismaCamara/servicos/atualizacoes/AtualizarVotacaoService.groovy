@@ -2,6 +2,8 @@ package br.org.prismaCamara.servicos.atualizacoes
 
 import org.hibernate.SessionFactory;
 
+import br.org.prismaCamara.servicos.UsuarioService;
+
 import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
@@ -13,6 +15,8 @@ import hackathon2013.Voto;
 @Log4j
 class AtualizarVotacaoService extends AtualizadorEntidade {
 
+	UsuarioService usuarioService
+	
 	SessionFactory sessionFactory
 	
 	@Override
@@ -26,14 +30,10 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 	 * A atualização recupera somente votos de Proposições que são acompanhadas por 1 ou mais usuários 
 	 */
 	def atualizar() {
-
-		def proposicoes = []
-/*		for (usuario in Usuario.list()) {
-			proposicoes.addAll(usuario.proposicoes)
-		}*/
 		
-		proposicoes = Proposicao.findAllByNumeroInList([190,300])
-//		proposicoes = Proposicao.list(max:70,offset:130)
+//		def proposicoes = usuarioService.proposicoesMapeadas
+		def proposicoes = Proposicao.findAllByNumeroInList([190,300])
+
 		log.debug("Um total de ${proposicoes.size()} terão votos verificados")
 		
 		for (proposicaoA in proposicoes) {
@@ -61,7 +61,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 			def dataHotaS = "${vot.attributes.Data} ${vot.attributes.Hora}"  
 			def dataHoraA = Date.parse('d/M/yyyy HH:mm',dataHotaS)
 			
-			boolean existeNovaVotacao = proposicaoA.ultimaVotacao.before(dataHoraA)
+			boolean existeNovaVotacao = (proposicaoA.ultimaVotacao)?proposicaoA.ultimaVotacao.before(dataHoraA):true
 			if (!existeNovaVotacao) { // não há nova votação além da última já registrada
 				log.debug("Última votação da proposição ${desc} já registrada e postada. Votação Ignorada")
 				continue
@@ -89,8 +89,7 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 					def votoA=ob.attributes.Voto.trim()
 					
 					// SE não for econtrado o Deputado, salve no banco como "ativo=false"
-					def ld = Deputado.where {nomeParlamentar==nomeA && partido.sigla==partidoA && uf==ufA}.list(max:1)
-					Deputado deputadoA = ld?ld.get(0):null
+					Deputado deputadoA = Deputado.findByNomeParlamentarAndUf(nomeA,ufA)
 							
 					if (!deputadoA) {
 						deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ativo:false)

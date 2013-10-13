@@ -1,25 +1,31 @@
 package br.org.prismaCamara.servicos.limpezas
 
-import hackathon2013.Deputado
-import hackathon2013.Despesa;
-import hackathon2013.Usuario
+import hackathon2013.Despesa
 
+/**
+ * Classe que exclui os registros defasados de {@link Despesa}. <br>
+ * A regra é excluir todas as despesas associadas a deputados cuja "dataEmissao" seja anterior ao "ultimoDiaGasto" do {@link Deputado}. <br>
+ * Varre-se todos os Deputados associados a {@link Usuario} 
+ * @author jyoshiriro
+ *
+ */
 class LimparDespesaService extends LimpadorEntidade {
 
+	def usuarioService
+	
 	@Override
 	public void limpar() {
-		// TODO: passar essas consultas para o UsuarioService
-		// Deputados marcados para acompanhamento por usuários
-		Set<Deputado> deputados = Deputado.findAllById(597) //[]
-		for (usuario in Usuario.list()) {
-			deputados+=usuario.deputados
-			deputados+=Deputado.findAllByPartidoInList(usuario.partidos)
-		}
-		
+		def deputados = usuarioService.deputadosMapeados
+
 		for (deputado in deputados) {
+			if (deputado.despesas.empty) 
+				continue
+			 
 			def ultimoDiaGasto = (deputado.ultimoDiaGasto)?:Despesa.executeQuery("select max(d.dataEmissao) from Despesa d where d.deputado=?",[deputado])[0]-1
 			Despesa.executeUpdate("delete from Despesa where deputado=? and dataEmissao<=?",[deputado,ultimoDiaGasto])
+			log.debug("Despesas do deputado ${deputado.descricao} excluidas")
 		}
+		log.debug("Limpezas de Despesas defasadas de Deputados concluída com sucesso!")
 	}
 
 }

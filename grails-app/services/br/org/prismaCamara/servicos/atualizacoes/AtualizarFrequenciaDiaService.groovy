@@ -41,7 +41,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		try {
 			def quant = 0
 			def limite = 35
-			while (!quant && proximaAtualizacao>ultimaAtualizacao) {
+			while (quant==0 && proximaAtualizacao>ultimaAtualizacao) {
 				urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
 				try {
 					xmlr = getXML(urlT)
@@ -55,6 +55,10 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 					log.error(msg)
 					throw new Exception(msg)
 				}
+			}
+			if (quant==0) {
+				log.debug("Não há novas frequencias após ${ultimaAtualizacao}")
+				return
 			}
 			proximaAtualizacao++
 			

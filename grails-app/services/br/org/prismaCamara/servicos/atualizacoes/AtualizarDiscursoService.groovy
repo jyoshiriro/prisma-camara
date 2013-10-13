@@ -65,7 +65,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 					def orador = discurso.childNodes()[0]
 					def siglaA = orador.childNodes()[2].text().trim()
 					
-					// verificando se é um Deputado (há casos em que o orador não pe Deputado)
+					// verificando se é um Deputado (há casos em que o orador não é Deputado)
 					if (!siglaA) {
 						log.debug('Orador que não é Deputado - Este discurso não será salvo')
 						continue
@@ -82,7 +82,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 					nomeDeputadoA = nomeDeputadoA.trim().toUpperCase()
 					def ufA = orador.childNodes()[3].text().trim()
 					
-					def deputadoA = Deputado.where {nomeParlamentar==nomeDeputadoA && uf==ufA && partido.sigla==siglaA}.find() 
+					def deputadoA = Deputado.findByNomeParlamentarAndUf(nomeDeputadoA,ufA) 
 					if (!deputadoA) {
 						deputadoA = new Deputado(nome:nomeDeputadoA,nomeParlamentar:nomeDeputadoA,siglaPartido:siglaA,uf:ufA, ultimoDiaDiscurso: (dataSessao-1),ativo:false)
 						deputadoA.save()
