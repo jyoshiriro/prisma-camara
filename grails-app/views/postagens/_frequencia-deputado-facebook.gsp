@@ -1,5 +1,5 @@
 <g:set var="presente" value="${freq?.frequenciaDia=='Presença'}"/>
-Como anda a assiduidade de ${dep.descricao} na Câmara dos Deputados?
+Novo registro de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> na Câmara dos Deputados:
 
 &bull; Dia <g:formatDate date="${freq.dia}"/> -> ${freq?freq.frequenciaDia:'Ausente'}. 
 <g:if test="${!presente}">
