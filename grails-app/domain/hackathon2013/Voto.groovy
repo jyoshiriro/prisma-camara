@@ -4,10 +4,9 @@ class Voto {
 	Deputado deputado
 	String voto 
 	
-	Votacao votacao
+	static belongsTo = [votacao:Votacao]
 	
 	static mapping = {
-		votacao(cascade:'all')
 	}
 	
 	static constraints = {

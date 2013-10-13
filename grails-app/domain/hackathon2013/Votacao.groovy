@@ -6,17 +6,15 @@ class Votacao {
 	String objVotacao
 	boolean enviado = false
 	
-	Proposicao proposicao
-	
+	static belongsTo = [proposicao:Proposicao]
 	static hasMany = [votos:Voto]
 	
 	static mapping = {
-		proposicao(cascade:'all')
-		votos(cascade:'all',sort:'deputado')
+		votos(sort:'deputado')
 	}
 	
 	static constraints = {
-		resumo(maxSize:512)
+		resumo(maxSize:2048)
 		objVotacao(maxSize:256)
 	}
 }

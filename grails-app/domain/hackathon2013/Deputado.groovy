@@ -15,8 +15,8 @@ class Deputado {
 	String siglaPartido
 	String fone
 	String email
-	Date ultimoDiaGasto
-	Date ultimoDiaDiscurso
+	Date ultimoDiaGasto // essa data pode ser diferente por deputado, por isso não é como o "ultimo_dia_frequencia" na tabela de parâmetros
+	Date ultimoDiaDiscurso // essa data pode ser diferente por deputado, por isso não é como o "ultimo_dia_frequencia" na tabela de parâmetros
 	Boolean ativo
 	
 	Partido partido
@@ -61,6 +61,12 @@ class Deputado {
 		def x = 0	
 	}
 	
+	def afterUpdate() {
+		if (!(this.ativo)) {
+			UsuarioDeputado.executeUpdate("delete from UsuarioDeputado ud where ud.deputado.id=?",[this.id])
+		}	
+	}
+	
 	public String getSiglaPartido() {
 		siglaPartido
 	}
@@ -86,8 +92,8 @@ class Deputado {
 	}
 	
 	public FrequenciaDia getUltimaFrequencia() {
-		frequenciasDia?.first()
+		frequenciasDia?frequenciasDia.first():null
 	}
 	
-	
+		
 }

@@ -33,6 +33,12 @@ class Proposicao {
 		tipoProposicao(cascade:'all')
 	}
 	
+	def afterUpdate() {
+		if (situacao.toLowerCase()=='arquivado') {
+			UsuarioProposicao.executeUpdate("delete from UsuarioProposicao up where up.proposicao.id=?",[this.id])
+		}
+	}
+	
 	static constraints = {
 		ano(maxSize:4)
 		txtEmenta(maxSize:256)
@@ -41,6 +47,7 @@ class Proposicao {
 		txtUltimoDespacho(maxSize:144, nullable:true)
 		situacao(maxSize:256) 
 		ultimoDespacho(nullable:true)
+		ultimaVotacao(nullable:true)
 
 		autor(nullable:true)
 		nomeAutor(nullable:true , maxSize:200)

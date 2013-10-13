@@ -6,10 +6,9 @@ class FrequenciaSessao {
 	String descricao
 	String frequencia
 	
-	FrequenciaDia frequenciaDia
+	static belongsTo = [frequenciaDia:FrequenciaDia]
 	
 	static mapping = {
-		frequenciaDia(cascade:'all')
 	}
 	
 	static constraints = {

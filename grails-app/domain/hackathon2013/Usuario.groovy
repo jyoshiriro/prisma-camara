@@ -1,6 +1,6 @@
 package hackathon2013
 
-import br.org.prismaCamara.mensagens.Postagem;
+import br.org.prismaCamara.mensagens.Postagem
 
 class Usuario {
 
@@ -17,21 +17,19 @@ class Usuario {
 	String tipoRede
 	boolean receberBiografias = true
 	
-	static hasMany = [partidos:Partido,deputados:Deputado,proposicoes:Proposicao]
+	static hasMany = [usuarioPartidos:UsuarioPartido,usuarioDeputados:UsuarioDeputado,usuarioProposicoes:UsuarioProposicao]
 	
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
 		nome(maxSize:50, nullable:true)
 		tipoRede(nullable:true, inList:Postagem.TIPOS)
+		
 	}
 
 	static mapping = {
 		password column: '`password`'
 		
-		deputados(cascade:'all')
-		partidos(cascade:'all')
-		proposicoes(cascade:'all')
 	}
 
 	Set<Perfil> getAuthorities() {
@@ -49,7 +47,7 @@ class Usuario {
 	}
 
 	protected void encodePassword() {
-		password = springSecurityService.encodePassword(password)
+		password = springSecurityService?.encodePassword(password)
 	}
 	
 	

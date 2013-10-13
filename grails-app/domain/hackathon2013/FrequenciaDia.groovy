@@ -12,7 +12,6 @@ class FrequenciaDia {
 	static hasMany = [frequenciasSessao:FrequenciaSessao]
 	
 	static mapping = {
-		deputado(cascade:'all')
 		frequenciasSessao(sort:'inicio')
 	}
 	
