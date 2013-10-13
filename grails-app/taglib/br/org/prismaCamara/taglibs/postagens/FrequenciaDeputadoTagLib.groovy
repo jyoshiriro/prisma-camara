@@ -13,7 +13,6 @@ class FrequenciaDeputadoTagLib extends PostagemTag {
      * @attr tipo REQUIRED Tipo de postagem (facebook ou twitter). Usar um {@link Postagem}.TIPO_XXX
 	 */
 	String getConteudo(attrs) {
-		attrs.freq=attrs.dep.ultimaFrequencia
 		String mensagem = getTexto("frequencia-deputado-${attrs.tipo}", attrs)
 		return mensagem
 		
