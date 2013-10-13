@@ -1,7 +1,7 @@
 package hackathon2013
 
 import grails.plugins.springsecurity.Secured
-import groovy.util.logging.Log4j;
+import groovy.util.logging.Log4j
 
 @Log4j
 @Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
@@ -11,7 +11,7 @@ class PainelController {
 	
 	def pegaUsuarioLogado() {
 		Usuario usuarioAtual = springSecurityService.currentUser
-		log.debug "Usuário logado: " + usuarioAtual
+		log.debug "Usuário logado: $usuarioAtual"
 		return usuarioAtual
 	}
 
@@ -26,24 +26,32 @@ class PainelController {
 	def configurarPostagens() {
 		[ usuario : pegaUsuarioLogado(),
 		  partidos : Partido.list(sort:"sigla", order:"asc"),
-		  deputados : Deputado.list(sort:"nome", order:"asc") ]
+		  deputados : Deputado.findAllByAtivo(true,[sort:"nome", order:"asc"]) ]
 	}
 	
 	def gravarConfiguracoes() {
 		Usuario usuario = pegaUsuarioLogado()
-		usuario.partidos.clear()
+		
+		// Usuario x Partidos
+		UsuarioPartido.executeUpdate("delete from UsuarioPartido where usuario=?",[usuario])
 		def partidosSelecionados = params.list('partidosSelecionados')
 		partidosSelecionados?.each {
-			usuario.addToPartidos(Partido.load(it))
-			log.debug "Partido selecionado: " + Partido.load(it).sigla 
+			Partido p = Partido.get(it)
+			UsuarioPartido up = new UsuarioPartido(usuario:usuario,partido:p)
+			up.save()
+			log.debug("O usuário ${usuario.username} agora acompanha o Partido ${p.sigla}") 
 		}
-		usuario.deputados.clear()
+		
+		// Usuario x Deputados
+		UsuarioDeputado.executeUpdate("delete from UsuarioDeputado where usuario=?",[usuario])
 		def deputadosSelecionados = params.list('deputadosSelecionados')
 		deputadosSelecionados?.each {
-			usuario.addToDeputados(Deputado.load(it))
-			log.debug "Deputado selecionado: " + Deputado.load(it).nome
+			Deputado d = Deputado.get(it)
+			UsuarioDeputado ud = new UsuarioDeputado(usuario:usuario,deputado:d)
+			ud.save()
+			log.debug("O usuário ${usuario.username} agora acompanha o Deputado ${d.descricao}")
 		}
-		usuario.save(flush: true)
-		redirect (action: 'configurarPostagens')
+		usuario.save()
+		redirect(action: 'configurarPostagens')
 	}
 }
