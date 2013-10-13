@@ -19,6 +19,9 @@ class AtualizarController {
 	def atualizarDiscursoService
 	
 	def limparDespesaService
+	def limparFrequenciaDiaService
+	def limparVotacaoService
+	def limparDiscursoService
 
 	def getMapaAux() {
 		[deputadosA:Deputado.countByAtivo(true),
