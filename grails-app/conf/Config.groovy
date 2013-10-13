@@ -95,6 +95,7 @@ log4j = {
 	environments {
 		development {
 			debug  'hackathon2013'
+			debug  'br.org.prismaCamara'
 		}
     }
 }
