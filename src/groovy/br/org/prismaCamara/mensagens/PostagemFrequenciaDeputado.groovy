@@ -11,6 +11,9 @@ class PostagemFrequenciaDeputado extends Postagem {
 	 * @return Conteúdo da mensagem
 	 */
 	public String getTexto(Map params) {
+		if (!params.dep.ultimaFrequencia)
+			return null
+		params.freq=params.dep.ultimaFrequencia
 		String mensagem = new FrequenciaDeputadoTagLib().getConteudo(params)
 		return mensagem
 	}
