@@ -8,7 +8,7 @@ import org.springframework.transaction.TransactionSystemException
 import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Proposicao;
 import br.org.prismaCamara.modelo.TipoProposicao;
-import br.org.prismaCamara.servicos.atualizacoes.AtualizarDiscursoService;
+import br.org.prismaCamara.servico.atualizacoes.AtualizarDiscursoService;
 
 @Log4j
 class AtualizarController {

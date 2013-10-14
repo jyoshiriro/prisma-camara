@@ -1,11 +1,11 @@
 package br.org.prismaCamara.controle
 
-import br.org.prismaCamara.mensagens.Postagem
-import br.org.prismaCamara.mensagens.PostagemBiografiaDeputado
-import br.org.prismaCamara.mensagens.PostagemDiscursoDeputado
-import br.org.prismaCamara.mensagens.PostagemFrequenciaDeputado
-import br.org.prismaCamara.mensagens.PostagemGastoDeputado
-import br.org.prismaCamara.mensagens.PostagemVotacaoProposicao
+import br.org.prismaCamara.mensagem.Postagem
+import br.org.prismaCamara.mensagem.PostagemBiografiaDeputado
+import br.org.prismaCamara.mensagem.PostagemDiscursoDeputado
+import br.org.prismaCamara.mensagem.PostagemFrequenciaDeputado
+import br.org.prismaCamara.mensagem.PostagemGastoDeputado
+import br.org.prismaCamara.mensagem.PostagemVotacaoProposicao
 import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Proposicao;
 import br.org.prismaCamara.modelo.Votacao;
