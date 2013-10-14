@@ -1,10 +1,13 @@
-package hackathon2013
+package br.org.prismaCamara.controle
 
 import grails.plugins.springsecurity.Secured
 import org.springframework.social.facebook.api.Facebook
 import org.springframework.social.facebook.api.FacebookProfile
 import org.springframework.social.facebook.api.Post
 import org.springframework.social.facebook.api.impl.FacebookTemplate
+
+import br.org.prismaCamara.modelo.Usuario;
+import br.org.prismaCamara.modelo.UsuarioFacebook;
 
 class FacebookPostController {
 

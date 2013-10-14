@@ -1,10 +1,13 @@
-package hackathon2013
+package br.org.prismaCamara.controle
 
 import groovy.util.logging.Log4j
 
 import org.hibernate.TransactionException
 import org.springframework.transaction.TransactionSystemException
 
+import br.org.prismaCamara.modelo.Deputado;
+import br.org.prismaCamara.modelo.Proposicao;
+import br.org.prismaCamara.modelo.TipoProposicao;
 import br.org.prismaCamara.servicos.atualizacoes.AtualizarDiscursoService;
 
 @Log4j

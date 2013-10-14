@@ -1,5 +1,10 @@
-package hackathon2013
+package br.org.prismaCamara.controle
 
+import br.org.prismaCamara.modelo.Deputado;
+import br.org.prismaCamara.modelo.Partido;
+import br.org.prismaCamara.modelo.Usuario;
+import br.org.prismaCamara.modelo.UsuarioDeputado;
+import br.org.prismaCamara.modelo.UsuarioPartido;
 import grails.plugins.springsecurity.Secured
 import groovy.util.logging.Log4j
 

@@ -1,4 +1,4 @@
-package hackathon2013
+package br.org.prismaCamara.controle
 
 import br.org.prismaCamara.mensagens.Postagem
 import br.org.prismaCamara.mensagens.PostagemBiografiaDeputado
@@ -6,6 +6,9 @@ import br.org.prismaCamara.mensagens.PostagemDiscursoDeputado
 import br.org.prismaCamara.mensagens.PostagemFrequenciaDeputado
 import br.org.prismaCamara.mensagens.PostagemGastoDeputado
 import br.org.prismaCamara.mensagens.PostagemVotacaoProposicao
+import br.org.prismaCamara.modelo.Deputado;
+import br.org.prismaCamara.modelo.Proposicao;
+import br.org.prismaCamara.modelo.Votacao;
 
 class PostagensController {
 
