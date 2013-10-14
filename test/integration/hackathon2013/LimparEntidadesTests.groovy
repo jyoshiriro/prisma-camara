@@ -4,8 +4,8 @@ import static org.junit.Assert.*
 
 import org.junit.*
 
-import br.org.prismaCamara.servicos.limpezas.LimparDespesaService
-import br.org.prismaCamara.servicos.limpezas.LimparFrequenciaDiaService;
+import br.org.prismaCamara.servico.limpezas.LimparDespesaService
+import br.org.prismaCamara.servico.limpezas.LimparFrequenciaDiaService;
 
 class LimparEntidadesTests {
 
