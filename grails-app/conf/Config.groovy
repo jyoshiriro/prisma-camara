@@ -94,19 +94,18 @@ log4j = {
 	
 	environments {
 		development {
-			debug  'hackathon2013'
 			debug  'br.org.prismaCamara'
 		}
     }
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'hackathon2013.Usuario'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'hackathon2013.UsuarioPerfil'
-grails.plugins.springsecurity.authority.className = 'hackathon2013.Perfil'
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'br.org.prismaCamara.modelo.Usuario'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'br.org.prismaCamara.modelo.UsuarioPerfil'
+grails.plugins.springsecurity.authority.className = 'br.org.prismaCamara.modelo.Perfil'
 grails.plugins.springsecurity.auth.loginFormUrl = '/'
 
-grails.plugins.springsecurity.facebook.domain.classname='hackathon2013.UsuarioFacebook'
+grails.plugins.springsecurity.facebook.domain.classname='br.org.prismaCamara.modelo.UsuarioFacebook'
 grails.plugins.springsecurity.facebook.permissions = 'read_stream, email, publish_actions'
 grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'
 

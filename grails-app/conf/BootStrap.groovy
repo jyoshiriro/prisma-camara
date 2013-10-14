@@ -1,11 +1,8 @@
-import groovy.util.logging.Log4j
-import hackathon2013.Parametro
-import hackathon2013.Perfil;
-import hackathon2013.Usuario;
-import hackathon2013.UsuarioPerfil;
+import br.org.prismaCamara.modelo.Parametro
+import br.org.prismaCamara.modelo.Perfil
+import br.org.prismaCamara.modelo.Usuario
+import br.org.prismaCamara.modelo.UsuarioPerfil
 
-
-@Log4j
 class BootStrap {
 
     def init = { servletContext ->
