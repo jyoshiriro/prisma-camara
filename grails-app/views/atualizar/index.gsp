@@ -1,4 +1,4 @@
-<%@page import="hackathon2013.Parametro"%>
+<%@page import="br.org.prismaCamara.modelo.Parametro"%>
 <style>
 	li{
 	margin-bottom: 1em;

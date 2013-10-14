@@ -1,4 +1,4 @@
-<%@page import="hackathon2013.Deputado"%>
+<%@page import="br.org.prismaCamara.modelo.Deputado"%>
 <style>
 	li{
 	margin-bottom: 1em;
