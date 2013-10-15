@@ -46,7 +46,7 @@ grails.project.dependency.resolution = {
 //        runtime 'org.quartz-scheduler:quartz:2.2.1'
 		compile 'org.springframework.social:spring-social-core:1.0.1.RELEASE'
 		compile 'org.springframework.social:spring-social-facebook:1.0.1.RELEASE'
-		
+		runtime 'org.robolectric:robolectric:2.1.1'
     }
 
     plugins {
