@@ -5,6 +5,23 @@
 	}
 </style>
 
+${flash.message}
+${flash.error}
+
+<h2 style="color: navy">Qual entidade deseja Atualizar Completamente agora?</h2>
+<ul>
+	<li><g:link action="geral" id="frequenciaDia">Frequências de Deputados</g:link>
+	(Última foi em ${Parametro.findBySigla('ultimo_dia_frequencia')?.valor?:'-'})
+	</li>
+	
+	<li><g:link action="geral" id="discurso">Discursos de Deputados</g:link></li>
+		
+	<li><g:link action="geral" id="votacao">Votações de Proposições</g:link></li>
+	
+	<li><g:link action="geral" id="despesa">Gastos dos Deputados (Ano Atual)</g:link> - Ajuste manualmente no "AtualizarDespesaService" o caminho do XML</li>
+</ul>
+
+
 <h2>Qual entidade deseja Atualizar agora?</h2>
 <ul>
 	<li><g:link action="executar" id="deputado">Deputados</g:link> 
@@ -41,6 +58,3 @@
 	
 	<li><g:link action="limpar" id="votacao">Votações de Proposições</g:link></li>
 </ul>
-
-${flash.message}
-${flash.error}
