@@ -1,6 +1,7 @@
 package br.org.prismaCamara.servico.limpezas
 
-import br.org.prismaCamara.modelo.Despesa;
+import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.Despesa
 
 /**
  * Classe que exclui os registros defasados de {@link Despesa}. <br>
@@ -9,6 +10,7 @@ import br.org.prismaCamara.modelo.Despesa;
  * @author jyoshiriro
  *
  */
+@Log4j
 class LimparDespesaService extends LimpadorEntidade {
 
 	def usuarioService
@@ -21,7 +23,11 @@ class LimparDespesaService extends LimpadorEntidade {
 			if (deputado.despesas.empty) 
 				continue
 			 
-			def ultimoDiaGasto = (deputado.ultimoDiaGasto)?:Despesa.executeQuery("select max(d.dataEmissao) from Despesa d where d.deputado=?",[deputado])[0]-1
+			def ultimoDiaGasto = deputado.ultimoDiaGasto
+			if (!ultimoDiaGasto) {
+				log.debug("O deputado ${deputado.descricao} ainda registro de despesa para excluir")
+				continue;
+			}
 			Despesa.executeUpdate("delete from Despesa where deputado=? and dataEmissao<=?",[deputado,ultimoDiaGasto])
 			log.debug("Despesas do deputado ${deputado.descricao} excluidas")
 		}

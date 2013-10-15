@@ -1,8 +1,7 @@
 package br.org.prismaCamara.servico.limpezas
 
-import br.org.prismaCamara.modelo.Despesa;
-import br.org.prismaCamara.modelo.Proposicao;
-import br.org.prismaCamara.modelo.Votacao;
+import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.Votacao
 
 /**
  * Classe que exclui os registros defasados de {@link Votacao}. <br>
@@ -11,6 +10,7 @@ import br.org.prismaCamara.modelo.Votacao;
  * @author jyoshiriro
  *
  */
+@Log4j
 class LimparVotacaoService extends LimpadorEntidade {
 
 	def usuarioService
@@ -21,8 +21,13 @@ class LimparVotacaoService extends LimpadorEntidade {
 		def proposicoes = usuarioService.proposicoesMapeadas
 		
 		for (proposicao in proposicoes) {
-			def ultimoDiaVotacao = (proposicao.ultimaVotacao)?:Votacao.executeQuery("select max(v.dataHoraVotacao) from Votacao v where v.proposicao=?",[proposicao])[0]-1
-			for (votacao in Votacao.findAllByProposicaoAndDataHoraVotacaoLessThanEquals(proposicao,ultimoDiaVotacao)) {
+			def ultimoDiaVotacao = proposicao.ultimaVotacao
+			if (!ultimoDiaVotacao) {
+				log.debug("A proposicao ${proposicao.descricao} ainda não tinha votações registradas para excluir")
+				continue;
+			}
+			def votacoes = Votacao.findAllByProposicaoAndDataHoraVotacaoLessThanEquals(proposicao,ultimoDiaVotacao)
+			for (votacao in votacoes) {
 				votacao.delete()
 				log.debug("Votacao ${votacao.id} excluida")
 			}

@@ -1,7 +1,7 @@
 package br.org.prismaCamara.servico.limpezas
 
-import br.org.prismaCamara.modelo.Despesa;
-import br.org.prismaCamara.modelo.Discurso;
+import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.Discurso
 
 /**
  * Classe que exclui os registros defasados de {@link Discurso}. <br>
@@ -10,6 +10,7 @@ import br.org.prismaCamara.modelo.Discurso;
  * @author jyoshiriro
  *
  */
+@Log4j
 class LimparDiscursoService extends LimpadorEntidade {
 
 	def usuarioService
@@ -22,8 +23,12 @@ class LimparDiscursoService extends LimpadorEntidade {
 			if (deputado.discursos.empty) 
 				continue
 			 
-			def ultimoDiaDiscurso = (deputado.ultimoDiaDiscurso)?:Discurso.executeQuery("select max(d.data) from Discurso d where d.deputado=?",[deputado])[0]-1
-			Despesa.executeUpdate("delete from Despesa where deputado=? and dataEmissao<=?",[deputado,ultimoDiaDiscurso])
+			def ultimoDiaDiscurso = deputado.ultimoDiaDiscurso
+			if (!ultimoDiaDiscurso) {
+				log.debug("O deputado ${deputado.descricao} ainda sem registro de discurso para excluir")
+				continue;
+			}
+			Discurso.executeUpdate("delete from Discurso where deputado=? and data<=?",[deputado,ultimoDiaDiscurso])
 			log.debug("Discursos do deputado ${deputado.descricao} excluidas")
 		}
 		log.debug("Limpezas de Discursos defasados de Deputados concluída com sucesso!")

@@ -40,7 +40,6 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		GPathResult xmlr = null
 		try {
 			def quant = 0
-			def limite = 35
 			while (quant==0 && proximaAtualizacao>ultimaAtualizacao) {
 				urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
 				try {
@@ -50,11 +49,6 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
 				}
 				proximaAtualizacao--
-				if (--limite<0)  {
-					def msg = "Mais de 35 tentativas não conseguiram recuperar um XML válido de Atualização de Frequencias"
-					log.error(msg)
-					throw new Exception(msg)
-				}
 			}
 			if (quant==0) {
 				log.debug("Não há novas frequencias após ${ultimaAtualizacao}")
@@ -120,14 +114,14 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			
 			}
 		}
-		Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
+		/*Parametro pData = Parametro.findBySigla('ultimo_dia_frequencia')
 		if (pData) {
 			pData.valor=proximaAtualizacao.format('dd/MM/yyyy')
 		}
 		else {
 			pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: proximaAtualizacao.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
 			pData.save()
-		}
+		}*/
 
 		log.debug("Atualização de Frequencias de Deputados concluída com sucesso")
     }

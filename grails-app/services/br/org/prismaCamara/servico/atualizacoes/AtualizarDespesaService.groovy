@@ -9,6 +9,7 @@ import org.junit.After;
 
 import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Despesa;
+import br.org.prismaCamara.servico.UsuarioService
 
 
 /**
@@ -17,7 +18,7 @@ import br.org.prismaCamara.modelo.Despesa;
 @Log4j
 class AtualizarDespesaService extends AtualizadorEntidade {
 
-	def usuarioService
+	def usuarioService = new UsuarioService()
 	@Override
 	public String getSiglaDeParametro() {
 		// 'http://www.camara.gov.br/cotas/AnoAtual.zip'
@@ -70,28 +71,17 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			Date dataEmissao = Date.parse("yyyy-MM-dd'T00:00:00'",despesa.datEmissao.toString().trim())
 			
 			Deputado deputadoA = Deputado.findByMatricula(matriculaA)
-			if (!deputadoA) {
-				// o novo deputado 'nasce' com a data de último gasto como sendo a da Iteração-1dia 
-				deputadoA = new Deputado(nome:nomeA,nomeParlamentar: nomeA, siglaPartido:partidoA, uf:ufA, ultimoDiaGasto:(dataEmissao-1), ativo:false)
-				deputadoA.save()
-				log.debug("Deputado ${deputadoA.descricao}) não existia na base. Salvo como 'inativo', então nenhum gasto dele será salvo por enquanto.")
+			if ( (!deputadoA) || (!usuarioService.isDeputadoObservado(deputadoA))) {
 				// se ele não existia, nenhum usuário o acompanha
+				log.debug("Deputado ${deputadoA.descricao}) não está sendo observado por nenhum usuário. Despesa ignorada.")
 				continue
-			} else {
-				if (!usuarioService.isDeputadoObservado(deputadoA)) {
-					log.debug("Deputado ${deputadoA.descricao}) não está sendo observado por nenhum usuário. Despesa ignorada.")
-					continue
-				}
-				if (!deputadoA.ultimoDiaGasto) {
-					deputadoA.ultimoDiaGasto=(dataEmissao-1)
-				}
-			}
+			} 
 			
 			def atributos = [txtDescricao:despesa.txtDescricao.toString().trim(), txtBeneficiario:despesa.txtBeneficiario.toString().trim(),txtCNPJCPF:despesa.txtCNPJCPF.toString().trim(), numParcela:despesa.numParcela.toString().toInteger(),valor:despesa.vlrDocumento.toString()?.toDouble(), txtNumero:despesa.txtNumero.toString().trim()]
 			atributos+=[dataEmissao:dataEmissao]
 			
 			// esse 'ultimoDiaGasto' de Deputado é atualizado em PostagemGastoDeputado
-			def isMaisRecente = dataEmissao.after(deputadoA.ultimoDiaGasto)
+			def isMaisRecente = deputadoA.ultimoDiaGasto?dataEmissao.after(deputadoA.ultimoDiaGasto):true
 			if (isMaisRecente) { // só persiste a despesa se for mais recente que a última data de atualização
 				if (Despesa.countByDeputadoAndDataEmissao(deputadoA,dataEmissao)==0) { 
 					atributos+=[deputado:deputadoA, dataEmissao:dataEmissao]

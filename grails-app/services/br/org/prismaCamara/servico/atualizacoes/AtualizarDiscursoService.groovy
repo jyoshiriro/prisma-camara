@@ -8,8 +8,10 @@ import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Discurso;
 import br.org.prismaCamara.modelo.Parametro;
 
+import groovy.util.logging.Log4j;
 import groovy.util.slurpersupport.GPathResult
 
+@Log4j
 class AtualizarDiscursoService extends AtualizadorEntidade {
 
 	def usuarioService
@@ -22,7 +24,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 	
 	@Override
 	public Object atualizar() {
-		Date proximaAtualizacao = (new Date()-16).clearTime() // tirar esse "-16" depois
+		Date proximaAtualizacao = (new Date()-17).clearTime() // tirar esse "-16" depois
 		
 		def urlT = null
 		GPathResult xmlr = null
@@ -85,7 +87,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 					
 					def deputadoA = Deputado.findByNomeParlamentarAndUf(nomeDeputadoA,ufA) 
 					if (!deputadoA) {
-						deputadoA = new Deputado(nome:nomeDeputadoA,nomeParlamentar:nomeDeputadoA,siglaPartido:siglaA,uf:ufA, ultimoDiaDiscurso: (dataSessao-1),ativo:false)
+						deputadoA = new Deputado(nome:nomeDeputadoA,nomeParlamentar:nomeDeputadoA,siglaPartido:siglaA,uf:ufA, ativo:false)
 						deputadoA.save()
 						log.debug("Deputado ${deputadoA.descricao} não estava na base. Salvo como 'inativo', então nenhum discurso dele será salvo por enquanto.")
 						// se ele não existia, nenhum usuário o acompanha
@@ -94,9 +96,6 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 						if (!usuarioService.isDeputadoObservado(deputadoA)) {
 							log.debug("Deputado ${deputadoA.descricao}) não está sendo observado por nenhum usuário. Discurso ignorado.")
 							continue
-						}
-						if (!deputadoA.ultimoDiaDiscurso) {
-							deputadoA.ultimoDiaDiscurso=(dataSessao-1)
 						}
 					}
 					
@@ -109,7 +108,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 					atributos+=attrSessao
 					
 					// esse 'ultimoDiaDiscurso' de Deputado é atualizado em PostagemDiscursoDeputado
-					def isMaisRecente = dataSessao.after(deputadoA.ultimoDiaDiscurso)
+					def isMaisRecente = deputadoA.ultimoDiaDiscurso?dataSessao.after(deputadoA.ultimoDiaDiscurso):true
 					if (isMaisRecente) { // só persiste a despesa se for mais recente que a última data de atualização
 						if (Discurso.where{deputado==deputadoA && data==dataSessao && codigo==codSessao && horaInicio==horaInicioA}.count()==0) {
 							atributos+=[deputado:deputadoA]

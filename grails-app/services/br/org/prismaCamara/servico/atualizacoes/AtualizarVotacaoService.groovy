@@ -67,7 +67,6 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 				continue
 			} else { // ainda não existe. Persista agora
 				
-				proposicaoA.ultimaVotacao=dataHoraA
 				def atributos = [resumo:vot.attributes.Resumo, dataHoraVotacao:dataHoraA, objVotacao:vot.attributes.ObjVotacao, proposicao:proposicaoA]
 				
 				Votacao entidade = new Votacao(atributos)

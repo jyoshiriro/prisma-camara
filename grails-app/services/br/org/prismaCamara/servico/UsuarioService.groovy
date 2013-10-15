@@ -1,21 +1,22 @@
 package br.org.prismaCamara.servico
 
-import br.org.prismaCamara.modelo.Deputado;
-import br.org.prismaCamara.modelo.Partido;
-import br.org.prismaCamara.modelo.Proposicao;
-import br.org.prismaCamara.modelo.Usuario;
+import br.org.prismaCamara.modelo.Deputado
+import br.org.prismaCamara.modelo.Partido
+import br.org.prismaCamara.modelo.Proposicao
+import br.org.prismaCamara.modelo.Usuario
+import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.modelo.UsuarioPartido
 
 class UsuarioService {
 	
 	boolean isDeputadoObservado(Deputado deputado) {
-		// TODO: alimentar na base pra poder testar isso
-		/*def deputados = Usuario.executeQuery("select u.deputados from Usuario u")
-		def partidos = Usuario.executeQuery("select u.partidos from Usuario u")
-		for (p in partidos) {
-			deputados+=Deputado.findAllByPartido(p)
-		}
-		return deputados.contains(deputado)*/
-		return true
+
+		def deputados = UsuarioDeputado.countByDeputado(deputado)
+		if (deputados)
+			return true
+			
+		def partidos = UsuarioPartido.executeQuery("select count(up) from UsuarioPartido up where up.partido.id=${deputado.partido.id}")[0]
+		return (partidos)
 	}
 	
 	/**
