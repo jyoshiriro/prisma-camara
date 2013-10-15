@@ -3,6 +3,7 @@ package br.org.prismaCamara.servico.atualizacoes
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 
+import java.util.Map;
 import java.util.zip.ZipFile
 
 import org.junit.After;
@@ -10,6 +11,7 @@ import org.junit.After;
 import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Despesa;
 import br.org.prismaCamara.servico.UsuarioService
+import br.org.prismaCamara.util.xml.LerXmlCota;
 
 
 /**
@@ -40,7 +42,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		zipFile.close()
 		zipFileT.delete()*/
 		
-		String contXml = new File('/home/yoshiriro/workspaces/hackathon2013/prisma-camara/testeCota2.xml').text
+		//byte[] contXml = new File("C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml").bytes
 		
 /*		def xmlFile = new File("${nTmp}.zml")
 		xmlFile<<zipFile.getInputStream(zipFile.entries().nextElement()).text
@@ -50,48 +52,30 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			xmlCont.append(it)
 		}
 */		
+		LerXmlCota lerXmlCota = new LerXmlCota()
+		List<Map> novasDespesas = []
 		
-		GPathResult xmlr = getXMLDeTexto(contXml.toString())
-		
-		log.debug("Despesas chegaram no ZIP de (${urlZip})")
-		
-		int iTemp = 0
-		for (despesa in xmlr.DESPESAS.DESPESA) {
-			
-			// WA
-			if (++iTemp>100) break;
-			// WA
-			
-			def matriculaA = despesa.nuCarteiraParlamentar.toString().trim().toInteger()
-			
-			def nomeA = despesa.txNomeParlamentar.toString().trim().toUpperCase()
-			def partidoA = despesa.sgPartido.toString().trim()
-			def ufA = despesa.sgUF.toString().trim()
-			
-			Date dataEmissao = Date.parse("yyyy-MM-dd'T00:00:00'",despesa.datEmissao.toString().trim())
-			
-			Deputado deputadoA = Deputado.findByMatricula(matriculaA)
-			if ( (!deputadoA) || (!usuarioService.isDeputadoObservado(deputadoA))) {
-				// se ele não existia, nenhum usuário o acompanha
-				log.debug("Deputado ${deputadoA.descricao}) não está sendo observado por nenhum usuário. Despesa ignorada.")
-				continue
-			} 
-			
-			def atributos = [txtDescricao:despesa.txtDescricao.toString().trim(), txtBeneficiario:despesa.txtBeneficiario.toString().trim(),txtCNPJCPF:despesa.txtCNPJCPF.toString().trim(), numParcela:despesa.numParcela.toString().toInteger(),valor:despesa.vlrDocumento.toString()?.toDouble(), txtNumero:despesa.txtNumero.toString().trim()]
-			atributos+=[dataEmissao:dataEmissao]
-			
-			// esse 'ultimoDiaGasto' de Deputado é atualizado em PostagemGastoDeputado
-			def isMaisRecente = deputadoA.ultimoDiaGasto?dataEmissao.after(deputadoA.ultimoDiaGasto):true
-			if (isMaisRecente) { // só persiste a despesa se for mais recente que a última data de atualização
-				if (Despesa.countByDeputadoAndDataEmissao(deputadoA,dataEmissao)==0) { 
-					atributos+=[deputado:deputadoA, dataEmissao:dataEmissao]
-					Despesa entidade = new Despesa(atributos)
-					entidade.save()
-					log.debug("Despesa ${entidade.id} salva no banco")
-				}
-			}
+		try {
+			novasDespesas = lerXmlCota.getNovasDespesas(null, usuarioService.deputadosMapeados);
+//			novasDespesas = lerXmlCota.getNovasDespesas(contXml, usuarioService.deputadosMapeados);
+		} catch (Exception e) {
+			log.error("Erro ao tentar ler o XML de Cota Parlamentar! ${e.message}")
+			e.printStackTrace()
+			return
 		}
 		
+		for (mapDespesa in novasDespesas) {
+			try {
+				Despesa despesa = new Despesa(mapDespesa)
+				Deputado dep = Deputado.findByMatricula(despesa.deputado.matricula)
+				despesa.deputado = dep
+				despesa.save(flush:true)
+				log.debug("Despesa ${despesa.id} salva no banco")
+			} catch (Exception e) {
+				log.error("Erro ao tentar salvar novo registro de despesa: ${e.message}")
+				e.printStackTrace()
+			}
+		}
 		log.debug("Atualização de Despesas do Ano Atual concluída com sucesso")
 	}
 }
