@@ -74,7 +74,7 @@ class PainelController {
 			Proposicao p = Proposicao.get(it)
 			UsuarioProposicao up = new UsuarioProposicao(usuario:usuario, proposicao:p)
 			up.save()
-			log.debug("O usuário ${usuario.username} agora acompanha a Proposição ${p.numero}")
+			log.debug("O usuário ${up.usuario.username} agora acompanha a Proposição ${up.proposicao.descricao}")
 		}
 		redirect(action: 'configurarPostagens')
 	}
@@ -82,7 +82,7 @@ class PainelController {
 	def removerProposicao() {
 		def up = UsuarioProposicao.get(params.id)
 		up.delete(flush:true)
-		log.debug("O usuário ${usuario.username} não acompanha mais a Proposição ${p.numero}")
+		log.debug("O usuário ${up.usuario.username} não acompanha mais a Proposição ${up.proposicao.descricao}")
 		redirect action: 'configurarPostagens'
 	}
 	

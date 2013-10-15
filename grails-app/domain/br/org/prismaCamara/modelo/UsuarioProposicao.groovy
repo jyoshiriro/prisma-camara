@@ -11,7 +11,6 @@ class UsuarioProposicao {
 	}
 	
 	static mapping = {
-		proposicao(cascade:'all')
 	}
     
 }
