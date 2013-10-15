@@ -16,7 +16,7 @@ class PostagemGastoDeputado extends Postagem {
 		}
 		Deputado dep = params.dep
 
-		if (dep.ultimoDiaGasto.before(dep.despesas.last().dataEmissao)) {
+		if ((!dep.ultimoDiaGasto) || (dep.ultimoDiaGasto.before(dep.despesas.last().dataEmissao)) ) {
 			dep.ultimoDiaGasto=dep.despesas.last().dataEmissao	
 		}
 

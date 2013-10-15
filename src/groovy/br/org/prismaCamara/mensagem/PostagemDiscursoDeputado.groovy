@@ -17,7 +17,7 @@ class PostagemDiscursoDeputado extends Postagem {
 		}
 		Deputado dep = params.dep
 
-		if (dep.ultimoDiaDiscurso.before(dep.discursos.last().data)) {
+		if ( (!dep.ultimoDiaDiscurso) || (dep.ultimoDiaDiscurso.before(dep.discursos.last().data)) ) {
 			dep.ultimoDiaDiscurso=dep.discursos.last().data
 		}
 		

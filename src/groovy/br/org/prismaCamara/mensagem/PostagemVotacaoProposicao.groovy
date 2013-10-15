@@ -1,5 +1,7 @@
 package br.org.prismaCamara.mensagem
 
+import org.junit.Before;
+
 import br.org.prismaCamara.modelo.Proposicao;
 import br.org.prismaCamara.modelo.Votacao;
 import br.org.prismaCamara.taglibs.postagens.VotacaoProposicaoTagLib
@@ -13,7 +15,13 @@ class PostagemVotacaoProposicao extends Postagem {
 	 */
 	public String getTexto(Map params) {
 		Proposicao prop = params.prop
-		Votacao votacao = prop.votacoes.first()
+		
+		Votacao votacao = (prop.votacoes)?prop.votacoes.first():null
+		if (!votacao)
+			return null
+		
+		if ( (!prop.ultimaVotacao) || (prop.ultimaVotacao.before(votacao.dataHoraVotacao)))
+			prop.ultimaVotacao=votacao.dataHoraVotacao
 		
 		// montando Mapa de tipos de votos e seus deputados
 		def mvotos = [:] // ex: ['sim':['ze ruela','ze buduia','maria bigodenha'], 'nao':'tiririca']
