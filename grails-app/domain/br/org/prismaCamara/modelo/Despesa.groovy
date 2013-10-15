@@ -8,12 +8,13 @@ class Despesa {
 	String txtNumero
 	Date dataEmissao
 	Double valor
+	Double valorGlosa
 	Integer numParcela 
 	boolean enviado = false
 	
-	Deputado deputado
+	static belongsTo = [deputado:Deputado]
 	
-	static transients = ['urlDetalhes','descDoc']
+	static transients = ['urlDetalhes','descDoc','valorLiquido']
 	
 	static constraints = {
 		txtDescricao(maxSize:1024)
@@ -21,10 +22,10 @@ class Despesa {
 		txtCNPJCPF(maxSize:16)
 		txtNumero(maxSize:64)
 		numParcela(nullable:true) 
+		valorGlosa(nullable:true) 
 	}
 	
 	static mapping = {
-		deputado(cascade:'all')
 	}
 
 	public String getUrlDetalhes() {
@@ -43,6 +44,9 @@ class Despesa {
 			"CNPJ ${txtCNPJCPF[0..1]}.${txtCNPJCPF[2..4]}.${txtCNPJCPF[5..7]}/${txtCNPJCPF[8..11]}-${txtCNPJCPF[12..13]}"
 		}
 	}
-	
+
+	public Double getValorLiquido() {
+		valor-valorGlosa?:0.0
+	}	
 	
 }
