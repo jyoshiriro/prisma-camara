@@ -1,6 +1,8 @@
 Você conheçe <g:deputadoPrefix dep="${dep}" minusculo="true"/>?
 
 Nome completo: ${dep.nome}.
+
+Contatos: ${dep.email} / (61) ${dep.fone}
 <g:if test="${dep.comissoesTitular || dep.comissoesSuplente}">
 É membro de Comissões:
 

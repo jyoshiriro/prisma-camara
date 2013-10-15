@@ -1,4 +1,4 @@
-Veja os gastos da cota parlamentar recentes d<g:deputadoPrefix dep="${dep}" minusculo="true"/>:
+Veja os recentes gastos da cota parlamentar d<g:deputadoPrefix dep="${dep}" minusculo="true"/>:
 <g:each in="${despesas}" var="despesa" status="st">
 ${st+1}. Despesa: ${despesa.txtDescricao}
 Pago a:	${despesa.txtBeneficiario} (${despesa.descDoc})
