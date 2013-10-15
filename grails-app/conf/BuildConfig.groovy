@@ -43,7 +43,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         runtime 'mysql:mysql-connector-java:5.1.22'
-        runtime 'org.quartz-scheduler:quartz:2.2.1'
+//        runtime 'org.quartz-scheduler:quartz:2.2.1'
 		compile 'org.springframework.social:spring-social-core:1.0.1.RELEASE'
 		compile 'org.springframework.social:spring-social-facebook:1.0.1.RELEASE'
 		
@@ -68,6 +68,8 @@ grails.project.dependency.resolution = {
         compile ":rest-client-builder:1.0.3"
 		
 		compile "org.grails.plugins:spring-security-facebook:0.15"
+		
+		compile ":quartz:1.0-RC13"
 		
     }
 }
