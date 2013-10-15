@@ -13,10 +13,10 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://localhost:3306/hackathon"
+            url = "jdbc:mysql://localhost:3306/hackathon2"
             username = "root"
-//            password = "admin"
-            password = "123456"
+            password = "admin"
+//            password = "123456"
 			
             pooled = true
 			properties {
@@ -34,9 +34,10 @@ environments {
     }
     test {
         dataSource {
-            url = "jdbc:mysql://localhost:3306/hackathon"
+            url = "jdbc:mysql://localhost:3306/hackathon2"
     		username = "root"
-    		password = "123456"
+    		password = "admin"
+//    		password = "123456"
         }
     }
     production {
