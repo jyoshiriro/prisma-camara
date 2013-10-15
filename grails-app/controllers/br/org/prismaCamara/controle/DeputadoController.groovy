@@ -8,18 +8,18 @@ class DeputadoController {
 
     def list() {		
 		//Book.findAllByTitleLike("Harry Pot%", [max: 3, offset: 2, sort: "title", order: "desc"])
-		def listaDeputados = Deputado.findAllByNomeLike("%${params.sSeach}%", [max: params.iDisplayStart, offset: params.iDisplayLength, sort: "nome", order: "asc"]);
-		log.debug listaDeputados
+		def listaDeputados = Deputado.findAllByNomeParlamentarLike("%${params.sSearch}%", [max: params.iDisplayLength, offset: params.iDisplayStart, sort: "nomeParlamentar", order: "asc"]);
+		log.debug "Pesquisa por %${params.sSearch}%, inicio: ${params.iDisplayStart}, porPagina: ${params.iDisplayLength}"
 		render (contentType: 'text/json') {
 			sEcho = params.sEcho
 			iTotalRecords = Deputado.count()
-			iTotalDisplayRecords =  listaDeputados.size()
+			iTotalDisplayRecords =  Deputado.countByNomeParlamentarLike("%${params.sSearch}%")
 			aaData = array {
 				for(d in listaDeputados){
-					deputado id: d.id, nome: d.nome, partido: d.partido?.sigla, uf: d.uf
+					deputado id: d.id, nomeParlamentar: d.nomeParlamentar, partido: d.partido?.sigla, uf: d.uf
 				}
 			}
 		}
 	}
-	
+			
 }
