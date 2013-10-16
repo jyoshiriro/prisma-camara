@@ -87,9 +87,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 					
 					def deputadoA = Deputado.findByNomeParlamentarAndUf(nomeDeputadoA,ufA) 
 					if (!deputadoA) {
-						deputadoA = new Deputado(nome:nomeDeputadoA,nomeParlamentar:nomeDeputadoA,siglaPartido:siglaA,uf:ufA, ativo:false)
-						deputadoA.save()
-						log.debug("Deputado ${deputadoA.descricao} não estava na base. Salvo como 'inativo', então nenhum discurso dele será salvo por enquanto.")
+						log.debug("Deputado ${deputadoA.descricao} não estava na base. Discurso Ignorado.")
 						// se ele não existia, nenhum usuário o acompanha
 						continue
 					}else {

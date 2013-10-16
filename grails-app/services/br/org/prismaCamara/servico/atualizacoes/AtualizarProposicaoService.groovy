@@ -9,7 +9,8 @@ import groovy.util.slurpersupport.GPathResult
 
 
 /**
- * Atualizar a tabela de Proposicões. 
+ * Atualizar a tabela de Proposicões. Essa classe Inclui e Exclui registros também.
+ * A exclusão ocorre quando a proposição chega como "arquivada"  
  */
 @Log4j
 class AtualizarProposicaoService extends AtualizadorEntidade {

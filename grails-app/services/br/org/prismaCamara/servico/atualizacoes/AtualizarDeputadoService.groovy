@@ -1,15 +1,12 @@
 package br.org.prismaCamara.servico.atualizacoes
 
-import org.springframework.transaction.support.DefaultTransactionStatus;
-
-import br.org.prismaCamara.modelo.Comissao;
-import br.org.prismaCamara.modelo.Deputado;
-
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
+import br.org.prismaCamara.modelo.Comissao
+import br.org.prismaCamara.modelo.Deputado
 
 /**
- * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
+ * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false".
  */
 @Log4j
 class AtualizarDeputadoService extends AtualizadorEntidade {
@@ -41,8 +38,10 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 				entidade = Deputado.where{nomeParlamentar==dep.nomeParlamentar?.toString()?.trim() && partido.sigla==dep.partido?.toString()?.trim() && uf==dep.uf?.toString()?.trim()}.find()
 			}
 			
-			if (entidade) { // já existe o registro, atualize os dados
+			if (entidade) { // já existe o registro, atualize os dados e limpa as comissões
 				entidade.properties=atributos
+				entidade.comissoesSuplente.clear()
+				entidade.comissoesTitular.clear()
 				log.debug("Deputado ${ideCadastroA} possivelmente atualizado")
 			} else { // ainda não existe. Persista agora
 				entidade = new Deputado(atributos)

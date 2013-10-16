@@ -42,21 +42,13 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		zipFile.close()
 		zipFileT.delete()*/
 		
-		//byte[] contXml = new File("C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml").bytes
+		byte[] contZip = new File("/home/yoshiriro/Downloads/AnoAtual.zip").bytes
 		
-/*		def xmlFile = new File("${nTmp}.zml")
-		xmlFile<<zipFile.getInputStream(zipFile.entries().nextElement()).text
-		
-		StringBuffer xmlCont
-		xmlFile.eachLine {
-			xmlCont.append(it)
-		}
-*/		
 		LerXmlCota lerXmlCota = new LerXmlCota()
 		List<Map> novasDespesas = []
 		
 		try {
-			novasDespesas = lerXmlCota.getNovasDespesas(null, usuarioService.deputadosMapeados);
+			novasDespesas = lerXmlCota.getNovasDespesas(contZip, usuarioService.deputadosMapeados);
 //			novasDespesas = lerXmlCota.getNovasDespesas(contXml, usuarioService.deputadosMapeados);
 		} catch (Exception e) {
 			log.error("Erro ao tentar ler o XML de Cota Parlamentar! ${e.message}")
@@ -68,9 +60,13 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			try {
 				Despesa despesa = new Despesa(mapDespesa)
 				Deputado dep = Deputado.findByMatricula(despesa.deputado.matricula)
-				despesa.deputado = dep
-				despesa.save(flush:true)
-				log.debug("Despesa ${despesa.id} salva no banco")
+				def despesaCount = Despesa.countByTxtNumeroAndDataEmissaoAndDeputado(despesa.txtNumero,despesa.dataEmissao,dep)
+				if (!despesaCount) {
+					despesa.deputado = dep
+					despesa.save(flush:true)
+					log.debug("Despesa ${despesa.id} salva no banco")
+				}
+				log.debug("Despesa ${despesa} já existia")
 			} catch (Exception e) {
 				log.error("Erro ao tentar salvar novo registro de despesa: ${e.message}")
 				e.printStackTrace()
