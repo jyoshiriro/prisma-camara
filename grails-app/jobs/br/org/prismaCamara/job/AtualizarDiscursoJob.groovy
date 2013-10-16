@@ -1,13 +1,12 @@
 package br.org.prismaCamara.job
 
 import groovy.util.logging.Log4j
-import br.org.prismaCamara.modelo.Discurso;
 import br.org.prismaCamara.servico.atualizacoes.AtualizarDiscursoService
 import br.org.prismaCamara.servico.limpezas.LimparDiscursoService
 
 
 /**
- * Job de atualização de {@link Discurso}. Executado diariamente, as 06:30:00
+ * Job de atualização de {@link Discurso}. Executado diariamente, as 05:00:00
  * @author jyoshiriro
  *
  */
@@ -20,7 +19,7 @@ class AtualizarDiscursoJob {
 	def concurrent = false
 	
     static triggers = {
-	  cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "0 30 6 * * ?"
+	  cron name: 'atualizacaoDiscursosTrigger', cronExpression: "0 0 5 * * ?"
 //      cron name: 'atualizacaoDiscursosTrigger', cronExpression: "1 * * * * ?"
     }
 

@@ -2,11 +2,11 @@ package br.org.prismaCamara.job
 
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.servico.atualizacoes.AtualizarFrequenciaDiaService
-import br.org.prismaCamara.servico.limpezas.LimparFrequenciaDiaService;
+import br.org.prismaCamara.servico.limpezas.LimparFrequenciaDiaService
 
 
 /**
- * Job de atualização de {@link FrequenciaDia}. Executado Diariamente, as 06:00:00
+ * Job de atualização de {@link FrequenciaDia}. Executado Diariamente, as 04:30:00
  * @author jyoshiriro
  */
 @Log4j
@@ -19,7 +19,7 @@ class AtualizarFrequenciaDiaJob {
 	
     static triggers = {
 //      cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "1 * * * * ?"
-	  cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "0 0 6 * * ?"
+	  cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "0 30 4 * * ?"
     }
 
     def execute() {
@@ -28,7 +28,7 @@ class AtualizarFrequenciaDiaJob {
 			atualizarFrequenciaDiaService.atualizar()
 			log.debug("Atualização Geral dos registros de Frequencias de Deputados concluída com sucesso")
 		} catch (Exception e) {
-			log.error("Erro ao tentar a Atualização Geral dos registros de Frequencias de Despesas de Deputados: ${e.message}")
+			log.error("Erro ao tentar a Atualização Geral dos registros de Frequencias de Deputados: ${e.message}")
 			e.printStackTrace()
 		}
     }

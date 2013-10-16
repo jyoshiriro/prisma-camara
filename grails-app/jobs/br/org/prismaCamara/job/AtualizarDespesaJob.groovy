@@ -2,10 +2,10 @@ package br.org.prismaCamara.job
 
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.servico.atualizacoes.AtualizarDespesaService
-import br.org.prismaCamara.servico.limpezas.LimparDespesaService;
+import br.org.prismaCamara.servico.limpezas.LimparDespesaService
 
 /**
- * Job de atualização de {@link Despesa}. Executado todo Domingo, as 04:00:00
+ * Job de atualização de {@link Despesa}. Executado diariamente, as 01:30:00
  * @author jyoshiriro
  *
  */
@@ -18,7 +18,7 @@ class AtualizarDespesaJob {
 	def concurrent = false
 	
     static triggers = {
-	  cron name: 'atualizacaoDespesasTrigger', cronExpression: "0 0 4 ? * Sun"
+	  cron name: 'atualizacaoDespesasTrigger', cronExpression: "0 30 1 * * ?"
 //      cron name: 'atualizacaoDespesasTrigger', cronExpression: "1 * * * * ?"
     }
 

@@ -18,8 +18,8 @@ class AtualizarVotacaoJob {
 	def concurrent = false
 	
     static triggers = {
-	  cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "0 0 3 * * ?"
-//      cron name: 'atualizacaoDiscursosTrigger', cronExpression: "1 * * * * ?"
+	  cron name: 'atualizacaoVotacaoTrigger', cronExpression: "0 0 3 * * ?"
+//      cron name: 'atualizacaoVotacaoTrigger', cronExpression: "1 * * * * ?"
     }
 
     def execute() {
