@@ -25,7 +25,7 @@ class LimparDespesaService extends LimpadorEntidade {
 			 
 			def ultimoDiaGasto = deputado.ultimoDiaGasto
 			if (!ultimoDiaGasto) {
-				log.debug("O deputado ${deputado.descricao} ainda registro de despesa para excluir")
+				log.debug("O deputado ${deputado.descricao} ainda não possui registro de despesa para excluir")
 				continue;
 			}
 			Despesa.executeUpdate("delete from Despesa where deputado=? and dataEmissao<=?",[deputado,ultimoDiaGasto])
