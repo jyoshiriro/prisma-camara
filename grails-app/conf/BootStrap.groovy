@@ -1,8 +1,5 @@
 import groovy.sql.Sql
 import groovy.util.logging.Log4j
-
-import org.quartz.SchedulerFactory
-
 import br.org.prismaCamara.modelo.Parametro
 import br.org.prismaCamara.modelo.Perfil
 import br.org.prismaCamara.modelo.Usuario
@@ -23,11 +20,7 @@ class BootStrap {
 	}
 
 	def destroy = { servletContext->
-		// tarefas quartz morrendo
-		SchedulerFactory fabricaAgendas = servletContext.getAttribute('agendas');
-		fabricaAgendas.allSchedulers.each {
-			it.shutdown(true)
-		}
+		
 	}
 
 	def verificacoesIniciais() {
