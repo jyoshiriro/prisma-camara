@@ -19,3 +19,6 @@ INSERT INTO hackathon.usuario_deputado (id, version, deputado_id, usuario_id) VA
 INSERT INTO hackathon.usuario_partido (id, version, partido_id, usuario_id) VALUES (1, 0, 2, 1);
 INSERT INTO hackathon.usuario_proposicao (id, version, proposicao_id, usuario_id) VALUES (1, 0, 21, 1);
 INSERT INTO hackathon.usuario_proposicao (id, version, proposicao_id, usuario_id) VALUES (2, 0, 184, 1);
+
+-- Indice na tabela de despesas
+CREATE INDEX idx_despesa ON hackathon.despesa(data_emissao,deputado_id,txt_numero);
