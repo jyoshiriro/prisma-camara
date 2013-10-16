@@ -71,5 +71,7 @@ grails.project.dependency.resolution = {
 		
 		compile ":quartz:1.0-RC13"
 		
+		compile ":quartz-monitor:0.3-RC2"
+		
     }
 }
