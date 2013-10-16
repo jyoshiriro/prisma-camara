@@ -4,7 +4,8 @@ ${st+1}. Despesa: ${despesa.txtDescricao}
 Pago a:	${despesa.txtBeneficiario} (${despesa.descDoc})
 Número do documento: ${despesa.txtNumero}
 Data da emissão: <g:formatDate date="${despesa.dataEmissao}" format="dd/MM/yyyy"/> 
-Valor pago: R${'$'}${despesa.valor}
+Valor solicitado: R${'$'}${despesa.valor}
+Valor glosa: R${'$'}${despesa.valorGlosa}
 Parcela: ${despesa.numParcela?:'(única)'} 
 </g:each>
 

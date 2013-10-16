@@ -1,9 +1,15 @@
 <%@page import="br.org.prismaCamara.modelo.Deputado"%>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <style>
 	li{
 	margin-bottom: 1em;
 	}
 </style>
+</head>
+<body>
 
 <g:set var="sDeputados">
 	<g:select name="idDeputado" value="${params.idDeputado}" from="${deputados}" optionKey="id" optionValue="descricao"/>
@@ -50,3 +56,6 @@ ${flash.error}
 		<input type="submit" value="Enviar postagem para o face! Ah muleke!"/> 
 	</g:form>
 </g:if>
+
+</body>
+</html>
