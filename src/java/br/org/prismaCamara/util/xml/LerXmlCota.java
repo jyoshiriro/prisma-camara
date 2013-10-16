@@ -2,11 +2,14 @@ package br.org.prismaCamara.util.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -15,6 +18,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipFile;
 
 import br.org.prismaCamara.modelo.Deputado;
 
@@ -32,7 +38,7 @@ import com.ximpleware.XPathParseException;
 public class LerXmlCota {
 	
 	/**
-	 * @param conteudoXml
+	 * @param conteudoZip
 	 * @param deputadosMapeados
 	 * @return {@link List} de {@link Map} com os atributos e seus valores
 	 * @throws EncodingException
@@ -45,16 +51,26 @@ public class LerXmlCota {
 	 * @throws java.text.ParseException
 	 * @throws IOException 
 	 */
-	public List<Map> getNovasDespesas(byte[] conteudoXml, Set<Deputado> deputadosMapeados) throws EncodingException, EOFException, EntityException, ParseException, XPathParseException, XPathEvalException, NavException, java.text.ParseException, IOException {
+	public List<Map> getNovasDespesas(byte[] conteudoZip, Set<Deputado> deputadosMapeados) throws EncodingException, EOFException, EntityException, ParseException, XPathParseException, XPathEvalException, NavException, java.text.ParseException, IOException {
+
+		String nomeArquivoTemp = new Date().getTime()+"";
+		File ftemp = new File(nomeArquivoTemp+".zip");
+		FileUtils.writeByteArrayToFile(ftemp, conteudoZip); 
+		ZipFile zipFile = new ZipFile(ftemp);
 		
-		if (conteudoXml==null) {
-			String caminho = "C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml";
-			File f = new File(caminho);
-	
-			FileInputStream fis = new FileInputStream(f);
-			conteudoXml = new byte[(int) f.length()];
-			fis.read(conteudoXml);
-		}
+		Enumeration<? extends ZipEntry> entries = zipFile.getEntries();
+        ZipEntry entry = entries.nextElement();
+        File entryDestination = new File(nomeArquivoTemp+".xml",  entry.getName());
+        entryDestination.getParentFile().mkdirs();
+        InputStream in = zipFile.getInputStream(entry);
+        OutputStream out = new FileOutputStream(entryDestination);
+        IOUtils.copy(in, out);
+        IOUtils.closeQuietly(in);
+        IOUtils.closeQuietly(out);
+        
+		FileInputStream fis = new FileInputStream(entryDestination);
+		byte[] conteudoXml = new byte[(int) entryDestination.length()];
+		fis.read(conteudoXml);
 		
 		List<Map> despesas = new ArrayList<Map>();
 		
@@ -143,6 +159,9 @@ public class LerXmlCota {
 		}
 		
 		vgGeral.clear();		
+		zipFile.close();
+		ftemp.delete();
+		new File(nomeArquivoTemp+".xml").delete();
 		
 		return despesas;
 	}
@@ -150,6 +169,11 @@ public class LerXmlCota {
 	public static void main(String[] args) throws IOException,
 			EncodingException, EOFException, EntityException, ParseException,
 			NavException, XPathParseException, XPathEvalException, java.text.ParseException {
+		
+		
+		
+		if (1==1)
+			System.exit(0);
 		
 		LerXmlCota l = new LerXmlCota();
 		List deputados = new  ArrayList();
