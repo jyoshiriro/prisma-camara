@@ -6,30 +6,20 @@ import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioPerfil
 import br.org.prismaCamara.modelo.Perfil.*
 import br.org.prismaCamara.servico.atualizacoes.AtualizarDespesaService
+import groovy.sql.Sql
+import groovy.util.logging.Log4j;
 
+@Log4j
 class BootStrap {
 
-	AtualizarDespesaService atualizarDespesas1 = new AtualizarDespesaService()
+	def dataSource
 	
 	def init = { servletContext ->
 
+		verificacoesIniciais()
+		
 		inicializarSpringSecurity()
 
-		// atualizacao de parametros
-		verificacoesIniciais()
-
-//		iniciarJobs(servletContext)
-		// tarefas quartz iniciando
-
-		// atualização dos cadastros dos deputados: toda 6a feira, 23h
-
-		// atualização dos cadastros das proposições: todo dia, 18h
-
-		// acompanhamento das proposiçõees: todo dia, 22h
-
-		// acompanhamento das frequencias dos deputados: todo dia, 22h
-
-		// acompanhamento dos gastos dos deputados: todo sábado, 6h (PERGUNTAR A FREQUENCIA DE ATUALIZAÇÃO DISSO)99
 	}
 
 	def destroy = { servletContext->
@@ -41,13 +31,28 @@ class BootStrap {
 	}
 
 	def verificacoesIniciais() {
-		if (Parametro.count()==0) {
-			throw new Exception("Não há nenhum registro na tabela de Parâmetros! Tente executar o SQL com os registros iniciais (insert-inicial-parametro.sql)")
+		if (Parametro.count()>=12) {
+			println "Os Parâmetros parecem estar corretamente iniciados"
+			return 
 		}
-		//		AtualizarDeputadosService.URL=Parametro.findBySigla('url_listagem_deputados').valor
-		//		AtualizarTiposProposicoesService.URL=Parametro.findBySigla('url_listagem_tipos_proposicoes').valor
-		//		AtualizarProposicoesService.URL=Parametro.findBySigla('url_listagem_proposicoes').valor
-		//		Deputado.URL_BIOGRAFIAS=Parametro.findBySigla('url_biografia_deputado')
+		try {
+			println "Os Parâmetros não parecem estar corretamente iniciados... iniciando realimentação"
+			Sql sql = new Sql(dataSource)
+			sql.executeUpdate("truncate table parametro")
+			def sqlInicial = new File('scripts-iniciais.sql').text
+			
+			sqlInicial.eachLine {
+				if (it.trim()) {
+					println "Executando... ${it}"
+					sql.executeInsert(it)
+				}
+			}
+			println "Parâmetros configurados com sucesso"
+		}
+		catch (e) {
+			log.error("Falha ao tentar executar o SQL com os registros iniciais (scripts-iniciais.sql): ${e.message}")
+			e.printStackTrace()
+		}
 
 	}
 
@@ -60,34 +65,8 @@ class BootStrap {
 		if (!Usuario.findByUsername(username)) {
 			def testeUsuario = new Usuario(username: username, enabled: true, password: 'admin')
 			testeUsuario.save()
-			UsuarioPerfil.create tesetUsuario, perfilAdministrador, true
+			UsuarioPerfil.create testeUsuario, perfilAdministrador, true
 		}
 	}
-
-/*	public def iniciarJobs(servletContext) {
-		
-		SchedulerFactory fabricaAgendas = new StdSchedulerFactory();
-		servletContext.setAttribute('agendas',fabricaAgendas);
-		
-		Scheduler agendaAtualizacoes = fabricaAgendas.getScheduler();
-
-		agendaAtualizacoes.start();
-
-		// Jobs (tarefas)
-		AtualizarDespesaService atualizarDespesas = new AtualizarDespesaService() 
-		JobDetail despesasJob = JobBuilder.newJob(AtualizarDespesa2Job.class)
-				.withIdentity("despesaJob", "gAtualizacoes")
-				.build();
-
-		// Triggers (modalidades de agendamentos)
-		Trigger tDiario01 = TriggerBuilder.newTrigger()
-				.withIdentity("triggerDiaria", "gAtualizacoes")
-				.startNow()
-				.withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(18, 53))
-				.build();
-				
-		// Tell quartz to schedule the job using our trigger
-		agendaAtualizacoes.scheduleJob(despesasJob, tDiario01);
-	}*/
 	
 }
