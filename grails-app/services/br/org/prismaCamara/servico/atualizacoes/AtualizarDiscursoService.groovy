@@ -24,7 +24,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 	
 	@Override
 	public Object atualizar() {
-		Date proximaAtualizacao = (new Date()-17).clearTime() // tirar esse "-16" depois
+		Date proximaAtualizacao = (new Date()-21).clearTime() // tirar esse "-16" depois
 		
 		def urlT = null
 		GPathResult xmlr = null
@@ -87,7 +87,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 					
 					def deputadoA = Deputado.findByNomeParlamentarAndUf(nomeDeputadoA,ufA) 
 					if (!deputadoA) {
-						log.debug("Deputado ${deputadoA.descricao} não estava na base. Discurso Ignorado.")
+						log.debug("Deputado ${nomeDeputadoA}/${ufA} não estava na base. Discurso Ignorado.")
 						// se ele não existia, nenhum usuário o acompanha
 						continue
 					}else {
