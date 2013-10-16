@@ -42,13 +42,16 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 		zipFile.close()
 		zipFileT.delete()*/
 		
-		byte[] contZip = new File("/home/yoshiriro/Downloads/AnoAtual.zip").bytes
+		byte[] contZip = new File("C:/Users/Administrador/Downloads/AnoAtual (2).zip").bytes
 		
 		LerXmlCota lerXmlCota = new LerXmlCota()
 		List<Map> novasDespesas = []
 		
 		try {
-			novasDespesas = lerXmlCota.getNovasDespesas(contZip, usuarioService.deputadosMapeados);
+			String nomeArquivo="cotaAtuaisTmp"
+			novasDespesas = lerXmlCota.getNovasDespesas(contZip, usuarioService.deputadosMapeados, nomeArquivo);
+			new File("${nomeArquivo}.zip").delete()
+			new File("${nomeArquivo}.xml").delete()
 //			novasDespesas = lerXmlCota.getNovasDespesas(contXml, usuarioService.deputadosMapeados);
 		} catch (Exception e) {
 			log.error("Erro ao tentar ler o XML de Cota Parlamentar! ${e.message}")
@@ -65,8 +68,9 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 					despesa.deputado = dep
 					despesa.save(flush:true)
 					log.debug("Despesa ${despesa.id} salva no banco")
+				} else{
+					log.debug("Despesa ${despesa} já existia")
 				}
-				log.debug("Despesa ${despesa} já existia")
 			} catch (Exception e) {
 				log.error("Erro ao tentar salvar novo registro de despesa: ${e.message}")
 				e.printStackTrace()
