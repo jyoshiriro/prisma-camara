@@ -9,16 +9,22 @@ import br.org.prismaCamara.mensagem.PostagemVotacaoProposicao
 import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Proposicao;
 import br.org.prismaCamara.modelo.Votacao;
+import br.org.prismaCamara.servico.UsuarioService;
 
 class PostagensController {
 
+	UsuarioService usuarioService
+	
     def index() {
-		[proposicoes:proposicoes]
+		[proposicoes:proposicoes, deputados:deputados]
+	}
+	
+	def getDeputados() {
+		usuarioService.deputadosMapeados	
 	}
 	
 	def getProposicoes() {
-		def proposicoesV = Votacao.executeQuery("select proposicao from Votacao") 
-				//Proposicao.findAllByNumeroInList([190,300])
+		def proposicoesV = usuarioService.proposicoesMapeadas //Votacao.executeQuery("select proposicao from Votacao") 
 		return proposicoesV
 	}
 	
@@ -53,6 +59,6 @@ class PostagensController {
 		Proposicao proposicao = Proposicao.get(idProposicao)
 		Postagem post = new PostagemVotacaoProposicao()	
 		flash.postagem = post.getTexto([prop:proposicao,tipo:Postagem.TIPO_FACE])
-		render(view:'index',model:[proposicoes:proposicoes])
+		render(view:'index',model:[proposicoes:proposicoes,deputados:deputados])
 	}	
 }
