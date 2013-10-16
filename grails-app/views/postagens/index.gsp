@@ -6,7 +6,7 @@
 </style>
 
 <g:set var="sDeputados">
-	<g:select name="idDeputado" value="${params.idDeputado}" from="${Deputado.findAllByAtivo(true,[sort:'nomeParlamentar'])}" optionKey="id" optionValue="descricao"/>
+	<g:select name="idDeputado" value="${params.idDeputado}" from="${deputados}" optionKey="id" optionValue="descricao"/>
 </g:set>
 	
 <h2>Mensagens deseja ver agora?</h2>
