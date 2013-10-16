@@ -1,3 +1,6 @@
+import groovy.sql.Sql
+import groovy.util.logging.Log4j
+
 import org.quartz.SchedulerFactory
 
 import br.org.prismaCamara.modelo.Parametro
@@ -5,9 +8,6 @@ import br.org.prismaCamara.modelo.Perfil
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioPerfil
 import br.org.prismaCamara.modelo.Perfil.*
-import br.org.prismaCamara.servico.atualizacoes.AtualizarDespesaService
-import groovy.sql.Sql
-import groovy.util.logging.Log4j;
 
 @Log4j
 class BootStrap {
