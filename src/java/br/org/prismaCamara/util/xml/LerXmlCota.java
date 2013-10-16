@@ -51,9 +51,8 @@ public class LerXmlCota {
 	 * @throws java.text.ParseException
 	 * @throws IOException 
 	 */
-	public List<Map> getNovasDespesas(byte[] conteudoZip, Set<Deputado> deputadosMapeados) throws EncodingException, EOFException, EntityException, ParseException, XPathParseException, XPathEvalException, NavException, java.text.ParseException, IOException {
+	public List<Map> getNovasDespesas(byte[] conteudoZip, Set<Deputado> deputadosMapeados, String nomeArquivoTemp) throws EncodingException, EOFException, EntityException, ParseException, XPathParseException, XPathEvalException, NavException, java.text.ParseException, IOException {
 
-		String nomeArquivoTemp = new Date().getTime()+"";
 		File ftemp = new File(nomeArquivoTemp+".zip");
 		FileUtils.writeByteArrayToFile(ftemp, conteudoZip); 
 		ZipFile zipFile = new ZipFile(ftemp);
@@ -186,7 +185,7 @@ public class LerXmlCota {
 		deputados.add(d1);
 		deputados.add(d2);
 		
-		Object despesas = l.getNovasDespesas(FileUtils.readFileToByteArray(new File("C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml")), new HashSet<Deputado>(deputados));
+		Object despesas = l.getNovasDespesas(FileUtils.readFileToByteArray(new File("C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml")), new HashSet<Deputado>(deputados),"teste");
 		System.out.println(despesas);
 		
 /*		String caminho = "C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml";
