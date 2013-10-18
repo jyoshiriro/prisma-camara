@@ -106,38 +106,44 @@ public class LerXmlCota {
 		
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T00:00:00'");
 		int result = 0;
-		Set<String> descricoes = new LinkedHashSet();
-		l1:while (result!=-1) { // Loop por Despesa de Deputado 
+		int matZero =0;
+		Set<String> descricoes = new LinkedHashSet(); // TODO: temporário! Tirar de posi de identificra os caracteres especiais
+		loopDespesa:while (result!=-1) { // Loop por Despesa de Deputado 
 			result = ap.evalXPath();
 			Map<String, Object> mapValores = new LinkedHashMap<String, Object>();
 			Integer ultimaMatricula = 0;
 			Date ultimaDataTodos = null;
-			for (int i=0;i<nomesAtributos.size();i++) {
+			loopAtributos:for (int i=0;i<nomesAtributos.size();i++) { // loop de atribuitos de cada despesa de Deputado
 				Object valor = lerValor(i!=0, nomesAtributos.get(i), vnGeral);
-				System.out.println(valor);
 				try {
 					switch (i) {
 					
 						case 0: // validação de matrícula válida e mapeada
 							if ((valor==null || valor.equals("") || valor.equals("0")) || (!mapDeputados.containsKey(Integer.valueOf(valor.toString().trim()))) ) {
 								vnGeral.toElement(VTDNav.PARENT);
-								continue l1;
+								continue loopDespesa;
 							}
 							ultimaMatricula = Integer.valueOf(valor.toString());
 							mapValores.put(nomesAtributos.get(i), ultimaMatricula);
 							break;
 							
-						case 1: // Ajuste de caracteres especiais nas descrições
+						case 1:	// Ajuste de caracteres especiais nas descrições (1 e 2)
+						case 2: 
 							descricoes.add(valor.toString());
 							String corrigido = CaracteresUtil.corrigirEspeciais(valor.toString().trim());
+							if (!corrigido.equals(valor.toString())) {
+								System.out.println(" - "+valor);
+								System.out.println(" - "+corrigido+" <-\n");
+							}
 							mapValores.put(nomesAtributos.get(i), corrigido);
 							break;
 							
 						case 5: // validação de data de novo gasto  
 							Date dataGastoAtual = formato.parse(valor.toString().trim());
 							if ( (mapDeputados.get(ultimaMatricula)!=null) && (!dataGastoAtual.after(mapDeputados.get(ultimaMatricula))) ) {
-								vnGeral.toElement(VTDNav.PARENT);
-								continue l1;
+								mapValores.clear();
+								System.out.println("saiu pela data de gasto");
+								break loopAtributos;
 							}
 							valor = dataGastoAtual;
 							mapValores.put(nomesAtributos.get(i), valor);
@@ -164,24 +170,27 @@ public class LerXmlCota {
 							+". Última Data registrada: "+ultimaDataTodos);
 					e.printStackTrace();
 					vnGeral.toElement(VTDNav.PARENT);
-					continue l1;
+					System.out.println("saiu por erro de conversão");					
+					continue loopDespesa;
 				}
 				
 			} // loop de preenchimento de valores de cada despesa
 			
-			Map valoresDespesa = new HashMap();
-			for (String chave:nomesAtributos) {
-				 valoresDespesa.put(mapaXmlDespesa.get(chave),mapValores.get(chave));
+			if (!mapValores.isEmpty()) {
+				Map valoresDespesa = new HashMap();
+				for (String chave:nomesAtributos) {
+					 valoresDespesa.put(mapaXmlDespesa.get(chave),mapValores.get(chave));
+				}
+				despesas.add(valoresDespesa);
 			}
-			despesas.add(valoresDespesa);
 			
 		    vnGeral.toElement(VTDNav.PARENT);
 	
 		} // Loop por Despesa de Deputado
 		
-		for (String string : descricoes) {
+		/*for (String string : descricoes) {
 			System.out.println("->"+string+"<-");
-		}
+		}*/
 		vgGeral.clear();		
 		zipFile.close();
 		ftemp.delete();
@@ -190,97 +199,11 @@ public class LerXmlCota {
 		return despesas;
 	}
 
-	public static void main(String[] args) throws IOException,
-			EncodingException, EOFException, EntityException, ParseException,
-			NavException, XPathParseException, XPathEvalException, java.text.ParseException {
-		
-		
-		
-		if (1==1)
-			System.exit(0);
-		
-		LerXmlCota l = new LerXmlCota();
-		List deputados = new  ArrayList();
-		Deputado d1 = new Deputado();
-		d1.setMatricula(256);
-		d1.setUltimoDiaGasto(new SimpleDateFormat("dd/MM/yyyy").parse("01/04/2013"));
-		Deputado d2 = new Deputado();
-		d1.setMatricula(522);
-		d1.setUltimoDiaGasto(new SimpleDateFormat("dd/MM/yyyy").parse("01/09/2013"));
-		deputados.add(d1);
-		deputados.add(d2);
-		
-		Object despesas = l.getNovasDespesas(FileUtils.readFileToByteArray(new File("C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml")), new HashSet<Deputado>(deputados),"teste");
-		System.out.println(despesas);
-		
-/*		String caminho = "C:/Users/Administrador/Documents/yoshi/partiubrasilia/workspace/prisma-camara/testeCotaTudo.xml";
-		File f = new File(caminho);
-
-		FileInputStream fis = new FileInputStream(f);
-		byte[] b = new byte[(int) f.length()];
-		fis.read(b);
-
-		VTDGen vgGeral = new VTDGen();
-		vgGeral.setDoc(b); // precisa do byte[] 
-		vgGeral.parse(true);
-		VTDNav vnGeral = vgGeral.getNav();
-		
-		AutoPilot ap = new AutoPilot(vnGeral);
-		ap.selectXPath("//orgao//DESPESAS//DESPESA");
-		
-		Map<Integer,Date> mapDeputados = new HashMap<Integer, Date>(); // vai virar par�metro
-		mapDeputados.put(356, new SimpleDateFormat("dd/MM/yyyy").parse("01/04/2013"));
-		mapDeputados.put(522, new SimpleDateFormat("dd/MM/yyyy").parse("01/09/2013"));
-		
-		List<String> nomesAtributos = Arrays.asList("nuCarteiraParlamentar","txtDescricao","txtBeneficiario","txtCNPJCPF","txtNumero","datEmissao","vlrDocumento","vlrGlosa","numParcela");
-		List<Map> listaMapas = new ArrayList<Map>();
-		
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T00:00:00'");
-		int result = 0;
-		l1:while (result!=-1) {
-			result = ap.evalXPath();
-			
-			Map<String, String> mapValores = new LinkedHashMap<String, String>();
-
-			Integer ultimaMatricula = 0;
-			l2:for (int i=0;i<nomesAtributos.size();i++) {
-				String valor = lerValor(i!=0, nomesAtributos.get(i), vnGeral);
-				
-				if (i==0) { 
-					if ((valor==null || valor.equals("") || valor.equals("0")) || (!mapDeputados.containsKey(Integer.valueOf(valor.trim()))) ) {
-						vnGeral.toElement(VTDNav.PARENT);
-						continue l1;
-					}
-					ultimaMatricula = Integer.valueOf(valor);
-				}
-				
-				if (i==5) { 
-					Date dataGastoAtual = formato.parse(valor);
-					if (!dataGastoAtual.after(mapDeputados.get(ultimaMatricula))) {
-						vnGeral.toElement(VTDNav.PARENT);
-						continue l1;
-					}
-				}
-				
-				mapValores.put(nomesAtributos.get(i), valor);
-			}
-
-			listaMapas.add(mapValores);
-	        System.out.println(mapValores);
-		    
-		    vnGeral.toElement(VTDNav.PARENT);
-			System.out.println();
-		}
-		
-		vgGeral.clear();
-		System.out.println("Novas despesas encontradas: "+listaMapas.size());*/
-	}
-	
 	/**
 	 * @param proximo Se false, pega o filho (usar na primeira subtag de uma tag)
 	 * @param nome Nome da tag a pegar o valor
-	 * @param vn Navegador de n� atual
-	 * @return Conte�do da tag
+	 * @param vn Navegador de nó atual
+	 * @return Conteúdo da tag
 	 * @throws NavException
 	 */
 	private String lerValor(boolean proximo,String nome, VTDNav vn) throws NavException {
