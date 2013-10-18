@@ -17,7 +17,6 @@ environments {
             username = "root"
             password = "admin"
 //            password = "123456"
-			
             pooled = true
 			properties {
 				defaultTransactionIsolation=2
