@@ -12,4 +12,6 @@ Novo registro de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> 
 ${st+1}. ${fs.descricao} <g:formatDate date="${fs.inicio}" format="HH:mm"/><g:if test="${presente}"> -> ${fs.frequencia}</g:if>
 </g:each>
 
-Mais detalhes em ${dep.urlDetalhes}.
+Contatos: ${dep.contatos}.
+
+Mais detalhes em ${dep.urlDetalhes}

@@ -8,4 +8,4 @@ Resumo: ${votacao.resumo}</g:if>
   <g:each in="${(voto.value-voto.value.last())}" var="vdep">${vdep.descricaoSemCaixaAlta}, </g:each>${voto.value.last().descricaoSemCaixaAlta} 
 </g:each>
 
-Mais detalhes em ${prop.urlDetalhes}.
+Mais detalhes em ${prop.urlDetalhes}

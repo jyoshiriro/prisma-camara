@@ -5,5 +5,7 @@
  Sumário: 
  ${discurso.sumario.trim()}
 
+ Contatos: ${dep.contatos}.
+ 
  Mais detalhes em ${discurso.urlDetalhes}
 </g:each>

@@ -2,7 +2,8 @@ Você conheçe <g:deputadoPrefix dep="${dep}" minusculo="true"/>?
 
 Nome completo: ${dep.nome}.
 
-Contatos: ${dep.email} / (61) ${dep.fone}
+Contatos: ${dep.contatos}.
+
 <g:if test="${dep.comissoesTitular || dep.comissoesSuplente}">
 É membro de Comissões:
 
@@ -16,4 +17,4 @@ Contatos: ${dep.email} / (61) ${dep.fone}
 Não faz parte de nenhuma comissão.
   </g:else>
 
-Mais detalhes em ${dep.urlDetalhes}.
+Mais detalhes em ${dep.urlDetalhes}

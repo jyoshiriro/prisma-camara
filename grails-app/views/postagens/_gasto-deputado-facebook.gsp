@@ -9,4 +9,6 @@ Valor glosa: R${'$'}${despesa.valorGlosa}
 Parcela: ${despesa.numParcela?:'(única)'} 
 </g:each>
 
-Mais detalhes em ${despesas.first().urlDetalhes}.
+Contatos: ${dep.contatos}.
+
+Mais detalhes em ${despesas.first().urlDetalhes}
