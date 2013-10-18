@@ -18,6 +18,13 @@ public class CaracteresUtil {
 		ms.put("Æ","ã");
 		ms.put("Ò","Ê");
 		ms.put("â","Ô");
+		ms.put("", "Ç");
+		ms.put("", "É");
+		ms.put("", "ç");
+		ms.put("é", "Ú");
+		ms.put("S¶O", "SÃO");
+		ms.put("C¶N", "CÂM");
+		
 	}
 	
 	static String corrigirEspeciais(String original) {

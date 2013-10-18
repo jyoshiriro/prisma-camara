@@ -12,9 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -106,8 +104,7 @@ public class LerXmlCota {
 		
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T00:00:00'");
 		int result = 0;
-		int matZero =0;
-		Set<String> descricoes = new LinkedHashSet(); // TODO: temporário! Tirar de posi de identificra os caracteres especiais
+		
 		loopDespesa:while (result!=-1) { // Loop por Despesa de Deputado 
 			result = ap.evalXPath();
 			Map<String, Object> mapValores = new LinkedHashMap<String, Object>();
@@ -129,12 +126,7 @@ public class LerXmlCota {
 							
 						case 1:	// Ajuste de caracteres especiais nas descrições (1 e 2)
 						case 2: 
-							descricoes.add(valor.toString());
 							String corrigido = CaracteresUtil.corrigirEspeciais(valor.toString().trim());
-							if (!corrigido.equals(valor.toString())) {
-								System.out.println(" - "+valor);
-								System.out.println(" - "+corrigido+" <-\n");
-							}
 							mapValores.put(nomesAtributos.get(i), corrigido);
 							break;
 							
@@ -142,7 +134,6 @@ public class LerXmlCota {
 							Date dataGastoAtual = formato.parse(valor.toString().trim());
 							if ( (mapDeputados.get(ultimaMatricula)!=null) && (!dataGastoAtual.after(mapDeputados.get(ultimaMatricula))) ) {
 								mapValores.clear();
-								System.out.println("saiu pela data de gasto");
 								break loopAtributos;
 							}
 							valor = dataGastoAtual;
@@ -170,7 +161,6 @@ public class LerXmlCota {
 							+". Última Data registrada: "+ultimaDataTodos);
 					e.printStackTrace();
 					vnGeral.toElement(VTDNav.PARENT);
-					System.out.println("saiu por erro de conversão");					
 					continue loopDespesa;
 				}
 				
@@ -188,9 +178,6 @@ public class LerXmlCota {
 	
 		} // Loop por Despesa de Deputado
 		
-		/*for (String string : descricoes) {
-			System.out.println("->"+string+"<-");
-		}*/
 		vgGeral.clear();		
 		zipFile.close();
 		ftemp.delete();
