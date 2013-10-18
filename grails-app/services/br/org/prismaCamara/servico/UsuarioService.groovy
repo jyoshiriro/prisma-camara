@@ -25,12 +25,14 @@ class UsuarioService {
 	 * @return
 	 */
 	Set<Deputado> getDeputadosMapeados() {
-		Set<Deputado> deputados = Usuario.executeQuery("select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true")
+		/*Set<Deputado> deputados = Usuario.executeQuery("select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true")
 		Set<Partido> partidos = Partido.executeQuery("select partido from UsuarioPartido")
 		deputados+=Deputado.findAllByPartidoInListAndAtivo(partidos,true)
-		return deputados
-		/*Set<Deputado> deputados = Deputado.getAll([10,76,324,472]) //[]
-		deputados*/
+		return deputados*/
+		
+		Set<Deputado> deputados = Deputado.getAll(10,619,173)
+		deputados = deputados.sort{d1,d2-> d1.nomeParlamentar<=>d2.nomeParlamentar} 
+		deputados
 	}
 	
 	Set<Deputado> getDeputadosDeUsuario(Usuario) {
@@ -42,10 +44,10 @@ class UsuarioService {
 	 * @return
 	 */
 	Set<Proposicao> getProposicoesMapeadas() {
-		Set<Proposicao> proposicoes = Usuario.executeQuery("select proposicao from UsuarioProposicao")
-		return proposicoes
-		/*Set<Proposicao> proposicoes = Proposicao.findAllByNumeroInList([190,300])
-		proposicoes*/
+		/*Set<Proposicao> proposicoes = Usuario.executeQuery("select proposicao from UsuarioProposicao")
+		return proposicoes*/
+		Set<Proposicao> proposicoes = Proposicao.findAllByNumeroInList([190,300])
+		proposicoes
 	}
 	
 }
