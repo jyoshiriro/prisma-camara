@@ -25,7 +25,7 @@ class Deputado {
 	
 	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia,discursos:Discurso, despesas:Despesa]
 	
-	static transients = ['siglaPartido','descricao','descricaoSemCaixaAlta','urlDetalhes','ultimaFrequencia', 'urlFoto']
+	static transients = ['siglaPartido','descricao','descricaoSemCaixaAlta','urlDetalhes','ultimaFrequencia', 'urlFoto','contatos']
 	
 	static constraints = {
 		condicao(maxSize:20, nullable:true)
@@ -103,6 +103,10 @@ class Deputado {
 	
 	public String getUrlFoto() {
 		"${Parametro.findBySigla('url_foto_deputado').valor}${ideCadastro}.jpg"
+	}
+	
+	public String getContatos() {
+		"${email} / (61) ${fone}"
 	}
 		
 }
