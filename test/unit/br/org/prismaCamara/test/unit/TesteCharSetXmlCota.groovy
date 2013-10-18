@@ -13,14 +13,14 @@ import br.org.prismaCamara.util.xml.LerXmlCota;
 class TesteCharSetXmlCota {
 
 	static main(args) {
-		File fxml = new File("/home/yoshiriro/Downloads/AnoAtual.zip")
+		File fxml = new File("C:/Users/Administrador/Downloads/AnoAtual (1).zip")
 		LerXmlCota ler = new LerXmlCota()
-		def fv = '18' //new File("/home/yoshiriro/teste.csv").text //18 (jordy)
+		def fv = new File("C:/Users/Administrador/Downloads/deputados.txt").text //18 (jordy)
 		def deputados = []
 		fv.eachLine {
 			deputados+=new Deputado(ultimoDiaGasto:(new Date()-665),matricula:it.toInteger())
 		}
-		ler.getNovasDespesas(fxml.bytes, deputados as Set, "testeX")
+		ler.getNovasDespesas(fxml.bytes, deputados as Set, "testeX"+new Date().getTime())
 	}
 
 }
