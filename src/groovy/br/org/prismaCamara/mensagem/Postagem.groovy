@@ -1,8 +1,12 @@
 package br.org.prismaCamara.mensagem
 
-import br.org.prismaCamara.modelo.Deputado;
+import grails.gsp.PageRenderer
+import groovy.util.logging.Log4j
 
+@Log4j
 abstract class Postagem {
+	
+	PageRenderer r
 
 	static final String TIPO_FACE = "facebook";
 	static final String TIPO_TWITTER = "twitter";
@@ -10,6 +14,7 @@ abstract class Postagem {
 	static final String TIPO_LINKEDIN = "linkedin";
 	
 	static final List TIPOS=[TIPO_FACE,TIPO_TWITTER]
+	
 	/**
 	 * Gera e retorna o texto da postagem conforme os parâmetros informados
 	 * @param params

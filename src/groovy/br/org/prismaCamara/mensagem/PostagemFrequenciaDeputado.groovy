@@ -1,9 +1,8 @@
 package br.org.prismaCamara.mensagem
 
 
-import br.org.prismaCamara.modelo.FrequenciaDia;
-import br.org.prismaCamara.modelo.Parametro;
-import br.org.prismaCamara.taglibs.postagens.FrequenciaDeputadoTagLib
+import br.org.prismaCamara.modelo.FrequenciaDia
+import br.org.prismaCamara.modelo.Parametro
 
 class PostagemFrequenciaDeputado extends Postagem {
 
@@ -28,8 +27,8 @@ class PostagemFrequenciaDeputado extends Postagem {
 			pData.save()
 		}
 		params.freq=freq
-		String mensagem = new FrequenciaDeputadoTagLib().getConteudo(params)
-		return mensagem
+		String p = r.render(template:"/postagens/frequencia-deputado-${params.tipo}", model:params).toString() // new FrequenciaDeputadoTagLib().getConteudo(params)
+		return p
 	}
 
 }

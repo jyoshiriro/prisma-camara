@@ -1,7 +1,7 @@
 package br.org.prismaCamara.mensagem
 
-import br.org.prismaCamara.modelo.Deputado;
-import br.org.prismaCamara.taglibs.postagens.BiografiaDeputadoTagLib
+import grails.gsp.PageRenderer
+import br.org.prismaCamara.modelo.Deputado
 
 class PostagemBiografiaDeputado extends Postagem {
 	
@@ -19,13 +19,11 @@ class PostagemBiografiaDeputado extends Postagem {
 	 */
 	public String getTexto(Map params) {
 		params.dep = deputadoAleatorio
-		String mensagem = new BiografiaDeputadoTagLib().getConteudo(params)
-		return mensagem
+		/*String mensagem = new BiografiaDeputadoTagLib().getConteudo(params)
+		return mensagem*/
+		
+		String p = r.render(template:"/postagens/frequencia-deputado-${params.tipo}", model:params).toString()
+		p
 	}
 
-	/**
-	 * Gera e retorna o texto de uma postagem de biografia de deputado
-	 * @param params (dep:um {@link Deputado}, tipo: um {@link Postagem}.TIPO_XX)
-	 * @return Conteúdo da mensagem
-	 */
 }
