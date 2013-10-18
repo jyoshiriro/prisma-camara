@@ -14,7 +14,6 @@ class Deputado {
 	String nomeParlamentar
 	String sexo
 	String uf
-	String siglaPartido
 	String fone
 	String email
 	Date ultimoDiaGasto // essa data pode ser diferente por deputado, por isso não é como o "ultimo_dia_frequencia" na tabela de parâmetros
@@ -23,9 +22,11 @@ class Deputado {
 	
 	Partido partido
 	
-	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia,discursos:Discurso, despesas:Despesa]
+	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia, discursos:Discurso, despesas:Despesa]
 	
-	static transients = ['siglaPartido','descricao','descricaoSemCaixaAlta','urlDetalhes','ultimaFrequencia', 'urlFoto','contatos']
+	static transients = ['siglaPartido', 'descricao', 'descricaoSemCaixaAlta', 'urlDetalhes', 'ultimaFrequencia', 'urlFoto','contatos']
+	
+	static searchable = [only: ['nome', 'nomeParlamentar']]
 	
 	static constraints = {
 		condicao(maxSize:20, nullable:true)
