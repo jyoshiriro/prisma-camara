@@ -30,33 +30,21 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 	def atualizar() {
 		def urlZip = getUrlAtualizacao()
 	
-/*		def urlZip = getUrlAtualizacao()
-		
-		def nTmp = "${new Date().time}"
-		def zipFileT = new File("${nTmp}.zip")
-		zipFileT<<urlZip.toURL().bytes
-
-		ZipFile zipFile = new ZipFile("${nTmp}.zip")
-		
-		String contXml = zipFile.getInputStream(zipFile.entries().nextElement()).text
-		zipFile.close()
-		zipFileT.delete()*/
-		
-		byte[] contZip = new File("C:/Users/Administrador/Downloads/AnoAtual (2).zip").bytes
+		byte[] contZip =  urlZip.toURL().bytes //new File("/home/yoshiriro/Downloads/AnoAtual.zip").bytes
 		
 		LerXmlCota lerXmlCota = new LerXmlCota()
 		List<Map> novasDespesas = []
 		
+		String nomeArquivo="cotaAtuaisTmp"
 		try {
-			String nomeArquivo="cotaAtuaisTmp"
 			novasDespesas = lerXmlCota.getNovasDespesas(contZip, usuarioService.deputadosMapeados, nomeArquivo);
-			new File("${nomeArquivo}.zip").delete()
-			new File("${nomeArquivo}.xml").delete()
-//			novasDespesas = lerXmlCota.getNovasDespesas(contXml, usuarioService.deputadosMapeados);
 		} catch (Exception e) {
 			log.error("Erro ao tentar ler o XML de Cota Parlamentar! ${e.message}")
 			e.printStackTrace()
 			return
+		} finally {
+			new File("${nomeArquivo}.zip").delete()
+			new File("${nomeArquivo}.xml").delete()		
 		}
 		
 		for (mapDespesa in novasDespesas) {
@@ -67,9 +55,9 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 				if (!despesaCount) {
 					despesa.deputado = dep
 					despesa.save(flush:true)
-					log.debug("Despesa ${despesa.id} salva no banco")
+					log.debug("Despesa ${despesa.id} para o Deputado ${despesa.deputado.matricula} salva no banco")
 				} else{
-					log.debug("Despesa ${despesa} já existia")
+					log.debug("Despesa ${despesa.txtNumero} já existia para o Deputado ${despesa.deputado.matricula}")
 				}
 			} catch (Exception e) {
 				log.error("Erro ao tentar salvar novo registro de despesa: ${e.message}")
