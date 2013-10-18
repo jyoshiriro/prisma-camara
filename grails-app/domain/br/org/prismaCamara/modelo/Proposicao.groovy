@@ -26,7 +26,9 @@ class Proposicao {
 
 	static hasMany = [votacoes:Votacao]
 	
-	static transients = ['PRIMEIRO_ANO','descricao','urlDetalhes']
+	static transients = ['PRIMEIRO_ANO', 'descricao', 'urlDetalhes']
+	
+	static searchable = [only: ['txtEmenta', 'txtExplicacaoEmenta']]
 	
 	static mapping = {
 		autor(cascade:'all')
