@@ -8,11 +8,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,9 +83,12 @@ public class LerXmlCota {
 		AutoPilot ap = new AutoPilot(vnGeral);
 		ap.selectXPath("//orgao//DESPESAS//DESPESA");
 		
-		Map<Integer,Date> mapDeputados = new HashMap<Integer, Date>(); 
+		Map<Integer,Date> mapDeputados = new HashMap<Integer, Date>();
+		Calendar cLimite = Calendar.getInstance();
+		cLimite.add(Calendar.MONTH, -1);
+		Date limiteInicial = cLimite.getTime(); 
 		for (Deputado dep:deputadosMapeados) {
-			mapDeputados.put(dep.getMatricula(), dep.getUltimoDiaGasto());
+			mapDeputados.put(dep.getMatricula(), dep.getUltimoDiaGasto()!=null?dep.getUltimoDiaGasto():limiteInicial);
 		}
 		
 		Map<String,String> mapaXmlDespesa = new LinkedHashMap<String, String>();
@@ -101,50 +106,67 @@ public class LerXmlCota {
 		
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd'T00:00:00'");
 		int result = 0;
-		l1:while (result!=-1) {
+		Set<String> descricoes = new LinkedHashSet();
+		l1:while (result!=-1) { // Loop por Despesa de Deputado 
 			result = ap.evalXPath();
-			
 			Map<String, Object> mapValores = new LinkedHashMap<String, Object>();
-
 			Integer ultimaMatricula = 0;
-			l2:for (int i=0;i<nomesAtributos.size();i++) {
+			Date ultimaDataTodos = null;
+			for (int i=0;i<nomesAtributos.size();i++) {
 				Object valor = lerValor(i!=0, nomesAtributos.get(i), vnGeral);
-				
-				switch (i) {
-				
-					case 0: // validação de matrícula válida e mapeada
-						if ((valor==null || valor.equals("") || valor.equals("0")) || (!mapDeputados.containsKey(Integer.valueOf(valor.toString().trim()))) ) {
-							vnGeral.toElement(VTDNav.PARENT);
-							continue l1;
-						}
-						ultimaMatricula = Integer.valueOf(valor.toString());
-						mapValores.put(nomesAtributos.get(i), ultimaMatricula);
-						break;
-						
-					case 5: // validação de data de novo gasto  
-						Date dataGastoAtual = formato.parse(valor.toString().trim());
-						if ( (mapDeputados.get(ultimaMatricula)!=null) && (!dataGastoAtual.after(mapDeputados.get(ultimaMatricula))) ) {
-							vnGeral.toElement(VTDNav.PARENT);
-							continue l1;
-						}
-						valor = dataGastoAtual;
-						mapValores.put(nomesAtributos.get(i), valor);
-						break;
+				System.out.println(valor);
+				try {
+					switch (i) {
 					
-					case 6: // valores Double (6 e 7)
-						// 6==7
-					case 7:
-						mapValores.put(nomesAtributos.get(i), Double.valueOf(valor.toString()));
-						break;
+						case 0: // validação de matrícula válida e mapeada
+							if ((valor==null || valor.equals("") || valor.equals("0")) || (!mapDeputados.containsKey(Integer.valueOf(valor.toString().trim()))) ) {
+								vnGeral.toElement(VTDNav.PARENT);
+								continue l1;
+							}
+							ultimaMatricula = Integer.valueOf(valor.toString());
+							mapValores.put(nomesAtributos.get(i), ultimaMatricula);
+							break;
+							
+						case 1: // Ajuste de caracteres especiais nas descrições
+							descricoes.add(valor.toString());
+							String corrigido = CaracteresUtil.corrigirEspeciais(valor.toString().trim());
+							mapValores.put(nomesAtributos.get(i), corrigido);
+							break;
+							
+						case 5: // validação de data de novo gasto  
+							Date dataGastoAtual = formato.parse(valor.toString().trim());
+							if ( (mapDeputados.get(ultimaMatricula)!=null) && (!dataGastoAtual.after(mapDeputados.get(ultimaMatricula))) ) {
+								vnGeral.toElement(VTDNav.PARENT);
+								continue l1;
+							}
+							valor = dataGastoAtual;
+							mapValores.put(nomesAtributos.get(i), valor);
+							ultimaDataTodos = dataGastoAtual;
+							break;
 						
-					case 8:
-						mapValores.put(nomesAtributos.get(i), Integer.valueOf(valor.toString()));
-						break;
-						
-					default:
-						mapValores.put(nomesAtributos.get(i), valor.toString());
-						break;
+						case 6: // valores Double (6 e 7)
+							// 6==7
+						case 7:
+							mapValores.put(nomesAtributos.get(i), Double.valueOf(valor.toString()));
+							break;
+							
+						case 8:
+							mapValores.put(nomesAtributos.get(i), Integer.valueOf(valor.toString()));
+							break;
+							
+						default:
+							mapValores.put(nomesAtributos.get(i), valor.toString());
+							break;
+					}
+				} catch (Exception e) {
+					System.err.println("Erro no formado de algum dado de Despesa de Deputado: "+e.getMessage()
+							+". Última Matrícula registrada: "+ultimaMatricula
+							+". Última Data registrada: "+ultimaDataTodos);
+					e.printStackTrace();
+					vnGeral.toElement(VTDNav.PARENT);
+					continue l1;
 				}
+				
 			} // loop de preenchimento de valores de cada despesa
 			
 			Map valoresDespesa = new HashMap();
@@ -155,8 +177,11 @@ public class LerXmlCota {
 			
 		    vnGeral.toElement(VTDNav.PARENT);
 	
-		}
+		} // Loop por Despesa de Deputado
 		
+		for (String string : descricoes) {
+			System.out.println("->"+string+"<-");
+		}
 		vgGeral.clear();		
 		zipFile.close();
 		ftemp.delete();
