@@ -1,7 +1,8 @@
 package br.org.prismaCamara.mensagem
 
-import grails.gsp.PageRenderer
-import br.org.prismaCamara.modelo.Deputado
+import java.util.Map;
+
+import br.org.prismaCamara.modelo.Deputado;
 
 class PostagemBiografiaDeputado extends Postagem {
 	
