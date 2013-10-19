@@ -1,5 +1,7 @@
 package br.org.prismaCamara.modelo
 
+import br.org.prismaCamara.mensagem.Postagem;
+
 
 
 class UsuarioFacebook {
@@ -12,5 +14,9 @@ class UsuarioFacebook {
 
 	static constraints = {
 		uid unique: true
+	}
+	
+	def beforeInsert() {
+		user?.tipoRede=Postagem.TIPO_FACE
 	}
 }

@@ -14,8 +14,6 @@ class PostNaoEnviado {
 	
 	static transients = ['hashGerado']
 	
-	static belongsTo = [usuario:Usuario]
-	
 	static constraints = {
 		hash(maxSize:256) 
 		conteudo(maxSize:8192) 
@@ -29,15 +27,15 @@ class PostNaoEnviado {
 	
 	//"${idEntidade}-${tipoInformacao}-${usuario.tipoRede}-${conteudo[0..143]}".encodeAsSHA1()
 	String getHashGerado() {
-		getHashGerado(idEntidade, tipoInformacao, usuario)
+		getHashGerado(idEntidade, tipoInformacao)
 	}
 	
-	public static String getHashGerado(idEntidade,tipoInformacao,usuario) {
-		"${idEntidade}-${tipoInformacao}-${usuario.tipoRede}".encodeAsSHA1()
+	public static String getHashGerado(idEntidade,tipoInformacao) {
+		"${idEntidade}-${tipoInformacao}".encodeAsSHA1()
 	}
 	
 	def afterUpdate() {
-		if (tentativas>=3) {
+		if (tentativas>=20) {
 			this.delete();
 		}
 	}
