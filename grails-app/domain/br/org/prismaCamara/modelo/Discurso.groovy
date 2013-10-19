@@ -1,6 +1,7 @@
 package br.org.prismaCamara.modelo
 
 import groovy.text.SimpleTemplateEngine
+import br.org.prismaCamara.util.URLUtil
 
 class Discurso {
 
@@ -41,7 +42,10 @@ class Discurso {
 			it.value=it.value.toString().encodeAsURL()
 		} 
 		Writable template = new SimpleTemplateEngine().createTemplate(texto).make(valores)
-		template.toString()
+		def urllonga = template.toString()
+		
+		def urlcurta = URLUtil.getUrlCurta(urllonga)
+		urlcurta
 	}
 }
 
