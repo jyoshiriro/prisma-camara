@@ -1,11 +1,15 @@
 package br.org.prismaCamara.servico.postagens
 
+import grails.gsp.PageRenderer;
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.modelo.PostNaoEnviado
 import br.org.prismaCamara.modelo.Usuario
+import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado;
 
 @Log4j
 abstract class PrepararPost {
+	
+	PageRenderer groovyPageRenderer
 
 	abstract String getNomeTipoInformacao()
 	
@@ -23,21 +27,34 @@ abstract class PrepararPost {
 	 * @param postagem Conteúdo da postagem que deve ser criado caso o respectivo {@link PostNaoEnviado} ainda não existir
 	 * @return
 	 */
-	protected PostNaoEnviado prepararPostagem(Usuario usuario, Long idEntidade, String conteudoPostagem) {
-		def post = PostNaoEnviado.findByHashAndPendente(PostNaoEnviado.getHashGerado(idEntidade,nomeTipoInformacao,usuario),false)
+	protected boolean prepararPostagem(Usuario usuario, Long idEntidade, String conteudoPostagem) {
+		if (!conteudoPostagem) {
+			log.debug("Nenhuma Postagem nova de ${usuario.username} em ${nomeTipoInformacao}")
+			return false
+		}
+		def post = PostNaoEnviado.findByHashAndPendente(PostNaoEnviado.getHashGerado(idEntidade,nomeTipoInformacao),false)
 		try {
 			if (!post) {
-				post = new PostNaoEnviado(idEntidade:idEntidade,tipoInformacao:nomeTipoInformacao,usuario:usuario)
+				post = new PostNaoEnviado(idEntidade:idEntidade,tipoInformacao:nomeTipoInformacao)
 				post.conteudo=conteudoPostagem
-				post.save(flush:true)
+				post.save(failOnError:true)
+				
+				UsuarioPostNaoEnviado upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
+				upost.save(failOnError:true)
+				
 				log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} ainda não existia... salva agora")
-			} else {
-				log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} JÁ existia... recuperada")
+				return true
+			} 
+			UsuarioPostNaoEnviado upost = UsuarioPostNaoEnviado.findByUsuarioAndPostNaoEnviado(usuario,post)
+			if (!upost) {
+				upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
+				upost.save(failOnError:true)
 			}
-			post
+			log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} JÁ existia... recuperada")
+			return true
 		} catch (Exception e) {
 			log.error("Erro ao preparara a Postagem de ${usuario.id} em ${nomeTipoInformacao}: ${e.message}")
-			e.printStackTrace()
+			return false
 		}
 	}
 	
