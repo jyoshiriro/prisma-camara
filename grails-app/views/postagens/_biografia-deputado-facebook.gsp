@@ -7,10 +7,10 @@ Contatos: ${dep.contatos}.
 <g:if test="${dep.comissoesTitular || dep.comissoesSuplente}">
 É membro de Comissões:
 
- &bull; ${dep.comissoesTitular.size()?:'Nenhuma'} como Titular
+ * ${dep.comissoesTitular.size()?:'Nenhuma'} como Titular
    <g:each in="${dep.comissoesTitular}" var="c">- ${c.descricao}
    </g:each>
- &bull; ${dep.comissoesSuplente.size()?:'Nenhuma'} como Suplente 
+ * ${dep.comissoesSuplente.size()?:'Nenhuma'} como Suplente 
    <g:each in="${dep.comissoesSuplente}" var="c">- ${c.descricao}
    </g:each></g:if>
   <g:else>
