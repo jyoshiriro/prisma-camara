@@ -19,6 +19,7 @@ class Deputado {
 	Date ultimoDiaGasto // essa data pode ser diferente por deputado, por isso não é como o "ultimo_dia_frequencia" na tabela de parâmetros
 	Date ultimoDiaDiscurso // essa data pode ser diferente por deputado, por isso não é como o "ultimo_dia_frequencia" na tabela de parâmetros
 	Boolean ativo
+	String siglaPartido // manter por causa dos get e set
 	
 	Partido partido
 	
