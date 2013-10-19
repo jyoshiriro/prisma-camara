@@ -1,7 +1,6 @@
 package br.org.prismaCamara.mensagem
 
-import br.org.prismaCamara.modelo.Deputado;
-import br.org.prismaCamara.taglibs.postagens.DiscursoDeputadoTagLib
+import br.org.prismaCamara.modelo.Deputado
 
 
 class PostagemDiscursoDeputado extends Postagem {
@@ -22,8 +21,8 @@ class PostagemDiscursoDeputado extends Postagem {
 		}
 		
 		params.discursos=dep.discursos
-		String mensagem = new DiscursoDeputadoTagLib().getConteudo(params)
-		return mensagem
+		String p = r.render(template:"/postagens/discurso-deputado-${params.tipo}", model:params).toString()
+		return p
 	}
 
 }

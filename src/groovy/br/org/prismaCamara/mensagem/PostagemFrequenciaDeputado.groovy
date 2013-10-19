@@ -26,8 +26,11 @@ class PostagemFrequenciaDeputado extends Postagem {
 			pData = new Parametro(sigla: 'ultimo_dia_frequencia', valor: freq.dia.format('dd/MM/yyyy'), descricao: 'Última atualização de frequências')
 			pData.save()
 		}
+		int qsessoes = freq.frequenciasSessao.size()
 		params.freq=freq
-		String p = r.render(template:"/postagens/frequencia-deputado-${params.tipo}", model:params).toString() // new FrequenciaDeputadoTagLib().getConteudo(params)
+		params.qsessoes=qsessoes
+		params.souma=(qsessoes==1)
+		String p = r.render(template:"/postagens/frequencia-deputado-${params.tipo}", model:params).toString()
 		return p
 	}
 

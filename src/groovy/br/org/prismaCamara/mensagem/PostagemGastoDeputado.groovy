@@ -1,7 +1,6 @@
 package br.org.prismaCamara.mensagem
 
-import br.org.prismaCamara.modelo.Deputado;
-import br.org.prismaCamara.taglibs.postagens.GastoDeputadoTagLib
+import br.org.prismaCamara.modelo.Deputado
 
 class PostagemGastoDeputado extends Postagem {
 
@@ -21,8 +20,8 @@ class PostagemGastoDeputado extends Postagem {
 		}
 
 		params.despesas=dep.despesas
-		String mensagem = new GastoDeputadoTagLib().getConteudo(params)
-		return mensagem
+		String p = r.render(template:"/postagens/gasto-deputado-${params.tipo}", model:params).toString()
+		return p
 	}
 
 }

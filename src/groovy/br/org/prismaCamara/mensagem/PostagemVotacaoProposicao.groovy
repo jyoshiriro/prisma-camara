@@ -1,10 +1,7 @@
 package br.org.prismaCamara.mensagem
 
-import org.junit.Before;
-
-import br.org.prismaCamara.modelo.Proposicao;
-import br.org.prismaCamara.modelo.Votacao;
-import br.org.prismaCamara.taglibs.postagens.VotacaoProposicaoTagLib
+import br.org.prismaCamara.modelo.Proposicao
+import br.org.prismaCamara.modelo.Votacao
 
 class PostagemVotacaoProposicao extends Postagem {
 
@@ -44,8 +41,8 @@ class PostagemVotacaoProposicao extends Postagem {
 		
 		params.votacao=votacao
 		params.mvotos=mvotos
-		String mensagem = new VotacaoProposicaoTagLib().getConteudo(params)
-		return mensagem
+		String p = r.render(template:"/postagens/votacao-proposicao-${params.tipo}", model:params).toString()
+		return p
 	}
 
 }

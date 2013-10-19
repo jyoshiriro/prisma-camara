@@ -19,10 +19,8 @@ class PostagemBiografiaDeputado extends Postagem {
 	 */
 	public String getTexto(Map params) {
 		params.dep = deputadoAleatorio
-		/*String mensagem = new BiografiaDeputadoTagLib().getConteudo(params)
-		return mensagem*/
 		
-		String p = r.render(template:"/postagens/frequencia-deputado-${params.tipo}", model:params).toString()
+		String p = r.render(template:"/postagens/biografia-deputado-${params.tipo}", model:params).toString()
 		p
 	}
 
