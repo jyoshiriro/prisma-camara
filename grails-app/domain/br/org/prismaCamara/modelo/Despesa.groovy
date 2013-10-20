@@ -1,5 +1,7 @@
 package br.org.prismaCamara.modelo
 
+import br.org.prismaCamara.util.URLUtil
+
 class Despesa {
 
 	String txtDescricao
@@ -14,7 +16,7 @@ class Despesa {
 	
 	static belongsTo = [deputado:Deputado]
 	
-	static transients = ['urlDetalhes','descDoc','valorLiquido']
+	static transients = ['urlDetalhes','urlDetalhesCurta','descDoc','valorLiquido']
 	
 	static constraints = {
 		txtDescricao(maxSize:1024)
@@ -31,6 +33,11 @@ class Despesa {
 	public String getUrlDetalhes() {
 		"${Parametro.findBySigla('url_gastos_site').valor}${deputado.ideCadastro}"
 	}
+	
+	public String getUrlDetalhesCurta() {
+		URLUtil.getUrlCurta(urlDetalhes)
+	}
+
 	
 	public String getDescDoc() {
 		if (!txtCNPJCPF)

@@ -1,5 +1,7 @@
 package br.org.prismaCamara.modelo
 
+import br.org.prismaCamara.util.URLUtil
+
 class Proposicao {
 	
 	// segundo pesquisado no site do congresso e após teste nos web services
@@ -26,7 +28,7 @@ class Proposicao {
 
 	static hasMany = [votacoes:Votacao]
 	
-	static transients = ['PRIMEIRO_ANO', 'descricao', 'urlDetalhes']
+	static transients = ['PRIMEIRO_ANO', 'descricao', 'urlDetalhes', 'urlDetalhesCurta']
 	
 	static searchable = [only: ['txtEmenta', 'txtExplicacaoEmenta']]
 	
@@ -88,5 +90,10 @@ class Proposicao {
 		//http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=377011
 		"${Parametro.findBySigla('url_proposicao_site').valor}${idProposicao}"
 	}
+	
+	public String getUrlDetalhesCurta() {
+		URLUtil.getUrlCurta(urlDetalhes)
+	}
+
 		
 }

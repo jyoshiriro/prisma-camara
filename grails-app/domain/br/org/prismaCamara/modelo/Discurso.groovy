@@ -17,7 +17,7 @@ class Discurso {
 	
 	Deputado deputado
 	
-	static transients = ['urlDetalhes']
+	static transients = ['urlDetalhes','urlDetalhesCurta']
 	
 	static constraints = {
 		codigo(maxSize:16)
@@ -47,6 +47,11 @@ class Discurso {
 		def urlcurta = URLUtil.getUrlCurta(urllonga)
 		urlcurta
 	}
+	
+	public String getUrlDetalhesCurta() {
+		URLUtil.getUrlCurta(urlDetalhes)
+	}
+
 }
 
 

@@ -2,6 +2,8 @@ package br.org.prismaCamara.modelo
 
 import org.apache.commons.lang.WordUtils;
 
+import br.org.prismaCamara.util.URLUtil;
+
 import groovy.util.logging.Log4j;
 
 @Log4j
@@ -25,7 +27,7 @@ class Deputado {
 	
 	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia, discursos:Discurso, despesas:Despesa]
 	
-	static transients = ['siglaPartido', 'descricao', 'descricaoSemCaixaAlta', 'urlDetalhes', 'ultimaFrequencia', 'urlFoto','contatos']
+	static transients = ['siglaPartido', 'descricao', 'descricaoSemCaixaAlta', 'urlDetalhes', 'urlDetalhesCurta','ultimaFrequencia', 'urlFoto','contatos']
 	
 	static searchable = [only: ['nome', 'nomeParlamentar']]
 	
@@ -97,6 +99,10 @@ class Deputado {
 	
 	public String getUrlDetalhes() {
 		"${Parametro.findBySigla('url_biografia_deputado').valor}${ideCadastro}"
+	}
+	
+	public String getUrlDetalhesCurta() {
+		URLUtil.getUrlCurta(urlDetalhes)
 	}
 	
 	public FrequenciaDia getUltimaFrequencia() {
