@@ -13,6 +13,8 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 
+	def usuarioService
+	
 	@Override
 	public String getSiglaDeParametro() {
 		// "http://www.camara.gov.br/SitCamaraWS/sessoesreunioes.asmx/ListarPresencasDia?numLegislatura=&numMatriculaParlamentar=&siglaPartido=&siglaUF=&data=${data}"
@@ -71,45 +73,52 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			
 			if (deputadoA) {
 				
-				def atributos = [dia:proximaAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
+				if (!usuarioService.isDeputadoObservado(deputadoA)) {
+					log.debug("Deputado ${deputadoA.descricao} não está associado a nenhum usuário. Sua frequência não será registrada na base.")
+				} 
+				else { // se o deputado está sendo observado
 				
-				atributos+=[deputado:deputadoA]
-				
-				FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==proximaAtualizacao}.find()
-				
-				if (entidade) { // já existe o registro, atualize os dados
-					entidade.properties=atributos
-					log.debug("Frequência de deputado ${deputadoA.nomeParlamentar} em ${entidade.dia} possivelmente atualizada")
-				} else { // ainda não existe. Persista agora
-					entidade = new FrequenciaDia(atributos)
-					entidade.save()
-					if (entidade.errors.errorCount>0) {
-						log.error("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} NÃO foi salva devido a erros: ${entidade?.errors}")
-					} else {
-						log.debug("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} salva no banco")
-					}
-				}
-		
-				// Frequencias de sessões do dia
-				def frequenciasSessao = parlemantar.childNodes()[7].childNodes()
-				for (sd in frequenciasSessao) {
+					def atributos = [dia:proximaAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
 					
-					def inicioA=Date.parse('d/M/yyyy HH:mm:ss',sd.childNodes()[0]?.text())
-					def descricaoA=sd.childNodes()[1]?.text()
-					def frequenciaA=sd.childNodes()[2]?.text()
+					atributos+=[deputado:deputadoA]
 					
-					def atributosS = [inicio:inicioA, descricao:descricaoA, frequencia:frequenciaA] 
-					FrequenciaSessao fSessao = FrequenciaSessao.findByFrequenciaDiaAndInicio(entidade,inicioA)
-					if (fSessao) {
-						fSessao.properties=atributosS
-						log.debug("Frequencia da Sessão ${descricaoA} provavelmente atualizada no banco")
-					} else {
-						atributosS+=[frequenciaDia:entidade]
-						fSessao = new FrequenciaSessao(atributosS)
-						fSessao.save()
-						log.debug("Frequencia da Sessão ${descricaoA} salva no banco")
+					FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==proximaAtualizacao}.find()
+					
+					if (entidade) { // já existe o registro, atualize os dados
+						entidade.properties=atributos
+						log.debug("Frequência de deputado ${deputadoA.nomeParlamentar} em ${entidade.dia} possivelmente atualizada")
+					} else { // ainda não existe. Persista agora
+						entidade = new FrequenciaDia(atributos)
+						entidade.save()
+						if (entidade.errors.errorCount>0) {
+							log.error("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} NÃO foi salva devido a erros: ${entidade?.errors}")
+						} else {
+							log.debug("Frequência de deputado ${deputadoA?.nomeParlamentar} em ${entidade?.dia} salva no banco")
+						}
 					}
-				}
+			
+					// Frequencias de sessões do dia
+					def frequenciasSessao = parlemantar.childNodes()[7].childNodes()
+					for (sd in frequenciasSessao) {
+						
+						def inicioA=Date.parse('d/M/yyyy HH:mm:ss',sd.childNodes()[0]?.text())
+						def descricaoA=sd.childNodes()[1]?.text()
+						def frequenciaA=sd.childNodes()[2]?.text()
+						
+						def atributosS = [inicio:inicioA, descricao:descricaoA, frequencia:frequenciaA] 
+						FrequenciaSessao fSessao = FrequenciaSessao.findByFrequenciaDiaAndInicio(entidade,inicioA)
+						if (fSessao) {
+							fSessao.properties=atributosS
+							log.debug("Frequencia da Sessão ${descricaoA} provavelmente atualizada no banco")
+						} else {
+							atributosS+=[frequenciaDia:entidade]
+							fSessao = new FrequenciaSessao(atributosS)
+							fSessao.save()
+							log.debug("Frequencia da Sessão ${descricaoA} salva no banco")
+						}
+					}
+				
+				} // se o deputado está associado a algum usuário
 				
 			} // if de existencia de Deputado
 			
