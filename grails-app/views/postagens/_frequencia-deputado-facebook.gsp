@@ -1,7 +1,7 @@
 <g:set var="presente" value="${freq?.frequenciaDia.startsWith('P')}"/>
 Novo registro de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> na Câmara dos Deputados:
 
-* Dia <g:formatDate date="${freq.dia}"/> -> ${freq?freq.frequenciaDia:'Ausente'}. 
+• Dia <g:formatDate date="${freq.dia}"/> -> ${freq?freq.frequenciaDia:'Ausente'}. 
 <g:if test="${!presente}">
 <g:if test="${freq.justificativa}">* Justificativa para ausência: ${freq.justificativa} *</g:if>
 <g:else>* A ausência não foi justificada! *</g:else>
