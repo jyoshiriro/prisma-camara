@@ -2,7 +2,8 @@ package br.org.prismaCamara.job
 
 import br.org.prismaCamara.modelo.PostNaoEnviado;
 import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado;
-import br.org.prismaCamara.util.FacebookUtil;
+import br.org.prismaCamara.util.redes.FacebookUtil;
+import br.org.prismaCamara.util.redes.TwitterUtil;
 import groovy.util.logging.Log4j;
 
 
@@ -14,9 +15,14 @@ class EnviarPostsJob {
       //cron name: 'enviarPostsTrigger', cronExpression: "0 30 8 * * ?"
     }
 	
-	FacebookUtil facebookUtil = new FacebookUtil()
+	def grailsApplication
+	
+	FacebookUtil facebookUtil
+    TwitterUtil twitterUtil
 
     def execute() {
+    	facebookUtil = new FacebookUtil()
+    	twitterUtil = new TwitterUtil(grailsApplication:grailsApplication)
 		
         for (upost in UsuarioPostNaoEnviado.list()) {
 			def usuario = upost.usuario
@@ -28,7 +34,6 @@ class EnviarPostsJob {
 			} catch (Exception e) {
 				log.error("Erro ao tentar enviar o post ${upost.id}: ${e.message}")
 				upost.postNaoEnviado.tentativas++
-				upost.postNaoEnviado.pendente=true
 			}
 		}
 		
@@ -36,6 +41,7 @@ class EnviarPostsJob {
         delete from PostNaoEnviado p where p.id not in 
 		(select up.postNaoEnviado.id from UsuarioPostNaoEnviado up)
 		""")
-		println ""
+		
+		log.debug("Envio de postagens concluído com sucesso")
     }
 }
