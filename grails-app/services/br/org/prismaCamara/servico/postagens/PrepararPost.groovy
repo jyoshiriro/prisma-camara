@@ -1,7 +1,10 @@
 package br.org.prismaCamara.servico.postagens
 
+import java.util.Map;
+
 import grails.gsp.PageRenderer;
 import groovy.util.logging.Log4j
+import br.org.prismaCamara.mensagem.Postagem
 import br.org.prismaCamara.modelo.PostNaoEnviado
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado;
@@ -14,6 +17,18 @@ abstract class PrepararPost {
 	abstract String getNomeTipoInformacao()
 	
 	/**
+	 * Define a subclasse de {@link Postagem} a ser usada
+	 * @return
+	 */
+	abstract Postagem getPostagem()
+	
+	private String getConteudo(Map params) {
+		def postagemp = postagem
+		postagemp.r=groovyPageRenderer
+		postagemp.getTexto(params)
+	}
+	
+	/**
 	 * Preparar a mensagem (possivelmente salvar uma instância de {@link PostNaoEnviado} caso ainda não existir com os parâmetros indicados)
 	 * @param usuario Instância de {@link Usuario}
 	 * @param idEntidade Id do {@link Deputado} ou {@link Proposicao}
@@ -24,10 +39,11 @@ abstract class PrepararPost {
 	 * Se não existir {@link PostNaoEnviado} semelhante cria-se uma nova instância para uma possível nova busca com o parâmetros informados
 	 * @param usuario
 	 * @param idEntidade
-	 * @param postagem Conteúdo da postagem que deve ser criado caso o respectivo {@link PostNaoEnviado} ainda não existir
+	 * @param params {@link Map} de parâmetros passados para o respectiva Subclasse de {@link Postagem}
 	 * @return
 	 */
-	protected boolean prepararPostagem(Usuario usuario, Long idEntidade, String conteudoPostagem) {
+	protected boolean prepararPostagem(Usuario usuario, Long idEntidade, Map params) {
+		def conteudoPostagem = getConteudo(params)
 		if (!conteudoPostagem) {
 			log.debug("Nenhuma Postagem nova de ${usuario.username} em ${nomeTipoInformacao}")
 			return false
