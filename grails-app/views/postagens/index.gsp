@@ -47,15 +47,26 @@
 	</li>
 </ul>
 
-<pre>${flash.postagem}</pre>
-${flash.error}
-
-<g:if test="${flash.postagem}">
+<b>Formato Facebook</b>
+<pre>${flash.postagem1}</pre>
+<g:if test="${flash.postagem1}">
 	<g:form controller="facebookPost" action="postarNoMural">
-		<input type="hidden" name="mp" value="${flash.postagem}"/>
-		<input type="submit" value="Enviar postagem para o face! Ah muleke!"/> 
+		<input type="hidden" name="mp" value="${flash.postagem1}"/>
+		<input type="submit" value="Enviar postagem para o Facebook!"/> 
 	</g:form>
 </g:if>
+<br>
+<p>
+<b>Formato Twitter</b>
+<pre>${flash.postagem2}</pre>
+<g:if test="${flash.postagem2}">
+	<g:form controller="twitterPost" action="postarNoMural">
+		<input type="hidden" name="mp" value="${flash.postagem2}"/>
+		<input type="submit" value="Enviar postagem para o Twitter!"/> 
+	</g:form>
+</g:if>
+</p>
+${flash.error}
 
 </body>
 </html>
