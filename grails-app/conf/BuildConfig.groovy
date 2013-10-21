@@ -37,15 +37,17 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+		mavenRepo "http://maven.springframework.org/release/"
+		mavenRepo "http://repo.spring.io/milestone/"
     }
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         runtime 'mysql:mysql-connector-java:5.1.22'
-//        runtime 'org.quartz-scheduler:quartz:2.2.1'
-		compile 'org.springframework.social:spring-social-core:1.0.1.RELEASE'
+		compile 'org.springframework.social:spring-social-core:1.0.3.RELEASE'
 		compile 'org.springframework.social:spring-social-facebook:1.0.1.RELEASE'
+		compile 'org.springframework.social:spring-social-twitter:1.0.5.RELEASE'
 		runtime 'org.robolectric:robolectric:2.1.1'
     }
 
@@ -67,7 +69,11 @@ grails.project.dependency.resolution = {
 		
         compile ":rest-client-builder:1.0.3"
 		
+		compile "org.grails.plugins:spring-security-core:1.2.7.2"
+		
 		compile "org.grails.plugins:spring-security-facebook:0.15"
+		
+		compile ":spring-security-twitter:0.5.4"
 		
 		compile ":quartz:1.0-RC13"
 		

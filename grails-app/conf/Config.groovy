@@ -113,3 +113,4 @@ grails.plugins.springsecurity.facebook.filter.redirect.failureHandler='redirectF
 grails.plugins.springsecurity.facebook.filter.redirect.successHandler='redirectSuccessHandlerPrismaCamara'
 
 
+grails.plugins.springsecurity.twitter.domain.classname='br.org.prismaCamara.modelo.UsuarioTwitter'

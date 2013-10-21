@@ -52,13 +52,14 @@ class BootStrap {
 	def inicializarSpringSecurity() {
 		def perfilAdministrador = Perfil.findOrSaveByAuthority('ROLE_ADMIN')
 		def perfilUsuario = Perfil.findOrSaveByAuthority('ROLE_USER')
+		def perfilTwitter = Perfil.findOrSaveByAuthority('ROLE_TWITTER')
 
 		String username = 'admininistrador'
 
 		if (!Usuario.findByUsername(username)) {
 			def testeUsuario = new Usuario(username: username, enabled: true, password: 'admin')
 			testeUsuario.save()
-			UsuarioPerfil.create testeUsuario, perfilAdministrador, true
+			UsuarioPerfil.create(testeUsuario, perfilAdministrador, true)
 		}
 	}
 	
