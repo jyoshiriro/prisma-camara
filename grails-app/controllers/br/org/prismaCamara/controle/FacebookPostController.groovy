@@ -28,7 +28,7 @@ class FacebookPostController {
 		UsuarioFacebook usuarioFacebook = UsuarioFacebook.where{user==usuario}.find()
 		Facebook facebook = new FacebookTemplate(usuarioFacebook.accessToken)
 		facebook.feedOperations().updateStatus(params.mp)
-		redirect(action: 'timeline')
+		redirect(controller:'postagens')
 	}
 	
 	def postarNoMuralUsuarioId2 = {
