@@ -44,5 +44,6 @@ class PostagemVotacaoProposicao extends Postagem {
 		String p = r.render(template:"/postagens/votacao-proposicao-${params.tipo}", model:params).toString()
 		return p
 	}
+	
 
 }
