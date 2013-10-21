@@ -30,4 +30,5 @@ class URLUtil {
 		cache.put(urlLonga.encodeAsMD5(),urlcurta.substring(urlcurta.lastIndexOf('/')+1)) 
 		urlcurta
 	}
+	
 }
