@@ -21,7 +21,7 @@ class PrepararPostDespesaService extends PrepararPost {
 	public void preparar(Usuario usuario, Long idEntidade) {
 		def postagemPreparada = prepararPostagem(usuario, idEntidade, new PostagemGastoDeputado(r:groovyPageRenderer).getTexto([dep:Deputado.get(idEntidade),tipo:usuario.tipoRede]))
 		if (postagemPreparada)
-			log.debug("Postagem de Despesa preparada com sucesso para ${usuario.id} em ${nomeTipoInformacao} (idEntidade: ${idEntidade})")
+			log.debug("Postagem preparada com sucesso para ${usuario.id} em ${nomeTipoInformacao} (idEntidade: ${idEntidade})")
 	}
 
 }

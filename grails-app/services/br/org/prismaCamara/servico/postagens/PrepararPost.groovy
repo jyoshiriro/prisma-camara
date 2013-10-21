@@ -32,15 +32,18 @@ abstract class PrepararPost {
 			log.debug("Nenhuma Postagem nova de ${usuario.username} em ${nomeTipoInformacao}")
 			return false
 		}
-		def post = PostNaoEnviado.findByHashAndPendente(PostNaoEnviado.getHashGerado(idEntidade,nomeTipoInformacao),false)
+		
+		def hashTeste = PostNaoEnviado.getHashGerado(idEntidade,nomeTipoInformacao,usuario.tipoRede)
+		def post = PostNaoEnviado.findByHashAndPendente(hashTeste,false)
 		try {
 			if (!post) {
 				post = new PostNaoEnviado(idEntidade:idEntidade,tipoInformacao:nomeTipoInformacao)
+				post.tipoRede=usuario.tipoRede
 				post.conteudo=conteudoPostagem
-				post.save(failOnError:true)
+				post.save(failOnError:true, flush:true)
 				
 				UsuarioPostNaoEnviado upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
-				upost.save(failOnError:true)
+				upost.save(failOnError:true, flush:true)
 				
 				log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} ainda não existia... salva agora")
 				return true
@@ -48,7 +51,7 @@ abstract class PrepararPost {
 			UsuarioPostNaoEnviado upost = UsuarioPostNaoEnviado.findByUsuarioAndPostNaoEnviado(usuario,post)
 			if (!upost) {
 				upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
-				upost.save(failOnError:true)
+				upost.save(failOnError:true, flush:true)
 			}
 			log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} JÁ existia... recuperada")
 			return true
