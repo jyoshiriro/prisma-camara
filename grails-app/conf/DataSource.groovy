@@ -13,7 +13,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://localhost:3306/hackathon2"
+            url = "jdbc:mysql://localhost:3306/hackathon"
             username = "root"
             password = "admin"
 //            password = "123456"
@@ -30,6 +30,10 @@ environments {
 				validationQuery="SELECT 1"
 			 }
         }
+		hibernate{
+			show_sql=false
+			format_sql=true
+		}
     }
     test {
         dataSource {
