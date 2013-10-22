@@ -9,13 +9,13 @@ import br.org.prismaCamara.modelo.Parametro
  * @author jyoshiriro
  */
 class URLUtil {
-	// TODO: verificar se precisa disso depois
+
 	static Map cache = [:]
 	
 	static String getUrlCurta(String urlLonga) {
-		def curta = cache.get(urlLonga)
+		def curta = cache.get(urlLonga.encodeAsMD5())
 		if (curta)
-			return curta
+			return "http://goo.gl/${curta}"
 
 		def resp = new RestBuilder().post(Parametro.findBySigla('url_shorturl').valor){
 			contentType "application/json"
@@ -27,7 +27,8 @@ class URLUtil {
 			return urlLonga
 		}
 		def urlcurta = resp.json.id
-		// cache.put(urlLonga,urlcurta) TODO: lá de cima
+		cache.put(urlLonga.encodeAsMD5(),urlcurta.substring(urlcurta.lastIndexOf('/')+1)) 
 		urlcurta
 	}
+	
 }

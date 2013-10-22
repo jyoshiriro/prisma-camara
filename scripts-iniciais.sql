@@ -1,3 +1,4 @@
+-- Em produção na pasta "bin" (ou similar do SA)
 -- Parâmetros
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL para chegar a página de Biografia de deputado(a)','url_biografia_deputado','http://www2.camara.leg.br/deputados/pesquisa/layouts_deputados_biografia?pk=');
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do servico que retorna o XML com todos os deputados atuais','url_listagem_deputados','http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterDeputados');
@@ -12,6 +13,8 @@ INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da 
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da Camara com Informações sobre os Gastos de certo Deputado', 'url_gastos_site', 'http://www.camara.gov.br/cota-parlamentar/consulta-cota-parlamentar?ideDeputado=');
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da Camara com Informações de uma Proposição', 'url_proposicao_site', 'http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=');
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL para obter URL curta do Google', 'url_shorturl', 'https://www.googleapis.com/urlshortener/v1/url');
+INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da Camara com relatório de frequencia de Deputado', 'url_frequencia_site', 'http://www.camara.leg.br/internet/deputado/RelPresencaPlenario.asp?nuLegislatura=54&nuMatricula=${matricula}&dtInicio=${dtinicio}&dtFim=${dtfim}');
 
 -- Indice na tabela de despesas
 CREATE INDEX idx_despesa ON despesa(data_emissao,deputado_id,txt_numero);
+CREATE INDEX idx_hash ON post_nao_enviado(hash,pendente);

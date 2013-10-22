@@ -2,23 +2,24 @@ package br.org.prismaCamara.servico.postagens
 
 import grails.gsp.PageRenderer
 import groovy.util.logging.Log4j
-import br.org.prismaCamara.mensagem.Postagem
-import br.org.prismaCamara.mensagem.PostagemDiscursoDeputado
-import br.org.prismaCamara.modelo.Deputado
+import br.org.prismaCamara.mensagem.Postagem;
+import br.org.prismaCamara.mensagem.PostagemBiografiaDeputado
+import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Usuario
 
 @Log4j
-class PrepararPostDiscursoService extends PrepararPost {
+class PrepararPostBiografiaService extends PrepararPost {
 
 	def usuarioService
 	
 	@Override
 	public String getNomeTipoInformacao() {
-		return "discurso";
+		return "biografia";
 	}
 	
+	@Override
 	public Postagem getPostagem() {
-		return new PostagemDiscursoDeputado()
+		return new PostagemBiografiaDeputado();
 	}
 	
 	@Override

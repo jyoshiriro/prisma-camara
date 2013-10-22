@@ -14,4 +14,4 @@ ${st+1}. ${fs.descricao} <g:formatDate date="${fs.inicio}" format="HH:mm"/><g:if
 
 Contatos: ${dep.contatos}.
 
-Mais detalhes em ${dep.urlDetalhes}
+Mais detalhes em ${freq.urlDetalhes}

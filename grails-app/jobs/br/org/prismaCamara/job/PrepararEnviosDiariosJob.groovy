@@ -5,6 +5,7 @@ import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioDeputado
 import br.org.prismaCamara.servico.UsuarioService
+import br.org.prismaCamara.servico.postagens.PrepararPostBiografiaService;
 import br.org.prismaCamara.servico.postagens.PrepararPostDespesaService;
 import br.org.prismaCamara.servico.postagens.PrepararPostDiscursoService;
 import br.org.prismaCamara.servico.postagens.PrepararPostFrequenciaDiaService
@@ -20,6 +21,7 @@ class PrepararEnviosDiariosJob {
 	PrepararPostDespesaService prepararPostDespesaService
 	PrepararPostDiscursoService prepararPostDiscursoService
 	PrepararPostVotacaoService prepararPostVotacaoService
+	PrepararPostBiografiaService prepararPostBiografiaService
 		
     static triggers = {
 	  cron name: 'prepararPostsDiariosTrigger', cronExpression: "1 0 0 * * ?"
@@ -42,6 +44,11 @@ class PrepararEnviosDiariosJob {
 				
 				prepararPostDiscursoService.preparar(usuario, deputado.id)
 				log.debug("Postagens a sobre discurso do deputado ${deputado.descricao} de ${usuario.username} preparadas!")
+				
+				if (usuario.receberBiografias) {
+					prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
+					log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
+				}
 			}
 			log.debug("Todas as postagens sobre Deputados de ${usuario.username} já preparadas!")
 
