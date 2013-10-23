@@ -2,22 +2,25 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
+		<title>Bem-vindo ao Prisma-Câmara</title>
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-			   this is the default page, feel free to modify it to either redirect to a controller or display whatever
-			   content you may choose. Below is a list of controllers that are currently deployed in this application,
-			   click on each to execute its default action:</p>
-
 			<div>
+				<h1>Bem-vindo ao Prisma-Câmara</h1>
+				<p>
+					Este software foi desenvolvido durante o evento Hackathon 2013 da Câmara dos Deputados.<br/>
+					Equipe formada por José Yoshirio e Raimundo Lameira.<br/>
+					Este é um software livre e seu código pode ser acessado <a href="https://github.com/jyoshiriro/prisma-camara">aqui</a>.
+				</p>
+			</div>
+			
+			<div>
+				<br/>
 				<sec:ifNotGranted roles="ROLE_USER">
-					<facebookAuth:connect />
-					<br>ou<br>
-					<twitterAuth:button />
+					Acesse o sistema:<br/>
+					<facebookAuth:connect /> ou <twitterAuth:button />
 				</sec:ifNotGranted>
 				<br/>
 				<br/>
@@ -28,9 +31,8 @@
 				</sec:ifAllGranted>
 			</div>
 
-
 			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
+				<h2>Ações Disponíveis:</h2>
 				<ul>
 					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
 						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
