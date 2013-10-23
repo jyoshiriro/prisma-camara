@@ -8,6 +8,9 @@
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="page-body" role="main">
 			<h1>Proposições</h1>
+			<g:form action="adicionarProposicoes" id="searchableForm" name="searchableForm" method="get">
+		        <g:textField name="q" value="${params.q}" size="50"/> <input type="submit" value="Search" />
+		    </g:form>
 			<div>
 				<g:form action="gravarProposicoes">
 					<table id="tbProposicoes">
@@ -20,13 +23,13 @@
 					        </tr>
 					    </thead>
 					    <tbody>
-					    	<g:if test="${proposicoes.isEmpty()}">
+					    	<g:if test="${listaProposicoes.isEmpty()}">
 					    		<tr>
 							    	<td colspan="5">Nenhuma Proposição.</td>
 								</tr>
 					    	</g:if>
 					    	<g:else>
-						    	<g:each var="proposicao" in="${proposicoes}">
+						    	<g:each var="proposicao" in="${listaProposicoes}">
 							    	<tr>
 							        	<td>${proposicao.numero}</td>
 							        	<td>${proposicao.ano}</td>
@@ -59,7 +62,7 @@
 				</g:form>
 			</div>--%>
 			<br/>
-			<g:link action="">Voltar</g:link>			
+			<g:link action="adicionarProposicoes">Voltar</g:link>			
 		</div>
 	</body>
 </html>

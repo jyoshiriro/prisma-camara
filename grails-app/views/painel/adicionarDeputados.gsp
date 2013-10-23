@@ -8,6 +8,9 @@
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="page-body" role="main">
 			<h1>Deputados</h1>
+			<g:form action="adicionarDeputados" id="searchableForm" name="searchableForm" method="get">
+		        <g:textField name="q" value="${params.q}" size="50"/> <input type="submit" value="Search" />
+		    </g:form>
 			<div>
 				<g:form action="gravarDeputados">
 					<table id="tbDeputados">
@@ -20,16 +23,16 @@
 					        </tr>
 					    </thead>
 					    <tbody>
-					    	<g:if test="${deputados.isEmpty()}">
+					    	<g:if test="${listaDeputados.isEmpty()}">
 					    		<tr>
 							    	<td colspan="5">Nenhum deputado.</td>
 								</tr>
 					    	</g:if>
 					    	<g:else>
-						    	<g:each var="deputado" in="${deputados}">
+						    	<g:each var="deputado" in="${listaDeputados}">
 							    	<tr>
-							        	<td>${deputado.nomeParlamentar}</td>
-							        	<td>${deputado.partido.sigla}</td>
+							        	<td>${deputado.nomeParlamentar} (${deputado.nome})</td>
+							        	<td>${deputado.partido?.sigla}</td>
 							        	<td>${deputado.uf}</td>
 							        	<td><g:checkBox name="deputadosSelecionados" value="${deputado.id}" checked="false" /></td>
 							        </tr>
@@ -59,7 +62,7 @@
 				</g:form>
 			</div>--%>
 			<br/>
-			<g:link action="">Voltar</g:link>			
+			<g:link action="configurarPostagens">Voltar</g:link>			
 		</div>
 	</body>
 </html>
