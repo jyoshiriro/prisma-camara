@@ -4,6 +4,7 @@ import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
 import br.org.prismaCamara.modelo.Comissao
 import br.org.prismaCamara.modelo.Deputado
+import br.org.prismaCamara.util.ImagensUtil;
 
 /**
  * Atualizar a tabela de Deputados. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false".
@@ -45,7 +46,13 @@ class AtualizarDeputadoService extends AtualizadorEntidade {
 				log.debug("Deputado ${ideCadastroA} possivelmente atualizado")
 			} else { // ainda não existe. Persista agora
 				entidade = new Deputado(atributos)
-				entidade.save()
+				
+				entidade.save(flush:true)
+				
+				// salvando a miniatura local
+				def nomeArquivo = "deputado-${entidade.id}.jpg"
+				ImagensUtil.getImagemLocal(entidade.getUrlFoto(),nomeArquivo)
+				
 				log.debug("Deputado ${ideCadastroA} salvo no banco")
 			}
 

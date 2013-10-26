@@ -1,10 +1,11 @@
 package br.org.prismaCamara.modelo
 
-import org.apache.commons.lang.WordUtils;
+import groovy.util.logging.Log4j
 
-import br.org.prismaCamara.util.URLUtil;
+import org.apache.commons.lang.WordUtils
 
-import groovy.util.logging.Log4j;
+import br.org.prismaCamara.util.ImagensUtil
+import br.org.prismaCamara.util.URLUtil
 
 @Log4j
 class Deputado {
@@ -27,7 +28,7 @@ class Deputado {
 	
 	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia, discursos:Discurso, despesas:Despesa]
 	
-	static transients = ['siglaPartido', 'descricao', 'descricaoSemCaixaAlta', 'urlDetalhes', 'urlDetalhesCurta','ultimaFrequencia', 'urlFoto','contatos']
+	static transients = ['siglaPartido', 'descricao', 'descricaoSemCaixaAlta', 'urlDetalhes', 'urlDetalhesCurta','ultimaFrequencia', 'urlFoto','contatos','foto']
 	
 	static searchable = [only: ['nome', 'nomeParlamentar']]
 	
@@ -115,6 +116,22 @@ class Deputado {
 	
 	public String getContatos() {
 		"${email} / (61) ${fone}"
+	}
+	
+	/**
+	 * Array de bytes da miniatura da foto
+	 * @return
+	 */
+	public byte[] getFoto() {
+		
+		def nomeArquivo = "deputado-${this.id}.jpg"
+		def bmini = ImagensUtil.getImagemLocal(nomeArquivo)
+		
+		// a miniatura local provavelmente existirá por causa da Atualização dos Deputados, mas, em todo caso...
+		if (!bmini) {
+			bmini = ImagensUtil.getMiniatura(this.getUrlFoto(), nomeArquivo)
+		}
+		bmini
 	}
 		
 }

@@ -1,7 +1,7 @@
 package br.org.prismaCamara.controle
 
-import br.org.prismaCamara.modelo.Deputado;
-import groovy.util.logging.Log4j;
+import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.Deputado
 
 @Log4j
 class DeputadoController {
@@ -20,6 +20,20 @@ class DeputadoController {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Download da foto miniatura do deputado (".../deputado/foto/$id")
+	 * @return
+	 */
+	def foto() {
+		
+		def dep = Deputado.get(params.id)
+		def bmini = dep.foto
+		
+		response.contentType='image/jpeg'
+		response.contentLength=bmini.size()
+		response.outputStream<<bmini
 	}
 			
 }
