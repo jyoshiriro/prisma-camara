@@ -49,6 +49,8 @@ grails.project.dependency.resolution = {
 		compile 'org.springframework.social:spring-social-facebook:1.0.1.RELEASE'
 		compile 'org.springframework.social:spring-social-twitter:1.0.5.RELEASE'
 		runtime 'org.robolectric:robolectric:2.1.1'
+		runtime 'org.imgscalr:imgscalr-lib:4.2'
+		
     }
 
     plugins {
