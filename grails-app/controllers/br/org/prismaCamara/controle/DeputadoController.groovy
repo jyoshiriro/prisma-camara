@@ -14,6 +14,11 @@ class DeputadoController {
 	
     def list() {		
 		
+		Usuario usuario = springSecurityService.currentUser
+		
+		// TODO: caso nada venha na pesquisa, pegar todos os já associados ao usuario e mandar essa lista para a view
+		// usuarioService.getDeputadosDeUsuario(usuarioService)
+		
 		def pesquisa = PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa(params.q)
 		log.debug "Pesquisa fonetizada: ${pesquisa}"
 		def listaDeputados = Deputado.searchEvery(pesquisa)
@@ -22,7 +27,7 @@ class DeputadoController {
 		
 		def mapDeputados = [:]
 		
-		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(springSecurityService.currentUser)
+		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(usuario)
 		
 		for (dep in listaDeputados) {
 			def mapeado = deputadosDeUsuario.contains(dep)
