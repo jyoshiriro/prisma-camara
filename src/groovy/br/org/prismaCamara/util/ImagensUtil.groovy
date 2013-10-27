@@ -41,11 +41,14 @@ class ImagensUtil {
 	 * Retorna o array de bytes da miniatura da imagem do array de bytes do parâmetro "original"
 	 * @param original
 	 * @param nomeArquivo Nome do arquivo que será salvo localmente no servidor. Se <b>null</b>, nenhum arquivo será salvo.
-	 * @return
+	 * @return O array de bytes ou <b>null</b>
 	 */
 	static byte[] getMiniatura(byte[] original, String nomeArquivo) {
 
-		def imageIn = ImageIO.read(new ByteArrayInputStream(original));		
+		def imageIn = ImageIO.read(new ByteArrayInputStream(original));
+		if ((!original) || (!imageIn)) {
+			return null
+		}		
 		BufferedImage scaledImage = Scalr.resize(imageIn, 72).getSubimage(3, 7, 48, 48);
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream()
