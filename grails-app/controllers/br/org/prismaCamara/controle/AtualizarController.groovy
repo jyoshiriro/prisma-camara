@@ -111,4 +111,11 @@ class AtualizarController {
 		atualizarDespesaJob = new AtualizarDespesaJob(atualizarDespesaService: atualizarDespesaService, limparDespesaService: limparDespesaService)
 		atualizarVotacaoJob = new AtualizarVotacaoJob(atualizarVotacaoService: atualizarVotacaoService, limparVotacaoService: limparVotacaoService)
 	}
+	
+	def atualizarIndice() {
+		log.debug "Reindexando Deputado."
+		Proposicao.reindex()
+		Deputado.reindex()		
+		log.debug "Reindexação concluida."
+	}
 }

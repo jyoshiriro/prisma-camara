@@ -1,5 +1,6 @@
 package br.org.prismaCamara.modelo
 
+import br.org.prismaCamara.util.PesquisaFoneticaUtil;
 import br.org.prismaCamara.util.URLUtil
 
 class Proposicao {
@@ -21,16 +22,18 @@ class Proposicao {
 	String nomeAutor // em registros antigos não há relação, apenas o nome do autor  // será truncado em 200 caracteres
 
 	Date ultimoDespacho	
-	String txtUltimoDespacho // será truncado em 144 caracteres
+	String txtUltimoDespacho // será truncado em 144 caracteres/
 	String situacao
 	
 	Date ultimaVotacao
+	
+	String campoPesquisa  
 
 	static hasMany = [votacoes:Votacao]
 	
 	static transients = ['PRIMEIRO_ANO', 'descricao', 'urlDetalhes', 'urlDetalhesCurta']
 	
-	static searchable = [only: ['txtEmenta', 'txtExplicacaoEmenta']]
+	static searchable = [only: ['campoPesquisa']]
 	
 	static mapping = {
 		autor(cascade:'all')
@@ -55,6 +58,8 @@ class Proposicao {
 
 		autor(nullable:true)
 		nomeAutor(nullable:true , maxSize:200)
+		
+		campoPesquisa maxSize: 4096
 	}
 	
 	public String getDescricao() {
@@ -95,5 +100,8 @@ class Proposicao {
 		URLUtil.getUrlCurta(urlDetalhes)
 	}
 
+	String getCampoPesquisa() {
+		return PesquisaFoneticaUtil.getFonemasParaIndexar(txtEmenta + " " + txtExplicacaoEmenta)
+	}
 		
 }

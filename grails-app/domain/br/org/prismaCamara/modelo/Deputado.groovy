@@ -5,6 +5,7 @@ import groovy.util.logging.Log4j
 import org.apache.commons.lang.WordUtils
 
 import br.org.prismaCamara.util.ImagensUtil
+import br.org.prismaCamara.util.PesquisaFoneticaUtil;
 import br.org.prismaCamara.util.URLUtil
 
 @Log4j
@@ -26,11 +27,13 @@ class Deputado {
 	
 	Partido partido
 	
+	String campoPesquisa
+	
 	static hasMany = [comissoesTitular:Comissao, comissoesSuplente:Comissao, frequenciasDia:FrequenciaDia, discursos:Discurso, despesas:Despesa]
 	
 	static transients = ['siglaPartido', 'descricao', 'descricaoSemCaixaAlta', 'urlDetalhes', 'urlDetalhesCurta','ultimaFrequencia', 'urlFoto','contatos','foto']
 	
-	static searchable = [only: ['nome', 'nomeParlamentar']]
+	static searchable = [only: ['campoPesquisa']]
 	
 	static constraints = {
 		condicao(maxSize:20, nullable:true)
@@ -45,6 +48,8 @@ class Deputado {
 		
 		ideCadastro(nullable:true) 
 		matricula(nullable:true)
+		
+		campoPesquisa maxSize: 256
 	}
 	
 	static mapping = {
@@ -132,6 +137,10 @@ class Deputado {
 			bmini = ImagensUtil.getMiniatura(this.getUrlFoto(), nomeArquivo)
 		}
 		bmini
+	}
+	
+	String getCampoPesquisa() {
+		return PesquisaFoneticaUtil.getFonemasParaIndexar(nome + " " + nomeParlamentar + " " + uf + " " + partido.sigla)
 	}
 		
 }

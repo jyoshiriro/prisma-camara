@@ -95,6 +95,8 @@ log4j = {
 	environments {
 		development {
 			debug  'br.org.prismaCamara'
+			//debug 'org.codahaus.groovy.grails.plugins.seachable'
+			//debug 'org.compass'
 		}
     }
 }
@@ -111,6 +113,5 @@ grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'
 
 grails.plugins.springsecurity.facebook.filter.redirect.failureHandler='redirectFailureHandlerPrismaCamara'
 grails.plugins.springsecurity.facebook.filter.redirect.successHandler='redirectSuccessHandlerPrismaCamara'
-
 
 grails.plugins.springsecurity.twitter.domain.classname='br.org.prismaCamara.modelo.UsuarioTwitter'
