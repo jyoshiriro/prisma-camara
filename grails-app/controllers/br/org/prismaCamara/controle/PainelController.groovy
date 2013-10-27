@@ -53,11 +53,9 @@ class PainelController {
 		def jaSelecionados = UsuarioDeputado.where { usuario.id == usuarioAtual.id }.findAll()
 		log.debug "Selecionados ${jaSelecionados.deputado.id}"
 		listaDeputados.removeAll { it.id in jaSelecionados.deputado.id }
-		//listaDeputados.each { it.refresh() }
+		listaDeputados.each { it.refresh() }
 		log.debug "Resultado Final: ${listaDeputados.id}"
 		return [listaDeputados : listaDeputados]
-		//def deputados = Deputado.executeQuery("from Deputado d where d.ativo = true d.id not in (select up.partido.id from UsuarioPartido up where up.usuario.id = :usuarioid) and d in (:resultado)", [usuarioid: usuario.id, resultado: resultado.results])
-		//[ deputados : deputados ]
 	}
 	
 	def gravarDeputados() {
