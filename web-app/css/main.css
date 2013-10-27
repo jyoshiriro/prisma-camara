@@ -619,3 +619,42 @@ a.skip {
 	position: absolute;
 	left: -9999px;
 }
+
+.lado-a-lado{
+	float: left;
+	margin: 1em;
+}
+
+.lado-a-lado img{
+	border: 0px;
+}
+
+.lado-a-lado img:HOVER {
+	border-color: navy;
+}
+
+.lado-a-lado a{
+	text-decoration: none;
+}
+
+b.marcado {
+	width:30px;
+	height:30px;
+	background-repeat: no-repeat;
+	font-size:25px;
+	background-image: url(../images/icone-marcado.png);
+}
+
+b.marcado.nao {
+	background-image: url(../images/icone-add.png);
+}
+
+b.marcado{
+	border: 1px;
+	border-color: white;
+	border-style: solid;
+}
+
+b.marcado:HOVER, b.marcado.nao:HOVER{
+	border-color: navy;	
+}
