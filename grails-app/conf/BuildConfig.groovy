@@ -83,5 +83,7 @@ grails.project.dependency.resolution = {
 		
 		compile ":searchable:0.6.4"
 		
+		compile ":cache-headers:1.1.5"
+		
     }
 }
