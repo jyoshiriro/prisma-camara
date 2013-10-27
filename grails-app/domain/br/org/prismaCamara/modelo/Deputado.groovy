@@ -76,6 +76,7 @@ class Deputado {
 	def afterUpdate() {
 		if (!(this.ativo)) {
 			UsuarioDeputado.executeUpdate("delete from UsuarioDeputado ud where ud.deputado.id=?",[this.id])
+			this.unindex()
 		}	
 	}
 	
