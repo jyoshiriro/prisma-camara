@@ -2,24 +2,34 @@ package br.org.prismaCamara.controle
 
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.modelo.Deputado
+import br.org.prismaCamara.modelo.Usuario
+import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.util.PesquisaFoneticaUtil
 
 @Log4j
 class DeputadoController {
 
+	def usuarioService
+	def springSecurityService
+	
     def list() {		
-		//Book.findAllByTitleLike("Harry Pot%", [max: 3, offset: 2, sort: "title", order: "desc"])
-		def listaDeputados = Deputado.findAllByNomeParlamentarLike("%${params.sSearch}%", [max: params.iDisplayLength, offset: params.iDisplayStart, sort: "nomeParlamentar", order: "asc"]);
-		log.debug "Pesquisa por %${params.sSearch}%, inicio: ${params.iDisplayStart}, porPagina: ${params.iDisplayLength}"
-		render (contentType: 'text/json') {
-			sEcho = params.sEcho
-			iTotalRecords = Deputado.count()
-			iTotalDisplayRecords =  Deputado.countByNomeParlamentarLike("%${params.sSearch}%")
-			aaData = array {
-				for(d in listaDeputados){
-					deputado id: d.id, nomeParlamentar: d.nomeParlamentar, partido: d.partido?.sigla, uf: d.uf
-				}
-			}
+		
+		def pesquisa = PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa(params.q)
+		log.debug "Pesquisa fonetizada: ${pesquisa}"
+		def listaDeputados = Deputado.searchEvery(pesquisa)
+		log.debug "Resultado: ${listaDeputados.id}"
+		listaDeputados.each { it.refresh() }
+		
+		def mapDeputados = [:]
+		
+		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(springSecurityService.currentUser)
+		
+		for (dep in listaDeputados) {
+			def mapeado = deputadosDeUsuario.contains(dep)
+			mapDeputados.put(dep, mapeado)
 		}
+		
+		render(template:'resultadoPesquisa',model:[mapa:mapDeputados])
 	}
 	
 	/**
@@ -36,4 +46,16 @@ class DeputadoController {
 		response.outputStream<<bmini
 	}
 			
+	def toogleAssociar() {
+		Usuario usuario = springSecurityService.currentUser
+		Deputado deputado = Deputado.get(params.id)
+		def ud = UsuarioDeputado.findByUsuarioAndDeputado(usuario,deputado)
+		if (ud) {
+			ud.delete()
+		} else {
+			ud = new UsuarioDeputado(usuario:usuario, deputado:deputado)
+			ud.save()
+		}
+		render(status:200) 
+	}
 }
