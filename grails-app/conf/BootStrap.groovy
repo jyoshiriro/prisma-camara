@@ -63,4 +63,22 @@ class BootStrap {
 		}
 	}
 	
+	def injetarMetaMetodos() {
+		// Todo String terá o "validoMinimoPalavras(minimo)", onde "minimo" é o número mínimo de palavras a considerar
+		String.metaClass.validoMinimoPalavras{minimo ->
+			def palavras = delegate.split(" ")
+			Set palavrasnr = [] as Set
+			def valida = false
+			for (palavra in palavras) {
+				if (['$','#','%','*','?','!','=','+','-','/','@'].contains(palavra)) {
+					break
+				}
+				if (palavra.size()>=2)
+					palavrasnr+=palavra
+			}
+			valida = palavrasnr.size()>=minimo
+			return valida
+		}
+	}
+	
 }
