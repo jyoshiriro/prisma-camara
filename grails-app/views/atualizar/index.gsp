@@ -24,6 +24,9 @@ ${flash.error}
 
 <h2>Qual entidade deseja Atualizar agora?</h2>
 <ul>
+	<li><g:link action="executar" id="partido">Partidos</g:link> 
+	</li>
+	
 	<li><g:link action="executar" id="deputado">Deputados</g:link> 
 	(Ativos: ${deputadosA}. Inativos: ${deputadosI}. Total: ${deputadosA+deputadosI})
 	</li>
