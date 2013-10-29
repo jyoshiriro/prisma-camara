@@ -35,6 +35,9 @@ class AtualizarPartidoService extends AtualizadorEntidade {
 					entidade = new Partido(sigla:sigla, nome:nome)
 					entidade.save()
 					log.debug("Novo partido ${entidade.sigla} criado")
+				} else {
+					entidade.properties=[sigla:sigla, nome:nome]
+					log.debug("Partido ${entidade.sigla} atualizado")
 				}
 			}
 		}
@@ -42,3 +45,4 @@ class AtualizarPartidoService extends AtualizadorEntidade {
 		log.debug("Atualização de Partidos concluída com sucesso")
 	}
 }
+
