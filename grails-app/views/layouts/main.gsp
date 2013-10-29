@@ -37,7 +37,10 @@
 		        </sec:ifAllGranted>
 		        <li><a href="#contact">Sobre</a></li>
 	            <sec:ifAllGranted roles="ROLE_USER">
-	            	<li><a href="#contact">Sair</a></li>
+	            	<ul class="nav navbar-nav navbar-right">
+		              <li><a href="#">Bem-vindo <g:if test="usuario?.nome?.trim()?.isEmpty()">${usuario.username}</g:if><g:else>${usuario.nome}</g:else></a></li>
+		              <li><a href="#">Sair</a></li>
+		            </ul>
 	            </sec:ifAllGranted>	            
 	          </ul>
 	        </div><!--/.nav-collapse -->
