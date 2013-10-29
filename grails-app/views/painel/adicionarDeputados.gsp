@@ -9,7 +9,8 @@
 		<div id="page-body" role="main">
 			<h1>Deputados</h1>
 			<g:formRemote url="[action:'list',controller:'deputado']" name="searchableForm" update="resultado">
-		        <g:textField name="q" value="${params.q}" size="50"/> <input type="submit" value="Pesquisar" id="bPesquisar"/>
+		        <g:textField name="q" value="${params.q}" size="50" placeholder="Nome do deputado ou seu partido ou sua uf"/>
+		        <input type="submit" value="Pesquisar" id="bPesquisar"/>
 		    </g:formRemote>
 			<div id="resultado">
 				<g:include controller="deputado" action="list"/>
