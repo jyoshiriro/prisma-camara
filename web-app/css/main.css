@@ -623,6 +623,9 @@ a.skip {
 .lado-a-lado{
 	float: left;
 	margin: 1em;
+	width: 11em;
+	height: 7em;
+	text-align: center;
 }
 
 .lado-a-lado img{
