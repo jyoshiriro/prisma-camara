@@ -101,7 +101,7 @@ class Proposicao {
 	}
 
 	String getCampoPesquisa() {
-		return PesquisaFoneticaUtil.getFonemasParaIndexar(txtEmenta + " " + txtExplicacaoEmenta)
+		return PesquisaFoneticaUtil.getFonemasParaIndexar("${tipoProposicao.sigla} ${numero} ${ano} ${txtEmenta} ${txtExplicacaoEmenta}")
 	}
 		
 }

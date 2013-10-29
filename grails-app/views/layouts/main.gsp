@@ -38,7 +38,8 @@
 		        <li><a href="#contact">Sobre</a></li>
 	            <sec:ifAllGranted roles="ROLE_USER">
 	            	<ul class="nav navbar-nav navbar-right">
-		              <li><a href="#">Bem-vindo <g:if test="usuario?.nome?.trim()?.isEmpty()">${usuario.username}</g:if><g:else>${usuario.nome}</g:else></a></li>
+
+		              <li><a href="#">Bem-vindo(a), <sec:username/></a></li>
 		              <li><a href="#">Sair</a></li>
 		            </ul>
 	            </sec:ifAllGranted>	            
@@ -49,6 +50,7 @@
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+		<g:javascript library="application"/>
 		<r:layoutResources />
 	</body>
 </html>

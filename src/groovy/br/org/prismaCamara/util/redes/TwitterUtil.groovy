@@ -46,9 +46,9 @@ class TwitterUtil {
 				twitter.timelineOperations().updateStatus(post)
 			}
 			
-			log.debug("Mensagem '${conteudo[2..80].trim()}' enviada com sucesso para ${usuario.username}")
+			log.debug("Mensagem '${conteudo[0..79].trim()}' enviada com sucesso para ${usuario.username}")
 		} catch (Exception e) {
-			log.error("Erro ao postar mensagem para rede social ${usuario.tipoRede} de ${usuario.username}: ${e.message}")
+			log.error("Erro ao postar mensagem para rede social ${usuario?.tipoRede} de ${usuario?.username}: ${e.message}")
 			throw e
 		} 
 	}
