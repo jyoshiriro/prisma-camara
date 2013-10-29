@@ -38,7 +38,6 @@
 		        <li><a href="#contact">Sobre</a></li>
 	            <sec:ifAllGranted roles="ROLE_USER">
 	            	<ul class="nav navbar-nav navbar-right">
-
 		              <li><a href="#">Bem-vindo(a), <sec:username/></a></li>
 		              <li><a href="#">Sair</a></li>
 		            </ul>
