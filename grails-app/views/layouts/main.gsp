@@ -38,7 +38,8 @@
 		        <li><a href="#contact">Sobre</a></li>
 	            <sec:ifAllGranted roles="ROLE_USER">
 	            	<ul class="nav navbar-nav navbar-right">
-		              <li><a href="#">Bem-vindo <g:if test="usuario?.nome?.trim()?.isEmpty()">${usuario.username}</g:if><g:else>${usuario.nome}</g:else></a></li>
+
+		              <li><a href="#">Bem-vindo(a), <sec:username/></a></li>
 		              <li><a href="#">Sair</a></li>
 		            </ul>
 	            </sec:ifAllGranted>	            
