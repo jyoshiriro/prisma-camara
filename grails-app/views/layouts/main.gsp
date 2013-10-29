@@ -19,32 +19,32 @@
 	</head>
 	<body>
 		<div class="navbar navbar-inverse">
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="#">Olho na Câmara</a>
-	        </div>
-	        <div class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
-	            <sec:ifAllGranted roles="ROLE_USER">
-		            <li><a href="#about">Meus Acompanhamentos</a></li>
-		            <li><a href="#contact">Meu Perfil</a></li>
-		        </sec:ifAllGranted>
-		        <li><a href="#contact">Sobre</a></li>
-	            <sec:ifAllGranted roles="ROLE_USER">
-	            	<ul class="nav navbar-nav navbar-right">
-		              <li><a href="#">Bem-vindo(a), <sec:username/></a></li>
-		              <li><a href="#">Sair</a></li>
-		            </ul>
-	            </sec:ifAllGranted>	            
-	          </ul>
-	        </div><!--/.nav-collapse -->
-	      </div>
+	    	<div class="container">
+		        <div class="navbar-header">
+		          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		          </button>
+		          <a class="navbar-brand" href="#">Olho na Câmara</a>
+		        </div>
+		        <div class="navbar-collapse collapse">
+		        	<ul class="nav navbar-nav">
+			            <li class="active"><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
+			            <sec:ifAllGranted roles="ROLE_USER">
+				            <li><g:link controller="painel">Meus Acompanhamentos</g:link></li>
+				            <li><a href="#contact">Meu Perfil</a></li>
+				        </sec:ifAllGranted>
+				        <li><a href="#contact">Sobre</a></li>
+			    	</ul>
+		            <sec:ifAllGranted roles="ROLE_USER">
+		            	<ul class="nav navbar-nav navbar-right">
+			              <li><a href="#">Bem-vindo(a), <sec:username/></a></li>
+			              <li><a href="#">Sair</a></li>
+			            </ul>
+		            </sec:ifAllGranted>
+	    		</div><!--/.nav-collapse -->
+	    	</div>
 	    </div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Bem-vindo ao Prisma-Câmara</title>
+		<title>Bem-vindo!</title>
 	</head>
 	<body>
 		<div class="container">
