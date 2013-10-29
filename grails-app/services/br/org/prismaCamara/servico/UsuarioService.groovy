@@ -38,12 +38,37 @@ class UsuarioService {
 		deputados*/
 	}
 	
-	List<Deputado> getDeputadosDeUsuario(Usuario usuario) {
-		Set<Deputado> deputados1 = Usuario.executeQuery("select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=?",[usuario]) as Set
-		Set<Deputado> deputados2 = Partido.executeQuery("select d from Deputado d where d.partido in (select up.partido from UsuarioPartido up where up.usuario=?)",[usuario]) as Set
-		def deputadost = deputados1+deputados2
-		return deputadost as List
+	Integer countDeputadosDeUsuario(Usuario usuario) {
+		def deputados1 = Usuario.executeQuery("""
+			select count(ud.deputado) from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=? order by ud.deputado.nomeParlamentar
+			""",[usuario])
+			
+		def deputados2 = Partido.executeQuery("""
+			select count(d) from Deputado d where d.partido in 
+			(select up.partido from UsuarioPartido up where up.usuario=:u)
+			and d not in (
+				select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=? order by ud.deputado.nomeParlamentar
+			)  
+			order by d.nomeParlamentar
+			""",[u:usuario])
 		
+		Integer countt = deputados1+deputados2
+		return countt
+	}
+	
+	List<Deputado> getDeputadosDeUsuario(Usuario usuario) {
+		def deputados1 = Usuario.executeQuery("""
+			select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=? order by ud.deputado.nomeParlamentar
+			""",[usuario])
+		
+		def deputados2 = Partido.executeQuery("""
+			select d from Deputado d where d.partido in 
+			(select up.partido from UsuarioPartido up where up.usuario=:u)
+			and d not in (:deps)  
+			order by d.nomeParlamentar
+			""",[u:usuario,deps:deputados1?:[Deputado.get(0)]])
+		List deputadost = deputados1+deputados2
+		return deputadost
 		/*return Deputado.getAll(10,619,173,500,374,324,458,437,174,359,479,500,5,320)*/
 	}
 	
