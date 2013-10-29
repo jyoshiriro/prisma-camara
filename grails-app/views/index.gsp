@@ -5,8 +5,7 @@
 		<title>Bem-vindo ao Prisma-Câmara</title>
 	</head>
 	<body>
-		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="page-body" role="main">
+		<div class="container">
 			<div>
 				<h1>Bem-vindo ao Prisma-Câmara</h1>
 				<p>
@@ -31,6 +30,7 @@
 				</sec:ifAllGranted>
 			</div>
 
+			<%--
 			<div id="controller-list" role="navigation">
 				<h2>Ações Disponíveis:</h2>
 				<ul>
@@ -39,6 +39,7 @@
 					</g:each>
 				</ul>
 			</div>
+			--%>
 		</div>
 	</body>
 </html>

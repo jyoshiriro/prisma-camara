@@ -18,11 +18,34 @@
 		<r:layoutResources />
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
+		<div class="navbar navbar-inverse">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="navbar-brand" href="#">Olho na Câmara</a>
+	        </div>
+	        <div class="navbar-collapse collapse">
+	          <ul class="nav navbar-nav">
+	            <li class="active"><a href="#">Início</a></li>
+	            <sec:ifAllGranted roles="ROLE_USER">
+		            <li><a href="#about">Meus Acompanhamentos</a></li>
+		            <li><a href="#contact">Meu Perfil</a></li>
+		        </sec:ifAllGranted>
+		        <li><a href="#contact">Sobre</a></li>
+	            <sec:ifAllGranted roles="ROLE_USER">
+	            	<li><a href="#contact">Sair</a></li>
+	            </sec:ifAllGranted>	            
+	          </ul>
+	        </div><!--/.nav-collapse -->
+	      </div>
+	    </div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<g:javascript library="application"/>
 		<r:layoutResources />
 	</body>
 </html>
