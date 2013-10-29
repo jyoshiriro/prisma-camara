@@ -14,20 +14,12 @@
 					Este é um software livre e seu código pode ser acessado <a href="https://github.com/jyoshiriro/prisma-camara">aqui</a>.
 				</p>
 			</div>
-			
-			<div>
-				<br/>
-				<sec:ifNotGranted roles="ROLE_USER">
-					Acesse o sistema:<br/>
-					<facebookAuth:connect /> ou <twitterAuth:button />
-				</sec:ifNotGranted>
-				<br/>
-				<br/>
-				<sec:ifAllGranted roles="ROLE_USER">
-					Bem-vindo <sec:username/>! (<g:link uri="/j_spring_security_logout">Logout</g:link>)
-					<br/>
-					<g:link class="create" controller="facebookPost" action="timeline">Minha Timeline</g:link>
-				</sec:ifAllGranted>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-1" style="text-align: center;">Acesse o sistema:</div>
+			</div>
+			<div class="row">
+				<div class="col-md-1 col-md-offset-1"><facebookAuth:connect /></div>
+				<div class="col-md-1 col-md-offset-1"><twitterAuth:button /></div>
 			</div>
 
 			<%--

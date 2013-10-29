@@ -30,7 +30,7 @@
 	        </div>
 	        <div class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="#">Início</a></li>
+	            <li class="active"><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
 	            <sec:ifAllGranted roles="ROLE_USER">
 		            <li><a href="#about">Meus Acompanhamentos</a></li>
 		            <li><a href="#contact">Meu Perfil</a></li>
