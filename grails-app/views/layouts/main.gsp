@@ -30,10 +30,15 @@
 		        </div>
 		        <div class="navbar-collapse collapse">
 		        	<ul class="nav navbar-nav">
-			            <li class="active"><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
+			            <li><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
 			            <sec:ifAllGranted roles="ROLE_USER">
-				            <li><g:link controller="painel">Meus Acompanhamentos</g:link></li>
-				            <li><a href="#contact">Meu Perfil</a></li>
+			            	<li class="dropdown">
+						    	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Painel <b class="caret"></b></a>
+						        <ul class="dropdown-menu">
+						        	<li><a href="#">Meu Perfil</a></li>
+							        <li><g:link controller="painel" action="configurarPostagens">Meus Acompanhamentos</g:link></li>
+						        </ul>
+						    </li>
 				        </sec:ifAllGranted>
 				        <li><a href="#contact">Sobre</a></li>
 			    	</ul>
@@ -47,7 +52,6 @@
 	    	</div>
 	    </div>
 		<g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		<script src="${resource(dir: 'js', file: 'application.js')}"></script>
 		<r:layoutResources />
