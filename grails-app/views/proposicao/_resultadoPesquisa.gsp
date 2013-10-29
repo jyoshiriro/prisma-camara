@@ -6,23 +6,20 @@
 	<ul><li>${request.message}</li></ul>
 	</div>
 </g:if>
+
+<div id="divDetalhes"></div>
+
 <g:each in="${mapa}" var="m">
 	<g:set var="e" value="${m.key}"/>
-	<g:set var="mapeado" value="marcado${m.value?'':' nao'}"/>
-	<div class="lado-a-lado">
-		<div style="text-align: center">
-		${e.descricao}
+	<div class="lado-a-lado pequeno ${m.value?'':'nao'}">
+	
+		<g:remoteLink action="detalhes" id="${e.id}" update="divDetalhes" title="Clique para detalhes">${e.descricao}</g:remoteLink>
+		
 		<g:remoteLink action="toogleAssociar" id="${e.id}" asynchronous="false" after="toogleAssociar(this)" 
 		update="nada" elementId="link${e.id}">
-		<b class="${mapeado}" id="slink${e.id}" style="float: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+		<span id="slink${e.id}" class="glyphicon ${m.value?'glyphicon-check':'glyphicon-plus'}"></span>
 		</g:remoteLink>
-		</div>
 	</div>
 </g:each>
 
 <div id="nada"></div>
-<script>
-	function toogleAssociar(elemento) {
-		$("#s"+elemento.id).toggleClass('nao');
-	}
-</script>
