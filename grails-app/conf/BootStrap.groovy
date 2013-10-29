@@ -16,6 +16,8 @@ class BootStrap {
 		verificacoesIniciais()
 		
 		inicializarSpringSecurity()
+		
+		injetarMetaMetodos()
 
 	}
 
