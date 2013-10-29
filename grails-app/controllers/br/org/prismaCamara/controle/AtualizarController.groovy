@@ -13,6 +13,7 @@ import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.Proposicao;
 import br.org.prismaCamara.modelo.TipoProposicao;
 import br.org.prismaCamara.servico.atualizacoes.AtualizarDiscursoService;
+import br.org.prismaCamara.servico.atualizacoes.AtualizarPartidoService;
 
 @Log4j
 class AtualizarController {
@@ -24,6 +25,7 @@ class AtualizarController {
 	def atualizarFrequenciaDiaService
 	def atualizarDespesaService
 	def atualizarDiscursoService
+	def atualizarPartidoService
 	
 	def limparDespesaService
 	def limparFrequenciaDiaService
