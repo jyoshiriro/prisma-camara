@@ -55,6 +55,7 @@ class Deputado {
 	static mapping = {
 		despesas(sort:'dataEmissao')
 		discursos(sort:'horaInicio')
+		sort('nomeParlamentar')
 	}
 	
 	def beforeValidate() {
