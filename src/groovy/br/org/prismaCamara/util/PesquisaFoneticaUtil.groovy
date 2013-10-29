@@ -85,7 +85,6 @@ class PesquisaFoneticaUtil {
 	}
 	
 	protected static String getTermosFoneticosParaPesquisa(String termoPesquisa) {
-		//termoPesquisa = new String(termoPesquisa.getBytes("ISO-8859-1"),"UTF-8");
 		termoPesquisa = termoPesquisa.toUpperCase().replace("-", " ").replace("/", " ");
 		
 		List<String> termos = new ArrayList<String>();
