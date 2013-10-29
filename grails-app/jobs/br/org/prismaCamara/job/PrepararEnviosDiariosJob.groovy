@@ -34,6 +34,11 @@ class PrepararEnviosDiariosJob {
 		for (usuario in usuarios) {
 			def deputados = usuarioService.getDeputadosDeUsuario(usuario)
 
+			// recebe biografias aleatórias?
+			if (usuario.receberBiografias) {
+				prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
+				log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
+			}
 			// posts relativos a Deputados
 			for (deputado in deputados) {
 				prepararPostFrequenciaDiaService.preparar(usuario, deputado.id)
@@ -45,10 +50,6 @@ class PrepararEnviosDiariosJob {
 				prepararPostDiscursoService.preparar(usuario, deputado.id)
 				log.debug("Postagens a sobre discurso do deputado ${deputado.descricao} de ${usuario.username} preparadas!")
 				
-				if (usuario.receberBiografias) {
-					prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
-					log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
-				}
 			}
 			log.debug("Todas as postagens sobre Deputados de ${usuario.username} já preparadas!")
 
