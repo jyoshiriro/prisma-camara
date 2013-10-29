@@ -13,29 +13,32 @@ class DeputadoController {
 	def springSecurityService
 	
     def list() {		
-		cache(validUntil:new Date()+3)
-		
+		//cache(validUntil:new Date()+3)
 		Usuario usuario = springSecurityService.currentUser
 		
-		def mapDeputados = [:]
+		LinkedHashMap mapDeputados = new LinkedHashMap()
 		def listaDeputados = []
 
+		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(usuario)
+		
 		// caso nada venha na pesquisa, pegar todos os já associados ao usuario e mandar essa lista para a view
 		if (!params.q) {
-			listaDeputados = usuarioService.getDeputadosDeUsuario(usuario)
+			listaDeputados = deputadosDeUsuario
 		}
 		else {
 			if (params.q.size()>=2) {
 				def pesquisa = PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa(params.q)
 				
 				log.debug "Pesquisa fonetizada: ${pesquisa}"
-				listaDeputados = Deputado.searchEvery(pesquisa)
+				def listaDeputadosTmp = Deputado.searchEvery(pesquisa)
 				log.debug "Resultado: ${listaDeputados.size()}"
 				
-				if (!listaDeputados) {
+				if (!listaDeputadosTmp) {
 					request.message="Nenhum Deputado encontrado com \"${params.q}\""
 				} else {
-					listaDeputados.each { it.refresh() }
+					listaDeputadosTmp.each { 
+						listaDeputados += Deputado.get(it.id) 
+					}
 					listaDeputados.sort{d1,d2-> d1.nomeParlamentar<=>d2.nomeParlamentar}
 				}
 			} else {
@@ -44,10 +47,10 @@ class DeputadoController {
 			
 		}
 		
-		def deputadosDeUsuario = listaDeputados?:usuarioService.getDeputadosDeUsuario(usuario)
 		for (dep in listaDeputados) {
-			if (!dep.ativo)
+			if (!dep.ativo) {
 				continue
+			}
 			def mapeado = deputadosDeUsuario.contains(dep)
 			mapDeputados.put(dep, mapeado)
 		}
@@ -87,6 +90,8 @@ class DeputadoController {
 				ud = new UsuarioDeputado(usuario:usuario, deputado:deputado)
 				ud.save()
 			}
+			Integer contagemDeputados = usuarioService.countDeputadosDeUsuario(usuario)
+			session.contagemDeputados = contagemDeputados
 			render(status:200)
 		} catch (Exception e) {
 			log.error("Erro ao tentar (des)associar deputado (${deputado.descricao}) a usuário ${usuario.login}: ${e.message}")

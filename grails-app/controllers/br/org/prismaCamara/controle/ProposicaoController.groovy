@@ -18,11 +18,13 @@ class ProposicaoController {
 		
 		Usuario usuario = springSecurityService.currentUser
 		
-		def mapProposicoes = [:]
+		LinkedHashMap mapProposicoes = new LinkedHashMap()
 		def listaProposicoes = []
 		
+		def proposicoesDeUsuario = usuarioService.getProposicoesDeUsuario(usuario)
+		
 		if (!params.q) {
-			listaProposicoes = usuarioService.getProposicoesDeUsuario(usuario)
+			listaProposicoes = proposicoesDeUsuario
 		}
 		else {
 			params.q=params.q.replace('/',' ')
@@ -30,13 +32,15 @@ class ProposicaoController {
 				def pesquisa = PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa(params.q)
 				
 				log.debug "Pesquisa fonetizada: ${pesquisa}"
-				listaProposicoes = Proposicao.searchEvery(pesquisa)
+				def listaProposicoesTmp = Proposicao.searchEvery(pesquisa)
 				log.debug "Resultado: ${listaProposicoes.size()}"
 				
-				if (!listaProposicoes) {
+				if (!listaProposicoesTmp) {
 					request.message="Nenhuma Proposição encontrada com \"${params.q}\""
 				} else {
-					listaProposicoes.each { it.refresh() }
+					listaProposicoesTmp.each { 
+						listaProposicoes+=Proposicao.get(it.id)
+					}
 					listaProposicoes.sort{d1,d2-> d2.ano<=>d1.ano}
 				}
 			} else {
@@ -45,7 +49,6 @@ class ProposicaoController {
 			
 		}
 		
-		def proposicoesDeUsuario = listaProposicoes?:usuarioService.getProposicoesDeUsuario(usuario)
 		for (prop in listaProposicoes) {
 			def mapeado = proposicoesDeUsuario.contains(prop)
 			mapProposicoes.put(prop, mapeado)
@@ -73,5 +76,9 @@ class ProposicaoController {
 			e.printStackTrace()
 			render(status:500, text:message(code:'erro.padrao'))
 		}
+	}
+	
+	def detalhes(Long id) {
+		render(template:'detalhes', model:[prop:Proposicao.get(id)])
 	}
 }
