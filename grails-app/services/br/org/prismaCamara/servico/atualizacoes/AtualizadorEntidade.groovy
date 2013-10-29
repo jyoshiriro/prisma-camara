@@ -33,7 +33,6 @@ abstract class AtualizadorEntidade {
 		
 		return template.toString();
 	}
-
 	
 	/**
 	 * Constroi um {@link GPathResult} a partir de uma String com o conteúdo de um XML
@@ -69,6 +68,5 @@ abstract class AtualizadorEntidade {
 			log.error(msg)
 			throw new Exception(msg)
 		}
-		
 	}
 }

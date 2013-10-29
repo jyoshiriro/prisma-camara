@@ -6,7 +6,7 @@ import groovy.util.slurpersupport.GPathResult
 
 
 /**
- * Atualizar a tabela de Tipos de Proposicao. Os que estiverem na tabela e não chegarem no XML são marcados com "ativo=false"
+ * Atualizar a tabela de Partidos. Os que chegarem com dataExtincao anterior a "hoje" serão excluídos do banco
  */
 @Log4j
 class AtualizarTipoProposicaoService extends AtualizadorEntidade {
