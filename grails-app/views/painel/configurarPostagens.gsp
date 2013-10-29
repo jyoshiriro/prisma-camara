@@ -6,9 +6,8 @@
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="page-body" role="main">
-			<h1>Painel</h1>
-			<p>Bem-vindo <g:if test="usuario?.nome?.trim()?.isEmpty()">${usuario.username}</g:if><g:else>${usuario.nome}</g:else>!</p>
+		<div class="container">
+			<h1>Meus Acompanhamentos</h1>
 			<br/>
 			<div>
 				<h2>Deputados de Interesse</h2>

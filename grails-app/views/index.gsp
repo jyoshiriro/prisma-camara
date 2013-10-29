@@ -2,33 +2,32 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Bem-vindo ao Prisma-Câmara</title>
+		<title>Bem-vindo!</title>
 	</head>
 	<body>
 		<div class="container">
 			<div>
-				<h1>Bem-vindo ao Prisma-Câmara</h1>
+				<h1>Bem-vindo!</h1>
 				<p>
 					Este software foi desenvolvido durante o evento Hackathon 2013 da Câmara dos Deputados.<br/>
 					Equipe formada por José Yoshirio e Raimundo Lameira.<br/>
 					Este é um software livre e seu código pode ser acessado <a href="https://github.com/jyoshiriro/prisma-camara">aqui</a>.
 				</p>
 			</div>
-			
-			<div>
-				<br/>
-				<sec:ifNotGranted roles="ROLE_USER">
-					Acesse o sistema:<br/>
-					<facebookAuth:connect /> ou <twitterAuth:button />
-				</sec:ifNotGranted>
-				<br/>
-				<br/>
-				<sec:ifAllGranted roles="ROLE_USER">
-					Bem-vindo <sec:username/>! (<g:link uri="/j_spring_security_logout">Logout</g:link>)
-					<br/>
-					<g:link class="create" controller="facebookPost" action="timeline">Minha Timeline</g:link>
-				</sec:ifAllGranted>
-			</div>
+			<sec:ifNotLoggedIn>
+				<div class="row">
+					<div class="col-md-4 col-md-offset-1" style="text-align: center;">Acesse o sistema:</div>
+				</div>			
+				<div class="row">
+					<div class="col-md-1 col-md-offset-1"><facebookAuth:connect /></div>
+					<div class="col-md-1 col-md-offset-1"><twitterAuth:button /></div>
+				</div>
+			</sec:ifNotLoggedIn>
+			<sec:ifAllGranted roles="ROLE_USER">
+				<div class="row">
+					<div class="col-md-4 col-md-offset-1" style="text-align: center;">Use o sistema acessando as opções do menu.</div>
+				</div>
+			</sec:ifAllGranted>
 
 			<%--
 			<div id="controller-list" role="navigation">
