@@ -49,7 +49,7 @@
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<g:javascript library="application"/>
+		<script src="${resource(dir: 'js', file: 'application.js')}"></script>
 		<r:layoutResources />
 	</body>
 </html>
