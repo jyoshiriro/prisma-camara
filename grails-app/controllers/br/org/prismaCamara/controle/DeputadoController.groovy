@@ -13,34 +13,43 @@ class DeputadoController {
 	def springSecurityService
 	
     def list() {		
+		cache(validUntil:new Date()+3)
 		
 		Usuario usuario = springSecurityService.currentUser
 		
 		def mapDeputados = [:]
 		def listaDeputados = []
-		// TODO: caso nada venha na pesquisa, pegar todos os já associados ao usuario e mandar essa lista para a view
-		
+
+		// caso nada venha na pesquisa, pegar todos os já associados ao usuario e mandar essa lista para a view
 		if (!params.q) {
 			listaDeputados = usuarioService.getDeputadosDeUsuario(usuario)
 		}
 		else {
-			if (params.q.size()>2) {
+			if (params.q.size()>=2) {
 				def pesquisa = PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa(params.q)
 				
 				log.debug "Pesquisa fonetizada: ${pesquisa}"
 				listaDeputados = Deputado.searchEvery(pesquisa)
-				log.debug "Resultado: ${listaDeputados.id}"
-				listaDeputados.each { it.refresh() }
+				log.debug "Resultado: ${listaDeputados.size()}"
+				
+				if (!listaDeputados) {
+					request.message="Nenhum Deputado encontrado com \"${params.q}\""
+				} else {
+					listaDeputados.each { it.refresh() }
+					listaDeputados.sort{d1,d2-> d1.nomeParlamentar<=>d2.nomeParlamentar}
+				}
+			} else {
+				request.message="Digite pelo menos 2 letras na pesquisa"
 			}
 			
 		}
 		
-		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(usuario)
+		def deputadosDeUsuario = listaDeputados?:usuarioService.getDeputadosDeUsuario(usuario)
 		for (dep in listaDeputados) {
 			if (!dep.ativo)
 				continue
-				def mapeado = deputadosDeUsuario.contains(dep)
-				mapDeputados.put(dep, mapeado)
+			def mapeado = deputadosDeUsuario.contains(dep)
+			mapDeputados.put(dep, mapeado)
 		}
 		
 		render(template:'resultadoPesquisa',model:[mapa:mapDeputados])
@@ -53,7 +62,7 @@ class DeputadoController {
 	 * @return
 	 */
 	def foto() {
-		cache(validUntil:new Date()+30)
+		cache(validUntil:new Date()+90)
 		
 		def dep = Deputado.get(params.id)
 		def bmini = dep.foto
