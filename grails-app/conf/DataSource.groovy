@@ -46,8 +46,8 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-    		url = "jdbc:mysql://localhost:3306/hackathon"
-    		username = "root"
+    		url = "jdbc:mysql://ec2-50-19-213-178.compute-1.amazonaws.com/hackathon2013"
+    		username = "hackathon2013"
     		password = "123456"
             pooled = true
             properties {
