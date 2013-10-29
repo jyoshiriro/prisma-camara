@@ -1,10 +1,11 @@
 package br.org.prismaCamara.job
 
 import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.TipoProposicao;
 import br.org.prismaCamara.servico.atualizacoes.AtualizarTipoProposicaoService
 
 /**
- * Job de atualização de cadastro de {@link Deputado}. Executado Diariamente, as 01:00:00
+ * Job de atualização de cadastro de {@link TipoProposicao}. Executado Diariamente, as 01:00:00
  * @author jyoshiriro
  */
 @Log4j
