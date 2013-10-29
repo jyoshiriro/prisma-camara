@@ -8,10 +8,15 @@
 		<div class="container">
 			<h1>Meus Acompanhamentos</h1>
 			<br/>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-			    	<h3 class="panel-title">Deputados de Interesse</h3>
+			<nav class="navbar navbar-default">
+				<div class="nav navbar-nav">
+					<p class="navbar-text"><span class="glyphicon glyphicon-user"></span> Deputados</p>
 				</div>
+				<div class="nav navbar-nav navbar-right">
+					<p class="navbar-text">Você acompanha X</p>
+				</div>
+			</nav>
+			<div class="panel panel-default">
 				<div class="panel-body">
 			    	<table id="tbDeputados">
 					    <thead>
