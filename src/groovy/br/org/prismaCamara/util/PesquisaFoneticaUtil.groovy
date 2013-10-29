@@ -164,7 +164,7 @@ class PesquisaFoneticaUtil {
 	}
 	
 	static main(args) {
-		println "Pesquisa: " + PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa("ALESSANDRO") + " " +  PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa("ALESSANDRO");
+		println "Pesquisa: " + PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa("190") + " " +  PesquisaFoneticaUtil.getTermosFoneticosParaPesquisa("300");
 	} 
 	
 }
