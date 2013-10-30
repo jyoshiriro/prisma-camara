@@ -23,7 +23,7 @@ class PrepararEnvioFrequenciaDiaJob {
         def usuarios = Usuario.list()
 		
 		for (usuario in usuarios) {
-			def deputados = usuarioService.getDeputadosDeUsuario(usuario)
+			def deputados = usuarioService.getDeputadosDeUsuario(usuario,true)
 			
 			for (deputado in deputados) {
 				prepararPostFrequenciaDiaService.preparar(usuario, deputado.id)
