@@ -13,7 +13,7 @@ class PainelController {
 	def springSecurityService
 	def usuarioService
 	
-	def aliasEntidades = [Deputados:['Deputado(a)','Deputados(as)'],Proposicoes:['Proposição','Proposições'],Partido:['Partido','Partidos']]
+	def aliasEntidades = [Deputados:['Deputado(a)','Deputados(as)'],Proposicoes:['Proposição','Proposições'],Partidos:['Partido','Partidos']]
 	
 	def getUsuarioautenticado() {
 		Usuario usuarioAtual = springSecurityService.currentUser
@@ -45,7 +45,7 @@ class PainelController {
 		def cont = session["contagem${id}"]
 		if (cont) {
 			def idplural = cont?1:0
-			def desc = aliasEntidades["$id"][idplural]
+			def desc = aliasEntidades.get(id)[idplural]
 			render("Você já acompanha <b>${cont}</b> ${desc}")
 		}
 		else {
