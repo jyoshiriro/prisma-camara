@@ -22,7 +22,7 @@ class PainelController {
 	def springSecurityService
 	def usuarioService
 	
-	def pegaUsuarioLogado() {
+	def getUsuarioautenticado() {
 		Usuario usuarioAtual = springSecurityService.currentUser
 		if (!usuarioAtual.nome)
 			usuarioService.atualizaNome(usuarioAtual)
@@ -31,22 +31,36 @@ class PainelController {
 	}
 
     def index() {
-		[ usuario : pegaUsuarioLogado() ]
+		def usuario = getUsuarioautenticado()
+		
+		def contagemDeputados = usuarioService.countDeputadosDeUsuario(usuario)
+		def contagemPartidos = usuarioService.countPartidosDeUsuario(usuario)
+		def contagemProposicoes = usuarioService.countProposicoesDeUsuario(usuario)
+		
+		session.contagemDeputados = contagemDeputados
+		session.contagemPartidos = contagemPartidos
+		session.contagemProposicoes = contagemProposicoes 
+	}
+	
+	def contagem(String id) {
+		def cont = session["contagem${id}"]
+		if (cont) {
+			render("Você já acompanha <b>${cont}</b>")
+		}
+		else {
+			render("Ainda não acompanha nenhum")
+		}
 	}
 	
 	def editarUsuario() {
 		
 	}
 	
-	def configurarPostagens() {
-		[ usuario : pegaUsuarioLogado() ]
-	}
-	
 	/***
 	 * Action para selecionar deputados para serem adicionados à lista de acompanhamento.
 	 */
 	def adicionarDeputados() {
-		[ usuario : pegaUsuarioLogado() ]
+		[ usuario : getUsuarioautenticado() ]
 	}
 
 	
@@ -54,11 +68,11 @@ class PainelController {
 	 * Action para selecionar proposições para serem adicionadas à lista de acompanhamento.
 	 */
 	def adicionarProposicoes() {
-		[ usuario : pegaUsuarioLogado() ]
+		[ usuario : getUsuarioautenticado() ]
 	}
 	
 	def gravarProposicoes() {
-		Usuario usuario = pegaUsuarioLogado()
+		Usuario usuario = getUsuarioautenticado()
 		def proposicoesSelecionadas = params.list('proposicoesSelecionadas')
 		log.debug "Proposições selecionadas: ${proposicoesSelecionadas}"
 		proposicoesSelecionadas?.each {
@@ -67,14 +81,14 @@ class PainelController {
 			up.save()
 			log.debug("O usuário ${up.usuario.username} agora acompanha a Proposição ${up.proposicao.descricao}")
 		}
-		redirect(action: 'configurarPostagens')
+		redirect(action: 'meusAcompanhamentos')
 	}
 	
 	def removerProposicao() {
 		def up = UsuarioProposicao.get(params.id)
 		up.delete(flush:true)
 		log.debug("O usuário ${up.usuario.username} não acompanha mais a Proposição ${up.proposicao.descricao}")
-		redirect action: 'configurarPostagens'
+		redirect action: 'meusAcompanhamentos'
 	}
 	
 }

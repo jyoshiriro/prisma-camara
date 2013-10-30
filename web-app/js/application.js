@@ -7,3 +7,14 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+function toogleAssociar(elemento) {
+	$("#s"+elemento.id).toggleClass('glyphicon-check');
+	$("#s"+elemento.id).toggleClass('glyphicon-search');
+	$("#s"+elemento.id).parent().parent().toggleClass('nao');
+	$("#linkContagem").click();
+}
+
+function fecharDivs() {
+	$('#divAcompanhaDeputados,#divAcompanhaProposicoes,#divAcompanhaPartidos').html('');
+}
