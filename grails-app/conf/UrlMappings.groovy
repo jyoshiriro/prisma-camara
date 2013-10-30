@@ -3,7 +3,6 @@ class UrlMappings {
 	static mappings = {
 		
 		"/painel" (controller: 'painel', action: 'index')
-		"/painel/sobre" view: "sobre"
 		"/docs" (controller: 'docs', action:'index')
 		
 		"/searchable/$action?" (controller: "erros", action: "naoEncontrado")
