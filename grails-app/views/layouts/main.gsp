@@ -32,19 +32,14 @@
 		        	<ul class="nav navbar-nav">
 			            <li><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
 			            <sec:ifAllGranted roles="ROLE_USER">
-			            	<li class="dropdown">
-						    	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Painel <b class="caret"></b></a>
-						        <ul class="dropdown-menu">
-						        	<li><a href="#">Meu Perfil</a></li>
-							        <li><g:link controller="painel" action="meusAcompanhamentos">Meus Acompanhamentos</g:link></li>
-						        </ul>
-						    </li>
+				        	<li><a href="#">Meu Perfil</a></li>
+					        <li><g:link controller="painel" action="configurarPostagens">Meus Acompanhamentos</g:link></li>
 				        </sec:ifAllGranted>
 				        <li><a href="#contact">Sobre</a></li>
 			    	</ul>
 		            <sec:ifAllGranted roles="ROLE_USER">
 		            	<ul class="nav navbar-nav navbar-right">
-			              <li><a href="#">Bem-vindo(a), <sec:username/></a></li>
+			              <li><a href="#"><sec:username/></a></li>
 			              <li><a href="#">Sair</a></li>
 			            </ul>
 		            </sec:ifAllGranted>

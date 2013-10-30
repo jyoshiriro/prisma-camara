@@ -1,4 +1,4 @@
-package hackathon2013
+package br.org.prismaCamara.servicos
 
 import static org.junit.Assert.*
 import org.junit.*

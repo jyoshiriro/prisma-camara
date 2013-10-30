@@ -16,6 +16,7 @@ INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL para obter 
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da Camara com relatório de frequencia de Deputado', 'url_frequencia_site', 'http://www.camara.leg.br/internet/deputado/RelPresencaPlenario.asp?nuLegislatura=54&nuMatricula=${matricula}&dtInicio=${dtinicio}&dtFim=${dtfim}');
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da Camara a foto Deputado', 'url_foto_deputado', 'http://www.camara.gov.br/internet/deputado/bandep/');
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do servico que retorna o XML os partidos', 'url_listagem_partidos', 'http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterPartidosCD');
+INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'Diretório onde são armazenadas as miniaturas das imagens dos deputados.', 'dir_miniaturas', 'E:/junior');
 
 -- Indice na tabela de despesas
 CREATE INDEX idx_despesa ON despesa(data_emissao,deputado_id,txt_numero);

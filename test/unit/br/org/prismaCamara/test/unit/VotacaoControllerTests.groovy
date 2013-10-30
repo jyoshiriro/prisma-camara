@@ -1,7 +1,6 @@
 package br.org.prismaCamara.test.unit
 
 
-
 import org.junit.*
 import grails.test.mixin.*
 

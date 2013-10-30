@@ -1,16 +1,37 @@
 package br.org.prismaCamara.servico
 
-import java.util.List;
+import groovy.util.logging.Log4j
+
+import org.springframework.social.facebook.api.Facebook
+import org.springframework.social.facebook.api.FacebookProfile
+import org.springframework.social.facebook.api.impl.FacebookTemplate
 
 import br.org.prismaCamara.modelo.Deputado
-import br.org.prismaCamara.modelo.Partido;
+import br.org.prismaCamara.modelo.Partido
 import br.org.prismaCamara.modelo.Proposicao
-import br.org.prismaCamara.modelo.Usuario;
+import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.modelo.UsuarioFacebook
 import br.org.prismaCamara.modelo.UsuarioPartido
-import br.org.prismaCamara.modelo.UsuarioProposicao;
+import br.org.prismaCamara.modelo.UsuarioProposicao
 
+@Log4j
 class UsuarioService {
+	
+
+	/**
+	 * Atualiza o nome do usuário com seu nome em sua Rede Social no momento do cadastro 
+	 * @param usuario
+	 * @return
+	 */
+	def atualizaNome(Usuario usuario) {
+		UsuarioFacebook usuarioFacebook = UsuarioFacebook.findByUser(usuario)
+		Facebook facebook = new FacebookTemplate(usuarioFacebook.accessToken)
+		FacebookProfile fbProfile = facebook.userOperations().userProfile
+		usuario.nome = fbProfile.name
+		usuario.save()
+		log.debug "Usuario ${usuario.username} atualizado. Nome: ${usuario.nome}"
+	}
 	
 	/**
 	 * Verifica de um deputado é observado por pelo menos 1 usuário, seja via acompanhamento direto ({@link UsuarioDeputado}), seja via partido ({@link UsuarioPartido})
@@ -40,9 +61,6 @@ class UsuarioService {
 		deputados+=Deputado.findAllByPartidoInListAndAtivo(partidos,true)
 		return deputados
 		
-		/*Set<Deputado> deputados = Deputado.getAll(10,619,173,374,324,458, 437,174,359,479,500,5,320)
-		deputados = deputados.sort{d1,d2-> d1.nomeParlamentar<=>d2.nomeParlamentar} 
-		deputados*/
 	}
 	
 	/**
@@ -127,8 +145,8 @@ class UsuarioService {
 	List<Proposicao> getProposicoesDeUsuario(usuario) {
 		def proposicoes = UsuarioProposicao.executeQuery("select up.proposicao from UsuarioProposicao up where up.usuario=?",[usuario])
 		proposicoes 
-		/*return getProposicoesMapeadas() as List*/
 	}
+	
 	/**
 	 * Contagem de proposições que um determinado usuário acompanha
 	 * @param usuario Intancia de {@link Usuario}

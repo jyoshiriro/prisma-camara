@@ -6,6 +6,7 @@ import org.apache.commons.lang.WordUtils
 
 import br.org.prismaCamara.util.ImagensUtil
 import br.org.prismaCamara.util.PesquisaFoneticaUtil;
+import br.org.prismaCamara.util.StringUtil;
 import br.org.prismaCamara.util.URLUtil
 
 @Log4j
@@ -130,8 +131,10 @@ class Deputado {
 	 * @return
 	 */
 	public byte[] getFoto() {
-		
-		def nomeArquivo = "deputado-${this.id}.jpg"
+		def dirImagens = Parametro.findBySigla('url_foto_deputado').valor
+		dirImagens += StringUtil.terminaCom(dirImagens, "/", "\\") ? "" : "\\"
+		def nomeArquivo = "${dirImagens}deputado-${this.id}.jpg"
+		log.debug "Arquivo: ${nomeArquivo}"
 		def bmini = ImagensUtil.getImagemLocal(nomeArquivo)
 		
 		// a miniatura local provavelmente existirá por causa da Atualização dos Deputados, mas, em todo caso...
