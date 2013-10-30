@@ -1,5 +1,7 @@
 package br.org.prismaCamara.servico
 
+import java.util.List;
+
 import br.org.prismaCamara.modelo.Deputado
 import br.org.prismaCamara.modelo.Partido;
 import br.org.prismaCamara.modelo.Proposicao
@@ -10,6 +12,11 @@ import br.org.prismaCamara.modelo.UsuarioProposicao;
 
 class UsuarioService {
 	
+	/**
+	 * Verifica de um deputado é observado por pelo menos 1 usuário, seja via acompanhamento direto ({@link UsuarioDeputado}), seja via partido ({@link UsuarioPartido})
+	 * @param deputado
+	 * @return
+	 */
 	boolean isDeputadoObservado(Deputado deputado) {
 
 		def deputados = UsuarioDeputado.countByDeputado(deputado)
@@ -38,57 +45,113 @@ class UsuarioService {
 		deputados*/
 	}
 	
-	Integer countDeputadosDeUsuario(Usuario usuario) {
+	/**
+	 * Contagem de deputados um determinado usuário acompanha
+	 * @param usuario Intancia de {@link Usuario}
+	 * @param considerarPartidos Se <b>true</b>, considera os acompanhamentos via {@link UsuarioPartido}, caso contrário, só considera os acompanhamentos diretos de {@link UsuarioDeputado}
+	 * @return
+	 */
+	Integer countDeputadosDeUsuario(Usuario usuario, boolean considerarPartidos) {
 		def deputados1 = Usuario.executeQuery("""
-			select count(ud.deputado) from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=? order by ud.deputado.nomeParlamentar
+			select count(ud.deputado) from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=?
 			""",[usuario])
 			
-		def deputados2 = Partido.executeQuery("""
+		def deputados2 = considerarPartidos?Partido.executeQuery("""
 			select count(d) from Deputado d where d.partido in 
 			(select up.partido from UsuarioPartido up where up.usuario=:u)
 			and d not in (
-				select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=? order by ud.deputado.nomeParlamentar
+				select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=:u
 			)  
 			order by d.nomeParlamentar
-			""",[u:usuario])
+			""",[u:usuario]):[0]
 		
-		Integer countt = deputados1+deputados2
+		Integer countt = deputados1[0]+deputados2[0]
 		return countt
 	}
 	
-	List<Deputado> getDeputadosDeUsuario(Usuario usuario) {
+	/**
+	 * Listagem de deputados um determinado usuário acompanha
+	 * @param usuario Intancia de {@link Usuario}
+	 * @param considerarPartidos Se <b>true</b>, considera os acompanhamentos via {@link UsuarioPartido}, caso contrário, só considera os acompanhamentos diretos de {@link UsuarioDeputado}
+	 * @return a {@link List} preenchida ou vazia. Nunca <code>null</code>.
+	 */
+	List<Deputado> getDeputadosDeUsuario(Usuario usuario, boolean considerarPartidos) {
 		def deputados1 = Usuario.executeQuery("""
 			select ud.deputado from UsuarioDeputado ud where ud.deputado.ativo=true and ud.usuario=? order by ud.deputado.nomeParlamentar
 			""",[usuario])
 		
-		def deputados2 = Partido.executeQuery("""
+		def deputados2 = considerarPartidos?Partido.executeQuery("""
 			select d from Deputado d where d.partido in 
 			(select up.partido from UsuarioPartido up where up.usuario=:u)
 			and d not in (:deps)  
 			order by d.nomeParlamentar
-			""",[u:usuario,deps:deputados1?:[Deputado.get(0)]])
+			""",[u:usuario,deps:deputados1?:[Deputado.get(0)]]):[]
+		
 		List deputadost = deputados1+deputados2
 		return deputadost
 		/*return Deputado.getAll(10,619,173,500,374,324,458,437,174,359,479,500,5,320)*/
 	}
 	
+	/**
+	 * Listagem de partidos um determinado usuário acompanha
+	 * @param usuario Intancia de {@link Usuario}
+	 * @return a {@link List} preenchida ou vazia. Nunca <code>null</code>.
+	 */
+	List<Partido> getPartidosDeUsuario(Usuario usuario) {
+		def partidos = Partido.executeQuery("""
+			select up.partido from UsuarioPartido up where up.usuario=?
+			order by up.partido.sigla
+			""",[usuario])
+
+		return partidos
+	}
+	
+	/**
+	 * Contagem de partidos um determinado usuário acompanha
+	 * @param usuario Intancia de {@link Usuario}
+	 * @return 
+	 */
+	Integer countPartidosDeUsuario(Usuario usuario) {
+		def cpartidos = Partido.executeQuery("""
+				select count(up.partido) from UsuarioPartido up where up.usuario=?
+				""",[usuario])
+				
+		return cpartidos[0]
+	}
+	
+	/**
+	 * Listagem de proposições um determinado usuário acompanha
+	 * @param usuario Intancia de {@link Usuario}
+	 * @return a {@link List} preenchida ou vazia. Nunca <code>null</code>.
+	 */
 	List<Proposicao> getProposicoesDeUsuario(usuario) {
 		def proposicoes = UsuarioProposicao.executeQuery("select up.proposicao from UsuarioProposicao up where up.usuario=?",[usuario])
 		proposicoes 
 		/*return getProposicoesMapeadas() as List*/
 	}
+	/**
+	 * Contagem de proposições que um determinado usuário acompanha
+	 * @param usuario Intancia de {@link Usuario}
+	 * @return 
+	 */
+	Integer countProposicoesDeUsuario(usuario) {
+		def cproposicoes = UsuarioProposicao.executeQuery("select count(up) from UsuarioProposicao up where up.usuario=?",[usuario])
+		cproposicoes[0] 
+	}
 		
 	/**
-	 * Recupera todos as Proposições associados a {@link Usuario}, pela associação com {@link Proposicao}
+	 * Recupera todos as Proposições que pelo menos 1 usuário acompanha {@link UsuarioProposicao}
 	 * @return
 	 */
 	Set<Proposicao> getProposicoesMapeadas() {
-		Set<Proposicao> proposicoes = Usuario.executeQuery("select proposicao from UsuarioProposicao")
+		Set<Proposicao> proposicoes = Usuario.executeQuery("select proposicao from UsuarioProposicao") as Set
 		return proposicoes
-		/*Set<Proposicao> proposicoes = Proposicao.findAllByNumeroInList([190,300])
-		proposicoes*/
 	}
 
+	/**
+	 * Recuperar um Deputado aleatório (para o e envio de biografia automática
+	 * @return
+	 */
 	private Deputado getDeputadoAleatorio() {
 		def quantAtivos = Deputado.countByAtivo(true)
 		def id = new Random().nextInt(quantAtivos.toInteger())-1
