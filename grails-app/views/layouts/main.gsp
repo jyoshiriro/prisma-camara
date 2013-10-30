@@ -32,8 +32,8 @@
 		        	<ul class="nav navbar-nav">
 			            <li><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
 			            <sec:ifAllGranted roles="ROLE_USER">
-				        	<li><g:link controller="painel" action="meuPerfil">Meu Perfil</g:link></li>
 					        <li><g:link controller="painel" action="index">Meus Acompanhamentos</g:link></li>
+				        	<li><g:link controller="painel" action="meuPerfil">Meu Perfil</g:link></li>
 				        </sec:ifAllGranted>
 				        <li><g:link controller="painel" action="sobre">Sobre</g:link></li>
 			    	</ul>

@@ -26,20 +26,19 @@
 					</g:else>
 				</div>
 				
-					<div class="alert alert-warning painel">
-			    <p>
-			    Pesquise e adicione <b>Deputados</b> à sua conta.
-				</p>
-				<p>
-				De cada Deputado que escolher acompanhar, receberá sem sua rede social, diariamente as suas:
-				</p>
-				<ol>
-					<li><span>Frequência diária</span></li>
-					<li><span>Gastos que realizou</span></li>
-					<li><span>Discursos que proferiu</span></li>
-				</ol>
-				</p>
-			</div>
+				<div class="alert alert-warning painel">
+				    <p>
+				    Pesquise e adicione <b>Deputados</b> à sua conta.
+					</p>
+					<p>
+					De cada Deputado que escolher acompanhar, receberá sem sua rede social, diariamente as suas:
+					</p>
+					<ol>
+						<li><span>Frequência diária</span></li>
+						<li><span>Gastos que realizou</span></li>
+						<li><span>Discursos que proferiu</span></li>
+					</ol>
+				</div>
 			</nav>
 			
 			<nav class="navbar navbar-default">
