@@ -107,3 +107,59 @@ b.marcado:HOVER,b.marcado.nao:HOVER {
 	border: 1px solid #EFFBF5;
 	background-color: #FFF;
 }
+
+.painel{
+	width: 96%; 
+	margin-top: 3.5em;
+	margin-left: 2%;
+	height: 21em;
+}
+
+.alert.alert-warning.painel{
+	color:#886A08;		
+}
+
+.alert.painel p{
+	margin-bottom: 1em;
+	text-align: justify;
+}
+.alert.painel li{
+	margin-bottom: 0.3em;
+	font-weight: bold;
+}
+.alert.painel li span{
+	font-weight: normal;
+}
+
+.botao-face{
+	background: url('../images/botao-face.png') no-repeat scroll 0 0 transparent;
+	width: 89px;
+	height: 24px;
+	border: 0 none;
+	display: inline-block;
+}
+
+.botao-twitter{
+	background: url('../images/botao-twitter.png') no-repeat scroll 0 0 transparent;
+	width: 89px;
+	height: 24px;
+	border: 0 none;
+	display: inline-block;
+	padding-top: 1em;
+}
+
+.peq{
+	color: #CCC;
+	font-size: 1em;
+}
+
+.redes {
+	float: left;
+}
+.redes a{
+	padding-top: 1em;
+}
+.redes.peq{
+	margin-left: 1em;
+	margin-right: 1em;
+}
