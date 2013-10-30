@@ -7,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title><g:layoutTitle default="Grails"/></title>
+		<title>Olho na Câmara <g:layoutTitle/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<r:require modules="twitterAuth, application"/>
 		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
@@ -36,7 +36,7 @@
 						    	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Painel <b class="caret"></b></a>
 						        <ul class="dropdown-menu">
 						        	<li><a href="#">Meu Perfil</a></li>
-							        <li><g:link controller="painel" action="configurarPostagens">Meus Acompanhamentos</g:link></li>
+							        <li><g:link controller="painel" action="meusAcompanhamentos">Meus Acompanhamentos</g:link></li>
 						        </ul>
 						    </li>
 				        </sec:ifAllGranted>
