@@ -7,8 +7,9 @@
 	<body>
 		<div class="container">
 		
+			<div style="width: 476px; margin-bottom: 1em">
 			<g:include view="banner-home.gsp"/>
-			
+			</div>
 			
 			<sec:ifNotLoggedIn>
 				<div style="margin-bottom: 0.7em; margin-left: 3em">
