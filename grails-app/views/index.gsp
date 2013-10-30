@@ -6,11 +6,6 @@
 	</head>
 	<body>
 		<div class="container">
-		
-			<div style="width: 476px; margin-bottom: 1em">
-			<g:include view="banner-home.gsp"/>
-			</div>
-			
 			<sec:ifNotLoggedIn>
 				<div style="margin-bottom: 0.7em; margin-left: 3em">
 					<span class="glyphicon glyphicon-arrow-left"></span> 
@@ -28,17 +23,11 @@
 			<sec:ifAllGranted roles="ROLE_USER">
 				<p>Use o sistema acessando as opções do menu.</p>
 			</sec:ifAllGranted>
-
-			<%--
-			<div id="controller-list" role="navigation">
-				<h2>Ações Disponíveis:</h2>
-				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
-				</ul>
+			
+			<div style="width: 476px; margin-top: 3.5em">
+			<g:include view="banner-home.gsp"/>
 			</div>
-			--%>
+			
 		</div>
 	</body>
 </html>
