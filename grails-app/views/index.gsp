@@ -6,19 +6,22 @@
 	</head>
 	<body>
 		<div class="container">
-			<h1>Bem-vindo!</h1>
-			<p>
-				Este software foi desenvolvido durante o evento Hackathon 2013 da Câmara dos Deputados.<br/>
-				Equipe formada por José Yoshirio e Raimundo Lameira.<br/>
-				Este é um software livre e seu código pode ser acessado <a href="https://github.com/jyoshiriro/prisma-camara">aqui</a>.
-			</p>
+		
+			<g:include view="banner-home.gsp"/>
+			
+			
 			<sec:ifNotLoggedIn>
-				<div class="row">
-					<div class="col-md-4 col-md-offset-1" style="text-align: center;">Acesse o sistema:</div>
+				<div style="margin-bottom: 0.7em; margin-left: 3em">
+					<span class="glyphicon glyphicon-arrow-left"></span> 
+					Conecte-se com
+					<span class="glyphicon glyphicon-arrow-right"></span>
 				</div>			
-				<div class="row">
-					<div class="col-md-1 col-md-offset-1"><facebookAuth:connect /></div>
-					<div class="col-md-1 col-md-offset-1"><twitterAuth:button /></div>
+				<div class="redes">
+					<a href="/prisma-camara/j_spring_security_facebook_redirect" class="botao-face" title="Entrar com Facebook"></a>
+				</div>
+				<div class="redes peq"> ou </div>
+				<div class="redes">
+					<a href="/prisma-camara/j_spring_twitter_security_check" class="botao-twitter" title="Entrar com Twitter"></a>
 				</div>
 			</sec:ifNotLoggedIn>
 			<sec:ifAllGranted roles="ROLE_USER">
