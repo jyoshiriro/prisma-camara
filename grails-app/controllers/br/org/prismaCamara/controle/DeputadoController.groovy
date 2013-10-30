@@ -96,11 +96,11 @@ class DeputadoController {
 				ud = new UsuarioDeputado(usuario:usuario, deputado:deputado)
 				ud.save()
 			}
-			Integer contagemDeputados = usuarioService.countDeputadosDeUsuario(usuario)
+			Integer contagemDeputados = usuarioService.countDeputadosDeUsuario(usuario, false)
 			session.contagemDeputados = contagemDeputados
 			render(status:200)
 		} catch (Exception e) {
-			log.error("Erro ao tentar (des)associar deputado (${deputado.descricao}) a usuário ${usuario.login}: ${e.message}")
+			log.error("Erro ao tentar (des)associar deputado (${deputado.descricao}) a usuário ${usuario.username}: ${e.message}")
 			e.printStackTrace()
 			render(status:500, text:message(code:'erro.padrao'))
 		} 
