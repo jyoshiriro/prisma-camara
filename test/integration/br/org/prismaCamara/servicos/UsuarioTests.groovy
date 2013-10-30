@@ -1,4 +1,6 @@
-package hackathon2013
+package br.org.prismaCamara.servicos
+
+import br.org.prismaCamara.modelo.Usuario
 
 class UsuarioTests {
 

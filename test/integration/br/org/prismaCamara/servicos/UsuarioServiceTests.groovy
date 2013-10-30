@@ -2,6 +2,7 @@ package br.org.prismaCamara.servicos
 
 import static org.junit.Assert.*
 
+import br.org.prismaCamara.servico.UsuarioService
 import org.junit.*
 
 class UsuarioServiceTests {
