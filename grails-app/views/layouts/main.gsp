@@ -32,15 +32,15 @@
 		        	<ul class="nav navbar-nav">
 			            <li><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
 			            <sec:ifAllGranted roles="ROLE_USER">
-				        	<li><a href="#">Meu Perfil</a></li>
+				        	<li><g:link controller="painel" action="meuPerfil">Meu Perfil</g:link></li>
 					        <li><g:link controller="painel" action="index">Meus Acompanhamentos</g:link></li>
 				        </sec:ifAllGranted>
-				        <li><a href="#contact">Sobre</a></li>
+				        <li><g:link controller="painel" action="sobre">Sobre</g:link></li>
 			    	</ul>
 		            <sec:ifAllGranted roles="ROLE_USER">
 		            	<ul class="nav navbar-nav navbar-right">
-			              <li><a href="#"><g:nomeUsuario /></a></li>
-			              <li><a href="#">Sair</a></li>
+			              <li><g:link controller="painel" action="meuPerfil"><g:nomeUsuario /></g:link></li>
+			              <li><g:link controller="logout" action="index">Sair</g:link></li>
 			            </ul>
 		            </sec:ifAllGranted>
 	    		</div><!--/.nav-collapse -->

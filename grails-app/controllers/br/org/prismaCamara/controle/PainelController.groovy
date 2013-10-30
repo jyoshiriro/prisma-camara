@@ -15,14 +15,14 @@ class PainelController {
 	
 	def aliasEntidades = [Deputados:['Deputado(a)','Deputados(as)'],Proposicoes:['Proposição','Proposições'],Partido:['Partido','Partidos']]
 	
-	def getUsuarioautenticado() {
+	def getUsuarioAutenticado() {
 		Usuario usuarioAtual = springSecurityService.currentUser
 		log.debug "Usuário logado: $usuarioAtual"
 		return usuarioAtual
 	}
 
     def index() {
-		def usuario = getUsuarioautenticado()
+		def usuario = getUsuarioAutenticado()
 		
 		if (!session.contagemDeputados) {
 			def contagemDeputados = usuarioService.countDeputadosDeUsuario(usuario,false)
@@ -52,6 +52,16 @@ class PainelController {
 			render("Ainda não acompanha nenhum${id=='Deputado'?'(a)':''}")
 		}
 	}
-
+	
+	def meuPerfil() {
+		[ nome : getUsuarioAutenticado().nome]
+	}
+	
+	def atualizaNome() {
+		Usuario usuario = getUsuarioAutenticado()
+		usuario.nome = params.nome
+		usuario.save()
+		redirect action: 'meuPerfil'
+	}
 	
 }
