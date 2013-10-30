@@ -18,3 +18,4 @@ stacktrace.log
 *.log
 /.directory
 LICENSE
+.directory
