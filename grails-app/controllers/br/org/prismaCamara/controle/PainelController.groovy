@@ -6,7 +6,6 @@ import br.org.prismaCamara.modelo.Usuario
 
 
 @Log4j
-@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
 class PainelController {
 	
 	def searchableService
@@ -15,12 +14,15 @@ class PainelController {
 	
 	def aliasEntidades = [Deputados:['Deputado(a)','Deputados(as)'],Proposicoes:['Proposição','Proposições'],Partidos:['Partido','Partidos']]
 	
+	def sobre() {}
+	
 	def getUsuarioAutenticado() {
 		Usuario usuarioAtual = springSecurityService.currentUser
 		log.debug "Usuário logado: $usuarioAtual"
 		return usuarioAtual
 	}
 
+	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
     def index() {
 		def usuario = getUsuarioAutenticado()
 		
@@ -53,10 +55,12 @@ class PainelController {
 		}
 	}
 	
+	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
 	def meuPerfil() {
 		[ nome : getUsuarioAutenticado().nome]
 	}
 	
+	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
 	def atualizaNome() {
 		Usuario usuario = getUsuarioAutenticado()
 		usuario.nome = params.nome
