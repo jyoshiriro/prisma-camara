@@ -24,7 +24,7 @@ class AtualizarDiscursoService extends AtualizadorEntidade {
 	
 	@Override
 	public Object atualizar() {
-		Date proximaAtualizacao = Date.parse('dd/MM/yyyy', '26/09/2013') // new Date()
+		Date proximaAtualizacao = new Date()-15//Date.parse('dd/MM/yyyy', '26/09/2013') // new Date()
 		
 		def urlT = null
 		GPathResult xmlr = null
