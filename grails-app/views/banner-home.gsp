@@ -12,19 +12,19 @@
     <div class="item active">
       <img src="${resource(dir:'images',file:'foto-home-01.jpg')}" alt="Câmara dos Deputados">
       <div class="carousel-caption">
-        Câmara dos Deputados
+        Acompanhe atividades de Deputados e andamento de <br>Proposições da Câmara dos Deputados
       </div>
     </div>
     <div class="item">
       <img src="${resource(dir:'images',file:'foto-home-02.jpg')}" alt="Transparência com os gastos de Cota Parlamentar">
       <div class="carousel-caption">
-        Transparência com os gastos de Cota Parlamentar
+        Acompanhe uso de Cota Parlamentar, Frequências e <br>Discursos dos Deputados
       </div>
     </div>
     <div class="item">
       <img src="${resource(dir:'images',file:'foto-home-03.jpg')}" alt="Acompanhamento de Proposições">
       <div class="carousel-caption">
-        Acompanhamento de Proposições
+        Acompanhe a realização das votações<br> das Proposições (PEC, PL, PLP, PRO, etc.)
       </div>
     </div>
     
