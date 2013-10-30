@@ -1,20 +1,25 @@
 package br.org.prismaCamara.controle
 
+import grails.plugins.springsecurity.Secured
+import groovy.util.logging.Log4j
 import br.org.prismaCamara.modelo.Proposicao
 import br.org.prismaCamara.modelo.Usuario
-import br.org.prismaCamara.modelo.UsuarioDeputado
 import br.org.prismaCamara.modelo.UsuarioProposicao
 import br.org.prismaCamara.util.PesquisaFoneticaUtil
 
+@Log4j
+@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
 class ProposicaoController {
 	
 	def usuarioService
 	def springSecurityService
 
-    def index() { }
+	
+	def index() {
+		
+	}
 	
 	def list() {
-		cache(validUntil:new Date()+3)
 		
 		Usuario usuario = springSecurityService.currentUser
 		
@@ -70,6 +75,8 @@ class ProposicaoController {
 				up = new UsuarioProposicao(usuario:usuario, proposicao:proposicao)
 				up.save()
 			}
+			Integer contagemProposicoes = usuarioService.countProposicoesDeUsuario(usuario)
+			session.contagemProposicoes = contagemProposicoes
 			render(status:200)
 		} catch (Exception e) {
 			log.error("Erro ao tentar (des)associar proposição (${proposicao.descricao}) a usuário ${usuario.login}: ${e.message}")

@@ -1,5 +1,6 @@
 package br.org.prismaCamara.controle
 
+import grails.plugins.springsecurity.Secured
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.modelo.Deputado
 import br.org.prismaCamara.modelo.Usuario
@@ -7,11 +8,17 @@ import br.org.prismaCamara.modelo.UsuarioDeputado
 import br.org.prismaCamara.util.PesquisaFoneticaUtil
 
 @Log4j
+@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
 class DeputadoController {
 
 	def usuarioService
 	def springSecurityService
 	
+	def index() {
+		
+	}
+	
+	// FIXME: não trazer os deputados relacionados via Partido! por isso tá vindo um monte!
     def list() {		
 		//cache(validUntil:new Date()+3)
 		Usuario usuario = springSecurityService.currentUser

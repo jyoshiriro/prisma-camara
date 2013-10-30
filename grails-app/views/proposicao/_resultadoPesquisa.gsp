@@ -1,4 +1,4 @@
-<g:if test="${!params.q}">
+<g:if test="${!params.q && mapa}">
 	<p>Proposições que você já acompanha</p>
 </g:if>
 <g:if test="${request.message}">
@@ -21,5 +21,6 @@
 		</g:remoteLink>
 	</div>
 </g:each>
-
+<g:remoteLink elementId="linkContagem" 
+controller="painel" action="contagem" id="Proposicoes" update="pContagem"></g:remoteLink>
 <div id="nada"></div>
