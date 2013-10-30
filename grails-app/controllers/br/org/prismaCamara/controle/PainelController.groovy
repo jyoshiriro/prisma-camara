@@ -68,4 +68,11 @@ class PainelController {
 		redirect action: 'meuPerfil'
 	}
 	
+	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
+	def cancelaInscricao() {
+		Usuario usuario = getUsuarioAutenticado()
+		usuario.delete()
+		redirect controller: '/'
+	}
+	
 }
