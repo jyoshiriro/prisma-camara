@@ -1,6 +1,21 @@
-<g:if test="${!params.q && mapa}">
-	<p>Proposições que você já acompanha</p>
+<g:if test="${!params.q}">
+	<g:if test="${mapa}">
+		<p>Proposições que você já acompanha</p>
+	</g:if>
+	<g:else>
+		<p><i>Você ainda não acompanha nenhuma Proposição. Pesquise acima.</i></p>
+	</g:else>
 </g:if>
+<g:else>
+<p>
+Encontradas:
+<span class="label label-primary">${mapa.size()}</span>
+&nbsp; <a href="javascript:;" onclick="limparPesquisa()"
+			id="linkLimparPesquisa"><span
+			class="glyphicon glyphicon-collapse-up"></span> 
+			Ver só as que já Acompanho</a>
+	</p>
+</g:else>
 <g:if test="${request.message}">
 	<div class="errors">
 	<ul><li>${request.message}</li></ul>

@@ -25,7 +25,7 @@
 		</nav>
 
 			<g:formRemote url="[action:'list',controlr:'partido']" name="searchableForm" update="resultado">
-	        <g:textField name="q" value="${params.q}" size="50" placeholder="Nome ou sigla do Partido"/>
+	        <g:textField name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome ou sigla do Partido"/>
 	        <input type="submit" value="Pesquisar" id="bPesquisar"/>
 	        
 	        <div class="info-acompanhamento nao">

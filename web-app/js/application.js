@@ -4,6 +4,7 @@ if (typeof jQuery !== 'undefined') {
 			$(this).fadeIn();
 		}).ajaxStop(function() {
 			$(this).fadeOut();
+			dicas();
 		});
 	})(jQuery);
 }
@@ -18,3 +19,16 @@ function toogleAssociar(elemento) {
 function fecharDivs() {
 	$('#divAcompanhaDeputados,#divAcompanhaProposicoes,#divAcompanhaPartidos').html('');
 }
+
+function limparPesquisa(){
+	$("#campoQ").val('');
+	$("#searchableForm").submit();
+}
+
+function dicas() {
+	$('[data-toggle="tooltip"]').tooltip();
+}
+
+$(document).ready(function() {
+	dicas();
+});
