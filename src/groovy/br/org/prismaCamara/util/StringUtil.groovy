@@ -11,8 +11,12 @@ class StringUtil {
 	}
 	
 	public static boolean terminaCom(StringBuilder sb, String... fins) {
+		return terminaCom(sb.toString(), fins)
+	}
+	
+	public static boolean terminaCom(String texto, String... fins) {
 		for (String fim : fins) {
-			if (sb.toString().endsWith(fim))
+			if (texto.endsWith(fim))
 				return true;
 		}
 		return false;

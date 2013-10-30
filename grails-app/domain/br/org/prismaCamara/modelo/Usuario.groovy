@@ -16,15 +16,16 @@ class Usuario {
 	String nome
 	String tipoRede
 	boolean receberBiografias = true
+	Date dataNascimento
 	
 	static hasMany = [usuarioPartidos:UsuarioPartido,usuarioDeputados:UsuarioDeputado,usuarioProposicoes:UsuarioProposicao]
 	
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
-		nome(maxSize:50, nullable:true)
-		tipoRede(nullable:true, inList:Postagem.TIPOS)
-		
+		nome maxSize:50, nullable: true
+		tipoRede nullable:true, inList:Postagem.TIPOS
+		dataNascimento nullable: true 
 	}
 
 	static mapping = {

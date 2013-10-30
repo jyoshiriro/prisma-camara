@@ -1,5 +1,6 @@
 package br.org.prismaCamara.util
 
+import br.org.prismaCamara.modelo.Deputado
 import java.awt.image.BufferedImage
 
 import javax.imageio.ImageIO

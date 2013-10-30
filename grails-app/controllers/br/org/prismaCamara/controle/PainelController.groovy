@@ -7,6 +7,7 @@ import br.org.prismaCamara.modelo.Usuario;
 import br.org.prismaCamara.modelo.UsuarioDeputado;
 import br.org.prismaCamara.modelo.UsuarioPartido;
 import br.org.prismaCamara.modelo.UsuarioProposicao
+import br.org.prismaCamara.servico.UsuarioService;
 import br.org.prismaCamara.util.PesquisaFoneticaUtil;
 import grails.plugins.springsecurity.Secured
 import groovy.util.logging.Log4j
@@ -19,9 +20,12 @@ class PainelController {
 	
 	def searchableService
 	def springSecurityService
+	def usuarioService
 	
 	def pegaUsuarioLogado() {
 		Usuario usuarioAtual = springSecurityService.currentUser
+		if (!usuarioAtual.nome)
+			usuarioService.atualizaNome(usuarioAtual)
 		log.debug "Usuário logado: $usuarioAtual"
 		return usuarioAtual
 	}

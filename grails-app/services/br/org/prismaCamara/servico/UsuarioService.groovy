@@ -1,14 +1,29 @@
 package br.org.prismaCamara.servico
 
+import groovy.util.logging.Log4j;
 import br.org.prismaCamara.modelo.Deputado
 import br.org.prismaCamara.modelo.Partido;
 import br.org.prismaCamara.modelo.Proposicao
 import br.org.prismaCamara.modelo.Usuario;
 import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.modelo.UsuarioFacebook
 import br.org.prismaCamara.modelo.UsuarioPartido
 import br.org.prismaCamara.modelo.UsuarioProposicao;
+import org.springframework.social.facebook.api.Facebook
+import org.springframework.social.facebook.api.FacebookProfile
+import org.springframework.social.facebook.api.impl.FacebookTemplate
 
+@Log4j
 class UsuarioService {
+	
+	def atualizaNome(Usuario usuario) {
+		UsuarioFacebook usuarioFacebook = UsuarioFacebook.findByUser(usuario)
+		Facebook facebook = new FacebookTemplate(usuarioFacebook.accessToken)
+		FacebookProfile fbProfile = facebook.userOperations().userProfile
+		usuario.nome = fbProfile.name
+		usuario.save()
+		log.debug "Usuario ${usuario.username} atualizado. Nome: ${usuario.nome}"
+	}
 	
 	boolean isDeputadoObservado(Deputado deputado) {
 
