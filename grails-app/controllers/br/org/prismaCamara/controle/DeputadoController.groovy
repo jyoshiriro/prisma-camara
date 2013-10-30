@@ -18,7 +18,6 @@ class DeputadoController {
 		
 	}
 	
-	// FIXME: não trazer os deputados relacionados via Partido! por isso tá vindo um monte!
     def list() {		
 		//cache(validUntil:new Date()+3)
 		Usuario usuario = springSecurityService.currentUser
@@ -26,7 +25,7 @@ class DeputadoController {
 		LinkedHashMap mapDeputados = new LinkedHashMap()
 		def listaDeputados = []
 
-		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(usuario)
+		def deputadosDeUsuario = usuarioService.getDeputadosDeUsuario(usuario,false)
 		
 		// caso nada venha na pesquisa, pegar todos os já associados ao usuario e mandar essa lista para a view
 		if (!params.q) {
