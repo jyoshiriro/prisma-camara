@@ -19,8 +19,8 @@
 						</div>
 						<div class="row">		
 							<div class="col-md-8 col-md-offset-2">
-								<a href="j_spring_security_facebook_redirect" title="Entrar com Facebook"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-twitter.png')}"></a>
-								<a href="j_spring_twitter_security_check" title="Entrar com Twitter"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-face.png')}"></a>
+								<a href="j_spring_security_facebook_redirect" title="Entrar com Facebook"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-face.png')}"></a>
+								<a href="j_spring_twitter_security_check" title="Entrar com Twitter"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-twitter.png')}"></a>
 							</div>
 						</div>
 					</sec:ifNotLoggedIn>
