@@ -110,6 +110,10 @@ b.marcado:HOVER,b.marcado.nao:HOVER {
 	border: 1px solid #EFFBF5;
 }
 
+div.acompanhando {
+	background-color: #EFFBF5;
+}
+
 .info-acompanhamento.nao{
 	border: 1px solid #EFFBF5;
 	background-color: #FFF;

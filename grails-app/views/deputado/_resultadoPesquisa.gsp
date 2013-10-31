@@ -1,6 +1,6 @@
 <g:if test="${!params.q}">
 	<g:if test="${mapa}">
-		<p>Deputados que você já acompanha</p>
+		<p>Todos os Deputados que você já acompanha:</p>
 	</g:if>
 	<g:else>
 		<p><i>Você ainda não acompanha nenhum(a) Deputado(a). Pesquise acima.</i></p>
@@ -13,7 +13,7 @@ Encontrados:
 &nbsp; <a href="javascript:;" onclick="limparPesquisa()"
 			id="linkLimparPesquisa"><span
 			class="glyphicon glyphicon-collapse-up"></span> 
-			Ver só os(as) que já Acompanho</a>
+			Quero ver todos os(as) que eu já Acompanho!</a>
 	</p>
 </g:else>
 
@@ -22,7 +22,8 @@ Encontrados:
 	<ul><li>${request.message}</li></ul>
 	</div>
 </g:if>
-<g:each in="${mapa}" var="m">
+
+<g:each in="${mapa}" var="m" status="conta">
 	<g:set var="e" value="${m.key}"/>
 	<div class="lado-a-lado ${m.value?'':'nao'}">
 		<img src="${createLink(action:'foto',id:e.id)}" alt="foto" align="top">
@@ -36,6 +37,7 @@ Encontrados:
 		
 	</div>
 </g:each>
+
 <g:remoteLink elementId="linkContagem" 
 controller="painel" action="contagem" id="Deputados" update="pContagem"></g:remoteLink>
 <div id="nada"></div>

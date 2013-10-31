@@ -7,45 +7,63 @@
 </head>
 <body>
 
-	<p><g:link controller="painel" class="btn btn-success">Voltar para Painel de Acompanhamentos</g:link></p>
-
-	<div id="page-body" role="main">
-
-		<nav class="navbar navbar-default">
-			<div class="nav navbar-nav">
-				<p class="navbar-text">
-					<span class="glyphicon glyphicon-link"></span> <b>Seus Partidos</b>
-				</p>
-			</div>
-			<div class="nav navbar-nav navbar-right">
-				<p class="navbar-text" id="pContagem">
-					<g:include controller="painel" action="contagem" id="Partidos"/>
-				</p>
-			</div>
-		</nav>
-
-			<g:formRemote url="[action:'list',controlr:'partido']" name="searchableForm" update="resultado">
-	        <g:textField name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome ou sigla do Partido"/>
-	        <input type="submit" value="Pesquisar" id="bPesquisar"/>
-	        
-	        <div class="info-acompanhamento nao">
-	        <span id="slink62" class="glyphicon glyphicon-search"></span>
-	        Partidos que ainda <b>Não Acompanha</b>.<br>
-	        <span>Clique para acompanhar</span>.
+	<div class="container">
+	
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+				<div class="col-sm-6">
+		    		<span class="glyphicon glyphicon-link"></span> <b>Seus Partidos</b>
+				</div>
+				<div class="col-sm-6">
+		    		<span class="pull-right"><g:include controller="painel" action="contagem" id="Partidos"/></span>
+				</div>
+				</div>
+		  	</div>
+		</div>
+	
+		<g:formRemote url="[action:'list',controlr:'partido']" name="searchableForm" update="resultado">
+		
+			<div class="row">
+			
+				<div class="col-md-4">
+			        <div class="input-group">
+				    	<g:textField class="form-control" name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome ou sigla do Partido"/>
+				      	<span class="input-group-btn">
+				        	<button class="btn btn-default" type="submit">Pesquisar</button>
+				      	</span>
+				    </div><!-- /input-group -->
+				    <br/>
+		        </div>
+		        
+		        <div class="col-md-4">
+			        <div class="panel panel-default">
+						<div class="panel-body">
+							<span id="slink62" class="glyphicon glyphicon-search"></span>
+					        Partidos que você ainda <b>Não Acompanha</b>.<br>
+					        <span>Clique no ícone para acompanhar</span>.
+						</div>
+					</div>        
+				</div>
+				
+				<div class="col-md-4">
+			        <div class="panel panel-default acompanhando">
+						<div class="panel-body">
+							<span id="slink62" class="glyphicon glyphicon-check"></span>
+					        Partidos que você <b>Já Acompanha</b>.<br>
+					        Clique no ícone para deixar de acompanhar.
+						</div>
+					</div>        
+				</div>
+		        
 	        </div>
-	        
-	        <div class="info-acompanhamento">
-	        <span id="slink62" class="glyphicon glyphicon-check"></span>
-	        Partidos que você <b>Já Acompanha</b>.<br>
-	        Clique para deixar de acompanhar.
-	        </div>
-	        
-	    </g:formRemote>
-	    
+		        
+		</g:formRemote>
+		    
 	    <div style="clear: both;"></div>
 		<div id="resultado">
 			<g:include controller="partido" action="list"/>
-		</div>						
+		</div>
 	</div>
 </body>
 </html>

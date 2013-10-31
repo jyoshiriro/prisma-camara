@@ -1,6 +1,6 @@
 <g:if test="${!params.q}">
 	<g:if test="${mapa}">
-		<p>Partidos que você já acompanha</p>
+		<p>Todos os Partidos que você já acompanha:</p>
 	</g:if>
 	<g:else>
 		<p><i>Você ainda não acompanha nenhum Partido. Pesquise acima.</i></p>
@@ -16,6 +16,7 @@ Encontrados:
 			Ver só os que já Acompanho</a>
 	</p>
 </g:else>
+
 <g:if test="${request.message}">
 	<div class="errors">
 	<ul><li>${request.message}</li></ul>
