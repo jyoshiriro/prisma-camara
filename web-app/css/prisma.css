@@ -110,6 +110,10 @@ b.marcado:HOVER,b.marcado.nao:HOVER {
 	border: 1px solid #EFFBF5;
 }
 
+div.acompanhando {
+	background-color: #EFFBF5;
+}
+
 .info-acompanhamento.nao{
 	border: 1px solid #EFFBF5;
 	background-color: #FFF;
@@ -146,7 +150,7 @@ b.marcado:HOVER,b.marcado.nao:HOVER {
 	display: inline-block;
 }
 
-.botao-twitter{
+.botao-twitter {
 	background: url('../images/botao-twitter.png') no-repeat scroll 0 0 transparent;
 	width: 89px;
 	height: 24px;
@@ -155,23 +159,27 @@ b.marcado:HOVER,b.marcado.nao:HOVER {
 	padding-top: 1em;
 }
 
-.peq{
+.peq {
 	color: #CCC;
 	font-size: 1em;
 }
 
 .redes {
-	float: left;
+	padding: 0.5em 0.5em 2em 0.5em;
 }
-.redes a{
+
+/*
+.redes a {
 	padding-top: 1em;
 }
-.redes.peq{
+
+.redes.peq {
 	margin-left: 1em;
 	margin-right: 1em;
 }
+*/
 
-.carousel-caption{
+.carousel-caption {
 	right: 20%;
 	left: 0%;
 	top: 0%;
@@ -193,4 +201,21 @@ b.marcado:HOVER,b.marcado.nao:HOVER {
 }
 
 .carousel-caption:HOVER {
+}
+
+.carousel img {
+	min-width: 100%;
+}
+
+.centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.absolute-center {
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
 }

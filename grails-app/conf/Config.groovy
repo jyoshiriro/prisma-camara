@@ -108,7 +108,7 @@ grails.plugins.springsecurity.authority.className = 'br.org.prismaCamara.modelo.
 grails.plugins.springsecurity.auth.loginFormUrl = '/'
 
 grails.plugins.springsecurity.facebook.domain.classname='br.org.prismaCamara.modelo.UsuarioFacebook'
-grails.plugins.springsecurity.facebook.permissions = 'email, publish_actions'
+grails.plugins.springsecurity.facebook.permissions = 'publish_actions'
 grails.plugins.springsecurity.facebook.autoCreate.roles	= 'ROLE_USER'
 
 grails.plugins.springsecurity.facebook.filter.redirect.failureHandler='redirectFailureHandlerPrismaCamara'

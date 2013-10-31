@@ -26,7 +26,7 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		          </button>
-		          <a class="navbar-brand" href="${createLink(uri: '/', absolute: true)}"><strong>Olho na Câmara</strong></a>
+		          <a class="navbar-brand" href="${createLink(uri: '/', absolute: true)}"><strong style="color: white;">OlhoNaCamara</strong><small>.com.br</small></a>
 		        </div>
 		        <div class="navbar-collapse collapse">
 		        	<ul class="nav navbar-nav">

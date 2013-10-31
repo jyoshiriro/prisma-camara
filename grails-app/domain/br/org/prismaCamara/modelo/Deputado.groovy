@@ -132,7 +132,7 @@ class Deputado {
 	 */
 	public byte[] getFoto() {
 		def dirImagens = Parametro.findBySigla('dir_miniaturas').valor
-		dirImagens += StringUtil.terminaCom(dirImagens, "/", "\\") ? "" : "\\"
+		dirImagens += StringUtil.terminaCom(dirImagens, "/", "\\") ? "" : "/"
 		def nomeArquivo = "${dirImagens}${this.ideCadastro}.jpg"
 		log.debug "Arquivo: ${nomeArquivo}"
 		def bmini = ImagensUtil.getImagemLocal(nomeArquivo)

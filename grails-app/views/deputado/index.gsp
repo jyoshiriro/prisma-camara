@@ -26,15 +26,13 @@
 			<div class="row">
 			
 				<div class="col-md-4">
-					<%--<g:textField name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome do deputado ou seu partido ou sua uf"/>
-			        <input type="submit" value="Pesquisar" id="bPesquisar"/>--%>
-				        <div class="input-group">
-					    	<g:textField class="form-control" name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome do deputado ou seu partido ou sua uf"/>
-					      	<span class="input-group-btn">
-					        	<button class="btn btn-default" type="submit">Pesquisar</button>
-					      	</span>
-					    </div><!-- /input-group -->
-					    <br/>
+			        <div class="input-group">
+				    	<g:textField class="form-control" name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome, partido ou a UF do deputado"/>
+				      	<span class="input-group-btn">
+				        	<button class="btn btn-default" type="submit">Pesquisar</button>
+				      	</span>
+				    </div><!-- /input-group -->
+				    <br/>
 		        </div>
 		        
 		        <div class="col-md-4">
@@ -48,36 +46,21 @@
 				</div>
 	        
 	        	<div class="col-md-4">
-			        <div class="panel panel-default">
+			        <div class="panel panel-default acompanhando">
 						<div class="panel-body">
 							<span id="slink62" class="glyphicon glyphicon-check"></span>
 					        Deputados que você <b>Já Acompanha</b>.<br>
 					        Clique no ícone para deixar de acompanhar.
 						</div>
 					</div>        
-				</div>
-	        
-	        <%--
-	        <div class="info-acompanhamento nao">
-		        <span id="slink62" class="glyphicon glyphicon-search"></span>
-		        Deputados que ainda <b>Não Acompanha</b>.<br>
-		        <span>Clique para acompanhar</span>.
-	        </div>
-	        
-	        <div class="info-acompanhamento">
-		        <span id="slink62" class="glyphicon glyphicon-check"></span>
-		        Deputados que você <b>Já Acompanha</b>.<br>
-		        Clique para deixar de acompanhar.
-	        </div>
-	        --%>
-	        
+				</div>	        
 	        </div>	        
 	    </g:formRemote>
 	    
 	    <div style="clear: both;"></div>
 		<div id="resultado">
 			<g:include controller="deputado" action="list"/>
-		</div>						
+		</div>
 	</div>
-	</body>
+</body>
 </html>
