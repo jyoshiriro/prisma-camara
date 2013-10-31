@@ -27,7 +27,7 @@
 			
 				<div class="col-md-4">
 			        <div class="input-group">
-				    	<g:textField class="form-control" name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome do deputado ou seu partido ou sua uf"/>
+				    	<g:textField class="form-control" name="q" id="campoQ" value="${params.q}" size="50" placeholder="Nome, partido ou a UF do deputado"/>
 				      	<span class="input-group-btn">
 				        	<button class="btn btn-default" type="submit">Pesquisar</button>
 				      	</span>
