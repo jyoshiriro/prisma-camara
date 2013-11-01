@@ -50,7 +50,7 @@
 		        <div class="col-md-4">
 			        <div class="panel panel-default">
 						<div class="panel-body">
-							<span id="slink62" class="glyphicon glyphicon-search"></span>
+							<span id="slink62" class="glyphicon glyphicon-plus"></span>
 					        Deputados que você ainda <b>Não Acompanha</b>.<br>
 					        <span>Clique no ícone para acompanhar</span>.
 						</div>
