@@ -15,3 +15,5 @@ ${st+1}. ${fs.descricao} <g:formatDate date="${fs.inicio}" format="HH:mm"/><g:if
 Contatos: ${dep.contatos}.
 
 Mais detalhes em ${freq.urlDetalhes}
+
+Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/fWAHmG)

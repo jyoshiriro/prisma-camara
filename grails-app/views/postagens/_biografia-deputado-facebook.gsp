@@ -18,3 +18,5 @@ Não faz parte de nenhuma comissão.
   </g:else>
 
 Mais detalhes em ${dep.urlDetalhes}
+
+Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/fWAHmG)

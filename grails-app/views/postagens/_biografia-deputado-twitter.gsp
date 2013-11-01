@@ -4,4 +4,4 @@
 ${dep.comissoesSuplente.size()?'• '+dep.comissoesSuplente.size():'Nenhuma'} como Suplente 
 </g:if><g:else>
 Não faz parte de nenhuma comissão.
-</g:else>${dep.urlDetalhesCurta}
+</g:else>${dep.urlDetalhesCurta} Via http://goo.gl/fWAHmG

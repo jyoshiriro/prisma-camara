@@ -9,3 +9,6 @@ Resumo: ${votacao.resumo}</g:if>
 </g:each>
 
 Mais detalhes em ${prop.urlDetalhes}
+
+
+Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/fWAHmG)
