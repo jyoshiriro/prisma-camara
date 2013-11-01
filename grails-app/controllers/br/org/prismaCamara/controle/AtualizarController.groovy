@@ -5,15 +5,14 @@ import groovy.util.logging.Log4j
 import org.hibernate.TransactionException
 import org.springframework.transaction.TransactionSystemException
 
-import br.org.prismaCamara.job.AtualizarDespesaJob;
-import br.org.prismaCamara.job.AtualizarDiscursoJob;
-import br.org.prismaCamara.job.AtualizarFrequenciaDiaJob;
-import br.org.prismaCamara.job.AtualizarVotacaoJob;
-import br.org.prismaCamara.modelo.Deputado;
-import br.org.prismaCamara.modelo.Proposicao;
-import br.org.prismaCamara.modelo.TipoProposicao;
-import br.org.prismaCamara.servico.atualizacoes.AtualizarDiscursoService;
-import br.org.prismaCamara.servico.atualizacoes.AtualizarPartidoService;
+import br.org.prismaCamara.job.AtualizarDespesaJob
+import br.org.prismaCamara.job.AtualizarDiscursoJob
+import br.org.prismaCamara.job.AtualizarFrequenciaDiaJob
+import br.org.prismaCamara.job.AtualizarVotacaoJob
+import br.org.prismaCamara.modelo.Deputado
+import br.org.prismaCamara.modelo.Partido
+import br.org.prismaCamara.modelo.Proposicao
+import br.org.prismaCamara.modelo.TipoProposicao
 
 @Log4j
 class AtualizarController {
@@ -118,6 +117,7 @@ class AtualizarController {
 		log.debug "Reindexando Deputado."
 		Proposicao.reindex()
 		Deputado.reindex()		
+		Partido.reindex()
 		log.debug "Reindexação concluida."
 	}
 }
