@@ -42,8 +42,8 @@ class AtualizarVotacaoService extends AtualizadorEntidade {
 	 * A atualização recupera somente votos de Proposições que são acompanhadas por 1 ou mais usuários 
 	 */
 	def atualizar() {
-//		def proposicoes = usuarioService.proposicoesMapeadas
-		def proposicoes = Proposicao.findAllByNumeroInList([190,300])
+		def proposicoes = usuarioService.proposicoesMapeadas
+//		def proposicoes = Proposicao.findAllByNumeroInList([190,300])
 
 		log.debug("Um total de ${proposicoes.size()} terão votos verificados")
 		
