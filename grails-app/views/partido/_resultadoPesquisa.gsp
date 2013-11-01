@@ -3,11 +3,11 @@
  * Este arquivo é parte do programa Olho na Câmara.
  * 
  * O Olho na Câmara é um software livre; você pode redistribuí-lo e/ou modificá-lo dentro
- * dos termos da GNU General Public License como publicada pela Fundação do Software Livre
+ * dos termos da GNU Affero General Public License como publicada pela Fundação do Software Livre
  * (FSF); na versão 3 da Licença. Este programa é distribuído na esperança que possa ser
  * útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
  * MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a licença para maiores detalhes. Você deve ter
- * recebido uma cópia da GNU General Public License, sob o título 'LICENCA.txt', junto com
+ * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
 <g:if test="${!params.q}">
@@ -25,7 +25,7 @@ Encontrados:
 &nbsp; <a href="javascript:;" onclick="limparPesquisa()"
 			id="linkLimparPesquisa"><span
 			class="glyphicon glyphicon-collapse-up"></span> 
-			Ver só os que já Acompanho</a>
+			Quero ver todos que eu já Acompanho.</a>
 	</p>
 </g:else>
 
