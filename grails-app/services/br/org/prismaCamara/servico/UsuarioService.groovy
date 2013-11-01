@@ -174,7 +174,7 @@ class UsuarioService {
 	 * @return
 	 */
 	Set<Proposicao> getProposicoesMapeadas() {
-		Set<Proposicao> proposicoes = Usuario.executeQuery("select proposicao from UsuarioProposicao") as Set
+		Set<Proposicao> proposicoes = Usuario.executeQuery("select up.proposicao from UsuarioProposicao up") as Set
 		return proposicoes
 	}
 
