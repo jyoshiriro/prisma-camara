@@ -25,7 +25,7 @@ Encontradas:
 &nbsp; <a href="javascript:;" onclick="limparPesquisa()"
 			id="linkLimparPesquisa"><span
 			class="glyphicon glyphicon-collapse-up"></span> 
-			Ver só as que já Acompanho</a>
+			Quero ver todas que eu já Acompanho.</a>
 	</p>
 </g:else>
 <g:if test="${request.message}">
@@ -48,6 +48,7 @@ Encontradas:
 		</g:remoteLink>
 	</div>
 </g:each>
+
 <g:remoteLink elementId="linkContagem" 
 controller="painel" action="contagem" id="Proposicoes" update="pContagem"></g:remoteLink>
 <div id="nada"></div>

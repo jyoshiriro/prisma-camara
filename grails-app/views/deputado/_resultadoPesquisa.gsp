@@ -25,7 +25,7 @@ Encontrados:
 &nbsp; <a href="javascript:;" onclick="limparPesquisa()"
 			id="linkLimparPesquisa"><span
 			class="glyphicon glyphicon-collapse-up"></span> 
-			Quero ver todos os(as) que eu já Acompanho!</a>
+			Quero ver todos que eu já Acompanho.</a>
 	</p>
 </g:else>
 
