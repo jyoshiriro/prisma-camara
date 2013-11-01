@@ -59,6 +59,8 @@ class Deputado {
 		ultimoDiaGasto(nullable:true) 
 		ultimoDiaDiscurso(nullable:true) 
 		
+		partido(nullable:true)
+		
 		ideCadastro(nullable:true) 
 		matricula(nullable:true)
 		
