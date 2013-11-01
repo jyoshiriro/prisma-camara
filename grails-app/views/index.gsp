@@ -1,3 +1,15 @@
+<%--
+ * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
+ * Este arquivo é parte do programa Olho na Câmara.
+ * 
+ * O Olho na Câmara é um software livre; você pode redistribuí-lo e/ou modificá-lo dentro
+ * dos termos da GNU General Public License como publicada pela Fundação do Software Livre
+ * (FSF); na versão 3 da Licença. Este programa é distribuído na esperança que possa ser
+ * útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
+ * MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a licença para maiores detalhes. Você deve ter
+ * recebido uma cópia da GNU General Public License, sob o título 'LICENCA.txt', junto com
+ * este programa, se não, acesse http://www.gnu.org/licenses/
+ --%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,8 +19,8 @@
 	<body>
 		<div class="container">
 			<div class="row">
+				<sec:ifNotLoggedIn>
 				<div class="col-sm-4 centered">
-					<sec:ifNotLoggedIn>
 						<div class="row">
 							<div class="col-md-8 col-md-offset-2">
 								<span class="glyphicon glyphicon-arrow-left"></span> 
@@ -23,11 +35,8 @@
 								<a href="j_spring_twitter_security_check" title="Entrar com Twitter"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-twitter.png')}"></a>
 							</div>
 						</div>
-					</sec:ifNotLoggedIn>
-					<sec:ifAllGranted roles="ROLE_USER">
-						<p>Use o sistema acessando as opções do menu.</p>
-					</sec:ifAllGranted>
 				</div>
+				</sec:ifNotLoggedIn>
 				<div class="col-sm-6">
 					<g:include view="banner-home.gsp"/>
 				</div>
