@@ -35,11 +35,6 @@ class Proposicao {
 	
 	static searchable = [only: ['campoPesquisa']]
 	
-	static mapping = {
-		autor(cascade:'all')
-		tipoProposicao(cascade:'all')
-	}
-	
 	def afterUpdate() {
 		if (situacao.toLowerCase()=='arquivado') {
 			UsuarioProposicao.executeUpdate("delete from UsuarioProposicao up where up.proposicao.id=?",[this.id])
