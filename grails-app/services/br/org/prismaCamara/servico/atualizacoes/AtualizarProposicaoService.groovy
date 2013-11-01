@@ -12,12 +12,14 @@
  */
 package br.org.prismaCamara.servico.atualizacoes
 
-import br.org.prismaCamara.modelo.Deputado;
-import br.org.prismaCamara.modelo.Proposicao;
-import br.org.prismaCamara.modelo.TipoProposicao;
-import groovy.text.SimpleTemplateEngine
 import groovy.util.logging.Log4j
 import groovy.util.slurpersupport.GPathResult
+
+import org.hibernate.SessionFactory
+
+import br.org.prismaCamara.modelo.Deputado
+import br.org.prismaCamara.modelo.Proposicao
+import br.org.prismaCamara.modelo.TipoProposicao
 
 
 /**
@@ -27,6 +29,8 @@ import groovy.util.slurpersupport.GPathResult
 @Log4j
 class AtualizarProposicaoService extends AtualizadorEntidade {
 
+	SessionFactory sessionFactory
+	
 	@Override
 	public String getSiglaDeParametro() {
 		// "http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?numero=&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=&ano=${ano}&sigla=${sigla}"
@@ -36,13 +40,11 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 	def atualizar() {
 
 		def tipos = TipoProposicao.list().collect{it.sigla} //['PL','PEC']
-		def anos = [2005,2006,2007,2008,2009,2010,2011,2012,2013] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
+		def anos = [2007,2008,2009,2010,2011,2012,2013] // Proposicao.PRIMEIRO_ANO..(new Date().calendarDate.year)
 		
 		l1:for (tipo in tipos) {
 			l2:for (ano in anos) {
 				
-			def tx = Proposicao.withNewTransaction { tx ->
-					
 				def urlT = getUrlAtualizacao([ano:ano.toString(),sigla:tipo])
 				
 				GPathResult xmlr = null
@@ -50,7 +52,7 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 					xmlr = getXML(urlT)
 				} catch (Exception e) {
 					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
-					return 'l2';
+					continue l2;
 				}
 				
 				log.debug("${xmlr.childNodes().size()} proposições chegaram no XML")
@@ -113,10 +115,11 @@ class AtualizarProposicaoService extends AtualizadorEntidade {
 						}
 					}
 					
+					def session = sessionFactory?.currentSession
+					session?.transaction?.commit()
+					session?.transaction?.begin()
+					
 				}
-			}
-			
-			if (tx=='l2') continue l2
 			
 			} // for de anos
 		} // for de tipos
