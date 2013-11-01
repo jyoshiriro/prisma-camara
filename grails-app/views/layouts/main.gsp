@@ -47,6 +47,7 @@
 					        <li><g:link controller="painel" action="index">Meus Acompanhamentos</g:link></li>
 				        	<li><g:link controller="painel" action="meuPerfil">Meu Perfil</g:link></li>
 				        </sec:ifAllGranted>
+				        <li><g:link controller="painel" action="ajuda">Ajuda</g:link></li>
 				        <li><g:link controller="painel" action="sobre">Sobre</g:link></li>
 			    	</ul>
 		            <sec:ifAllGranted roles="ROLE_USER">

@@ -87,4 +87,6 @@ class PainelController {
 		redirect controller: '/'
 	}
 	
+	def ajuda() { }
+	
 }
