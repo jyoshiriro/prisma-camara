@@ -18,13 +18,13 @@
 	</head>
 	<body>
 		<div class="container">
-			<h1>Ajuda - "Olho na Câmara"</h1>
+			<h2>Ajuda - "Olho na Câmara"</h2>
+			<h3>
+				Passo-a-passo de uso
+			</h3>
 			<p>
-				Este software foi desenvolvido durante o evento Hackathon da Câmara dos Deputados 2013.<br/>
-				Equipe formada por <a href="https://www.facebook.com/jyoshiriro">José Yoshiriro</a> e 
-				<a href="https://www.facebook.com/raimundo.norbertolameirajunior">Raimundo Lameira</a>.<br/>
-				Este é um software livre e seu código pode ser acessado <a href="https://github.com/jyoshiriro/prisma-camara">aqui</a>.
-			</p>	
+			<a href="../docs/passo-a-passo-olho-na-camara.pdf" target="_blank">Versão para Download (PDF)</a> <br>	
+			<iframe src="http://www.slideshare.net/slideshow/embed_code/27849979" width="600" height="700" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/jyoshiriro/ajuda-olho-na-camara-27849979" title="Ajuda olho na camara" target="_blank">Ajuda olho na camara</a> </strong> from <strong><a href="http://www.slideshare.net/jyoshiriro" target="_blank">José Ramos</a></strong> </div>
 		</div>
 	</body>
 </html>
