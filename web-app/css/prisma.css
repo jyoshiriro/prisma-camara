@@ -1,14 +1,14 @@
 /*
- * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
- * Este arquivo é parte do programa Olho na Câmara.
+ * Copyright 2013 de Josï¿½ Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
+ * Este arquivo ï¿½ parte do programa Olho na Cï¿½mara.
  * 
- * O Olho na Câmara é um software livre; você pode redistribuí-lo e/ou modificá-lo dentro
- * dos termos da GNU Affero General Public License como publicada pela Fundação do Software Livre
- * (FSF); na versão 3 da Licença. Este programa é distribuído na esperança que possa ser
- * útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
- * MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a licença para maiores detalhes. Você deve ter
- * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
- * este programa, se não, acesse http://www.gnu.org/licenses/
+ * O Olho na Cï¿½mara ï¿½ um software livre; vocï¿½ pode redistribuï¿½-lo e/ou modificï¿½-lo dentro
+ * dos termos da GNU Affero General Public License como publicada pela Fundaï¿½ï¿½o do Software Livre
+ * (FSF); na versï¿½o 3 da Licenï¿½a. Este programa ï¿½ distribuï¿½do na esperanï¿½a que possa ser
+ * ï¿½til, mas SEM NENHUMA GARANTIA; sem uma garantia implï¿½cita de ADEQUAï¿½ï¿½O a qualquer
+ * MERCADO ou APLICAï¿½ï¿½O EM PARTICULAR. Veja a licenï¿½a para maiores detalhes. Vocï¿½ deve ter
+ * recebido uma cï¿½pia da GNU Affero General Public License, sob o tï¿½tulo 'LICENCA.txt', junto com
+ * este programa, se nï¿½o, acesse http://www.gnu.org/licenses/
  */
 body.modal-open, 
 .modal-open .navbar-fixed-top, 
@@ -230,4 +230,8 @@ div.acompanhando {
 	margin: auto;
 	position: absolute;
 	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+li>a.ativo{
+	color: white !important;
 }

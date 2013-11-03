@@ -47,7 +47,8 @@
 							<h4 class="modal-title" id="myModalLabel">Confirmação</h4>
 						</div>
 						<div class="modal-body">
-							Você tem certeza que deseja cancelar todos os seus acompanhamentos?
+							Você tem certeza que deseja cancelar sua conta no Olho na Câmara?<br>
+							Não é possível desfazer essa operação.
 						</div>
 						<div class="modal-footer">
 							<g:link class="btn btn-primary" controller="painel" action="cancelaInscricao">Sim</g:link>

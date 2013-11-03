@@ -10,6 +10,7 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
+<sec:ifNotLoggedIn>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -19,7 +20,6 @@
 	<body>
 		<div class="container">
 			<div class="row">
-				<sec:ifNotLoggedIn>
 				<div class="col-sm-4 centered">
 						<div class="row">
 							<div class="col-md-8 col-md-offset-2">
@@ -36,7 +36,6 @@
 							</div>
 						</div>
 				</div>
-				</sec:ifNotLoggedIn>
 				<div class="col-sm-6">
 					<g:include view="banner-home.gsp"/>
 				</div>
@@ -44,3 +43,7 @@
 		</div> <!-- container -->
 	</body>
 </html>
+</sec:ifNotLoggedIn>
+<sec:ifLoggedIn>
+<g:include controller="painel" action="/"/>
+</sec:ifLoggedIn>

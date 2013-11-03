@@ -84,7 +84,7 @@ class PainelController {
 	def cancelaInscricao() {
 		Usuario usuario = getUsuarioAutenticado()
 		usuario.delete()
-		redirect controller: '/'
+		redirect controller: 'logout'
 	}
 	
 	def ajuda() { }

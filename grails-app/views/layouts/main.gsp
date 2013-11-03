@@ -42,13 +42,22 @@
 		        </div>
 		        <div class="navbar-collapse collapse">
 		        	<ul class="nav navbar-nav">
+		        		<sec:ifNotLoggedIn>
 			            <li><a href="${createLink(uri: '/', absolute: true)}">Início</a></li>
+			            </sec:ifNotLoggedIn>
 			            <sec:ifAllGranted roles="ROLE_USER">
-					        <li><g:link controller="painel" action="index">Meus Acompanhamentos</g:link></li>
-				        	<li><g:link controller="painel" action="meuPerfil">Meu Perfil</g:link></li>
+					        <li>
+					        <g:link controller="painel" action="index"
+					        class="${['/','index'].contains(params.action)?'ativo':''}">
+					        Meus Acompanhamentos
+					        </g:link></li>
+				        	<li><g:link controller="painel" action="meuPerfil"
+				        	class="${params.action=='meuPerfil'?'ativo':''}">Meu Perfil</g:link></li>
 				        </sec:ifAllGranted>
-				        <li><g:link controller="painel" action="ajuda">Ajuda</g:link></li>
-				        <li><g:link controller="painel" action="sobre">Sobre</g:link></li>
+				        <li><g:link controller="painel" action="ajuda"
+				        class="${params.action=='ajuda'?'ativo':''}">Ajuda</g:link></li>
+				        <li><g:link controller="painel" action="sobre"
+				        class="${params.action=='sobre'?'ativo':''}">Sobre</g:link></li>
 			    	</ul>
 		            <sec:ifAllGranted roles="ROLE_USER">
 		            	<ul class="nav navbar-nav navbar-right">
