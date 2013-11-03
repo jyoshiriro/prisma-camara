@@ -235,3 +235,16 @@ div.acompanhando {
 li>a.ativo{
 	color: white !important;
 }
+
+footer {
+	margin-top: 4em;
+	padding-top: 1em;
+	background-color: #E5E2DE;
+	font-size: 12px;
+	line-height: 20px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+footer a {
+	color: black;
+}

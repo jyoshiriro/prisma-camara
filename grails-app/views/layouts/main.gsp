@@ -69,7 +69,25 @@
 	    	</div>
 	    </div>
 		<g:layoutBody/>
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+		<div id="spinner" class="spinner" style="display:none;">Carregando...</div>
+		
+<footer id="footer-main" data-tracking="Footer">
+<div class="footer-bottom">
+<div class="container">
+
+		<p>
+		Desenvolvido por <a href="https://www.facebook.com/jyoshiriro" target="_blank">José Yoshiriro</a> 
+		e <a href="https://www.facebook.com/raimundo.norbertolameirajunior" target="_blank">Raimundo Lameira</a> 
+		para o <b>Hackathon 2013 da Câmara dos Deputados</b>.
+		</p>
+		<p>
+Versão <i>0.1 Beta</i>. Código Licenciado na 
+<a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU AFFERO GENERAL PUBLIC LICENSE v3.0</a>.
+</p>
+</div>
+</div>
+		</footer>
+		
 		<script src="${resource(dir: 'js', file: 'application.js')}"></script>
 		<r:layoutResources />
 	</body>
