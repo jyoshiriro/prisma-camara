@@ -23,4 +23,4 @@ Resumo: ${votacao.resumo}</g:if>
 Mais detalhes em ${prop.urlDetalhes}
 
 
-Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/fWAHmG)
+Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)

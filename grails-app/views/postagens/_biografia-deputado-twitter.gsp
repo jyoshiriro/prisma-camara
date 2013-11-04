@@ -4,7 +4,7 @@
 ${dep.comissoesSuplente.size()?'• '+dep.comissoesSuplente.size():'Nenhuma'} como Suplente 
 </g:if><g:else>
 Não faz parte de nenhuma comissão.
-</g:else>${dep.urlDetalhesCurta} Via http://goo.gl/fWAHmG
+</g:else>${dep.urlDetalhesCurta} Via http://goo.gl/Drr2jj
 <%--
  * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
  * Este arquivo é parte do programa Olho na Câmara.

@@ -1,7 +1,7 @@
 <g:set var="presente" value="${freq?.frequenciaDia.startsWith('P')}"/>
 Frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> em <g:formatDate date="${freq.dia}" format="d/M/yy"/>: ${presente?'Presente':'Faltou'}<g:if test="${!presente}"><g:if test="${freq.justificativa}"> (${freq.justificativa})</g:if><g:else> (não justificou)</g:else>
 </g:if>
-${freq.urlDetalhesCurta}  Via http://goo.gl/fWAHmG
+${freq.urlDetalhesCurta}  Via http://goo.gl/Drr2jj
 <%--
  * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
  * Este arquivo é parte do programa Olho na Câmara.

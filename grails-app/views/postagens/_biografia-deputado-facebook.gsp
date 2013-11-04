@@ -31,4 +31,4 @@ Não faz parte de nenhuma comissão.
 
 Mais detalhes em ${dep.urlDetalhes}
 
-Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/fWAHmG)
+Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)

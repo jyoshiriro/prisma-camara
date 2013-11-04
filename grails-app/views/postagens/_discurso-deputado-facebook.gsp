@@ -22,4 +22,4 @@
  Mais detalhes em ${discurso.urlDetalhes}
  
 </g:each>
- Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/fWAHmG)
+ Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)
