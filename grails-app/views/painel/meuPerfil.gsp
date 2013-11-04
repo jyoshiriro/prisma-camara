@@ -23,8 +23,16 @@
 				<div class="col-lg-4">
 					<g:form role="form" controller="painel" action="atualizaNome">
 						<div class="form-group">
-						    <label for="nome">O nome pelo qual o chamamos aqui é:</label>
-							<input type="text" class="form-control" name="nome" placeholder="Seu nome" value="${nome}">
+						    <label for="nome">
+						    <g:if test="${session.primeiroAcesso}">
+						    Como quer que te chamemos por aqui?
+						    </g:if>
+						    <g:else>
+						    O nome pelo qual o chamamos aqui é:
+						    </g:else>
+						    </label>
+						    
+							<input type="text" class="form-control" name="nome" placeholder="Seu nome aqui conosco" value="${nome}">
 						</div>
 						<button type="submit" class="btn btn-default">Gravar</button>
 					</g:form>
