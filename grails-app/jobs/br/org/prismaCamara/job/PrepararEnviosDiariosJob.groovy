@@ -14,6 +14,7 @@ package br.org.prismaCamara.job
 
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.modelo.Deputado;
+import br.org.prismaCamara.modelo.PostNaoEnviado;
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioDeputado
 import br.org.prismaCamara.servico.UsuarioService
@@ -41,16 +42,20 @@ class PrepararEnviosDiariosJob {
     }
 
     def execute() {
+		
+		def semBiografiaAtrasada = PostNaoEnviado.countByTipoInformacao('biografia')==0
+
         def usuarios = Usuario.list() 
 		
 		for (usuario in usuarios) {
 			def deputados = usuarioService.getDeputadosDeUsuario(usuario,true)
 
 			// recebe biografias aleatórias?
-			if (usuario.receberBiografias) {
+			if (semBiografiaAtrasada && usuario.receberBiografias) {
 				prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
 				log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
 			}
+			
 			// posts relativos a Deputados
 			for (deputado in deputados) {
 				prepararPostFrequenciaDiaService.preparar(usuario, deputado.id)
@@ -74,6 +79,8 @@ class PrepararEnviosDiariosJob {
 			log.debug("Todas as postagens sobre Proposições de ${usuario.username} já preparadas!")
 			
 		}
+		
+		
 		log.debug("Todas as postagens de todos os usuários já preparadas!")
     }
 }
