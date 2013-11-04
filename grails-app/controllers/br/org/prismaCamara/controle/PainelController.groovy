@@ -53,6 +53,11 @@ class PainelController {
 			session.contagemProposicoes = contagemProposicoes 
 		}
 		
+		if (!usuario.nome) {
+			session.primeiroAcesso=true
+			redirect(action:"meuPerfil")
+			return
+		}
 	}
 	
 	def contagem(String id) {
@@ -77,7 +82,8 @@ class PainelController {
 		Usuario usuario = getUsuarioAutenticado()
 		usuario.nome = params.nome
 		usuario.save()
-		redirect action: 'meuPerfil'
+		session.primeiroAcesso=false
+		redirect action: ''
 	}
 	
 	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
