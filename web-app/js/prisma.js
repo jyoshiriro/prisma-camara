@@ -23,7 +23,7 @@ if (typeof jQuery !== 'undefined') {
 
 function toogleAssociar(elemento) {
 	$("#s"+elemento.id).toggleClass('glyphicon-check');
-	$("#s"+elemento.id).toggleClass('glyphicon-search');
+	$("#s"+elemento.id).toggleClass('glyphicon-plus');
 	$("#s"+elemento.id).parent().parent().toggleClass('nao');
 	$("#linkContagem").click();
 }
