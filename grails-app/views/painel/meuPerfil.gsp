@@ -23,7 +23,12 @@
 				<div class="col-lg-4">
 					<g:form role="form" controller="painel" action="atualizaNome">
 						<div class="form-group">
-						    <label for="nome">
+							
+							<label >A rede pela qual nos acompanha é</label>
+						    <g:set var="nomeLogo" value="logo-${tipoRedeUsuario()}.png"/>
+			                <img src='${resource(dir:'images',file:nomeLogo)}' alt="${tipoRedeUsuario().capitalize()}" title="${tipoRedeUsuario().capitalize()}">
+			                
+						    <label for="nome" style="margin-top: 1em">
 						    <g:if test="${session.primeiroAcesso}">
 						    Como quer que te chamemos por aqui?
 						    </g:if>
@@ -31,8 +36,8 @@
 						    O nome pelo qual o chamamos aqui é:
 						    </g:else>
 						    </label>
-						    
 							<input type="text" class="form-control" name="nome" placeholder="Seu nome aqui conosco" value="${nome}">
+							
 						</div>
 						<button type="submit" class="btn btn-default">Gravar</button>
 					</g:form>
