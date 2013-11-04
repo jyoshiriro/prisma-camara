@@ -27,7 +27,7 @@ class FacebookUtil {
 			UsuarioFacebook uface = UsuarioFacebook.where{user==usuario}.find()
 			Facebook facebook = new FacebookTemplate(uface.accessToken)
 			facebook.feedOperations().updateStatus(conteudo)
-			
+			Thread.sleep(1000) // evitar spam
 			log.debug("Mensagem '${conteudo[3..101].trim()}' enviada  com sucesso para ${usuario.username}")
 		} catch (Exception e) {
 			log.error("Erro ao postar mensagem para rede social ${usuario.tipoRede} de ${usuario.username}: ${e.message}")
