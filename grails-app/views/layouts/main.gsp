@@ -61,7 +61,9 @@
 			    	</ul>
 		            <sec:ifAllGranted roles="ROLE_USER">
 		            	<ul class="nav navbar-nav navbar-right">
-			              <li><g:link controller="painel" action="meuPerfil"><g:nomeUsuario /></g:link></li>
+		            	  <g:set var="nomeLogo" value="logo-${tipoRedeUsuario()}.png"/>
+			              <li><img src='${resource(dir:'images',file:nomeLogo)}' class="logo-rede-topo"></li>
+			              <li><g:link controller="painel" action="meuPerfil" class="link-perfil ${tipoRedeUsuario()}"><g:nomeUsuario /></g:link></li>
 			              <li><g:link controller="logout" action="index">Sair</g:link></li>
 			            </ul>
 		            </sec:ifAllGranted>
@@ -74,6 +76,18 @@
 <footer id="footer-main" data-tracking="Footer">
 <div class="footer-bottom">
 <div class="container">
+
+<p>
+<a href="https://twitter.com/olhonacamaradep" title="Seguir @olhonacamaradep no Twitter" target="_blank"
+class="botao-rede">
+<img src="${resource(dir:'images',file:'botao-seguir-twitter.png')}"></a>
+ &nbsp; 
+<a href="https://www.facebook.com/olhonacamaradosdeputados" title="Seguir as atualizações públicas de Olho na Câmara dos Deputados" target="_blank"
+class="botao-rede">
+<img src="${resource(dir:'images',file:'botao-seguir-facebook.png')}">
+</a>
+</p>
+
 
 		<p>
 		Desenvolvido por <a href="https://www.facebook.com/jyoshiriro" target="_blank">José Yoshiriro</a> 
