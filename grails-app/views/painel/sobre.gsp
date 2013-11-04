@@ -25,6 +25,8 @@
 				<a href="https://www.facebook.com/raimundo.norbertolameirajunior">Raimundo Lameira</a>.<br/>
 				Este é um software livre e seu código pode ser acessado <a href="https://github.com/jyoshiriro/prisma-camara">aqui</a>.
 			</p>
+			<g:render template="oque-fazemos"/>
+			<g:render template="imagens-exemplos"/>
 			<p>
 			<b>Sugestões e Críticas?</b>
 			<ul>

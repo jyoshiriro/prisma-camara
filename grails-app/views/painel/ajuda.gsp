@@ -14,17 +14,23 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>:: Sobre</title>
+		<title>:: Ajuda</title>
 	</head>
 	<body>
 		<div class="container">
 			<h2>Ajuda - "Olho na Câmara"</h2>
-			<h3>
-				Passo-a-passo de uso
+			<g:render template="oque-fazemos"/>
+			<g:render template="imagens-exemplos"/>
+			<h3 style="cursor: pointer;" onclick="$('#divPassoAPasso').toggle()">
+				<u>Passo-a-passo de uso</u>
 			</h3>
 			<p>
-			<a href="../docs/passo-a-passo-olho-na-camara.pdf" target="_blank">Versão para Download (PDF)</a> <br>	
-			<iframe src="http://www.slideshare.net/slideshow/embed_code/27849979" width="600" height="700" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/jyoshiriro/ajuda-olho-na-camara-27849979" title="Ajuda olho na camara" target="_blank">Ajuda olho na camara</a> </strong> from <strong><a href="http://www.slideshare.net/jyoshiriro" target="_blank">José Ramos</a></strong> </div>
-		</div>
+			<div id="divPassoAPasso" style="display: none;">
+				<a href="../docs/passo-a-passo-olho-na-camara.pdf" target="_blank">Versão para Download (PDF)</a> <br><br>
+				<iframe src="http://www.slideshare.net/slideshow/embed_code/27849979"
+					frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+					style="border: 1px solid #CCC; border-width: 1px 1px 0; margin-bottom: 5px; width:35em; height:45em;"
+					allowfullscreen> </iframe></div>
+			</div>
 	</body>
 </html>
