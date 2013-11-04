@@ -102,7 +102,6 @@ Versão <i>0.1 Beta</i>. Código Licenciado na
 </div>
 		</footer>
 		
-		<script src="${resource(dir: 'js', file: 'application.js')}"></script>
 		<r:layoutResources />
 	</body>
 </html>
