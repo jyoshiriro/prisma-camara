@@ -19,6 +19,17 @@
 	</head>
 	<body>
 		<div class="container">
+		
+			<%--Workaround enquanto não está autorizado pelo Face--%>
+			<div class="alert alert-info" id="divAvisoFace" style="display: none">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<b>Atenção:</b> O Facebook ainda não autorizou o uso público da nossa aplicação, porém se você aceitar ser "testador" dela, poderá conectar-se aqui.<br>
+				Se quiser usar a aplicação com sua conta do Facebook, entre em contato com 
+				<a href="https://www.facebook.com/jyoshiriro">José Yoshiriro</a> ou 
+				<a href="https://www.facebook.com/raimundo.norbertolameirajunior">Raimundo Lameira</a>.
+			</div>
+			<%--Workaround enquanto não está autorizado pelo Face--%>
+			
 			<div class="row">
 				<div class="col-sm-4 centered">
 						<div class="row">
@@ -31,7 +42,9 @@
 						</div>
 						<div class="row">		
 							<div class="col-md-8 col-md-offset-2">
-								<a href="j_spring_security_facebook_redirect" title="Entrar com Facebook"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-face.png')}"></a>
+								<a href="j_spring_security_facebook_redirect" title="Entrar com Facebook"
+								onmouseover="$('#divAvisoFace').show(0)" onfocus="$('#divAvisoFace').show(0)"
+								onclick="$('#divAvisoFace').show(0)" target="_blank"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-face.png')}"></a>
 								<a href="j_spring_twitter_security_check" title="Entrar com Twitter"><img class="redes" alt="" src="${resource(dir:'images', file:'botao-twitter.png')}"></a>
 							</div>
 						</div>

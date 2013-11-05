@@ -10,6 +10,9 @@
 	<img src="${resource(dir:'images',file:'ss-exemplo-post-facebook2.png')}" alt="Exemplo 2 (Facebook)">
 	</p>
 	<p>
+	<img src="${resource(dir:'images',file:'ss-exemplo-post-facebook3.png')}" alt="Exemplo 3 (Facebook)">
+	</p>
+	<p>
 	<img src="${resource(dir:'images',file:'ss-exemplo-post-twitter1.png')}" alt="Exemplo 1 (Twitter)">
 	</p>
 	<p>
