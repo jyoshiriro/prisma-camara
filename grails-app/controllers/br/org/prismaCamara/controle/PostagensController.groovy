@@ -43,7 +43,7 @@ class PostagensController {
 	}
 	
 	def biografiaDeputado() {
-		Postagem post = new PostagemBiografiaDeputado(r:groovyPageRenderer)
+		Postagem post = new PostagemBiografiaDeputado(r:groovyPageRenderer,usuarioService:usuarioService)
 		flash.postagem1 = post.getTexto([tipo:Postagem.TIPO_FACE])
 		flash.postagem2 = post.getTexto([tipo:Postagem.TIPO_TWITTER])
 		render(view:'index')
