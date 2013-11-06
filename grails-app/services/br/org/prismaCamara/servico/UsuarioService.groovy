@@ -184,8 +184,13 @@ class UsuarioService {
 	 */
 	private Deputado getDeputadoAleatorio() {
 		def quantAtivos = Deputado.countByAtivo(true)
-		def id = new Random().nextInt(quantAtivos.toInteger())-1
-		def deputado = Deputado.list(max:1,offset:id).first()
+		def deputado = null
+		while (true) {
+			def id = new Random().nextInt(quantAtivos.toInteger())-1
+		 	deputado = Deputado.findAllByAtivo(true,[max:1,offset:id]).first()
+			if (deputado.ativo)
+				break;
+		}
 		deputado
 	}
 		
