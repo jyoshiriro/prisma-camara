@@ -43,7 +43,7 @@ class PrepararEnviosDiariosJob {
 
     def execute() {
 		
-		def semBiografiaAtrasada = PostNaoEnviado.countByTipoInformacao('biografia')==0
+		def semBiografiaAtrasada = true
 
         def usuarios = Usuario.list() 
 		
@@ -53,6 +53,7 @@ class PrepararEnviosDiariosJob {
 			// recebe biografias aleatórias?
 			if (semBiografiaAtrasada && usuario.receberBiografias) {
 				prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
+				semBiografiaAtrasada = false
 				log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
 			}
 			
