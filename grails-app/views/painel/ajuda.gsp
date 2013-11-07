@@ -30,7 +30,20 @@
 				<iframe src="http://www.slideshare.net/slideshow/embed_code/27849979"
 					frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
 					style="border: 1px solid #CCC; border-width: 1px 1px 0; margin-bottom: 5px; width:35em; height:45em;"
-					allowfullscreen> </iframe></div>
+					allowfullscreen> </iframe>
 			</div>
+			</p>
+			<h3 style="cursor: pointer;" onclick="$('#divManualTecnico').toggle()">
+				<u>Mini Guia Técnico</u>
+			</h3>
+			<p>
+			<div id="divManualTecnico" style="display: none;">
+				<a href="../docs/mini-guia-tecnico-olho-na-camara.pdf" target="_blank">Versão para Download (PDF)</a> <br><br>
+				<iframe src="http://www.slideshare.net/slideshow/embed_code/28019876"
+					frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+					style="border: 1px solid #CCC; border-width: 1px 1px 0; margin-bottom: 5px; width:50em; height:35em;"
+					allowfullscreen> </iframe>
+			</div>
+			</p>
 	</body>
 </html>
