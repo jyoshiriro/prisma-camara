@@ -112,11 +112,12 @@ class UsuarioService {
 		
 		def deputados2 = considerarPartidos?Partido.executeQuery("""
 			select d from Deputado d where d.partido in 
-			(select up.partido from UsuarioPartido up where up.usuario=:u)
-			and d not in (:deps)  
+			(select up.partido from UsuarioPartido up where up.usuario=?)
+			and d.ativo=true  
 			order by d.nomeParlamentar
-			""",[u:usuario,deps:deputados1?:[Deputado.get(0)]]):[]
+			""",[usuario]):[]
 		
+		deputados2-=deputados1
 		List deputadost = deputados1+deputados2
 		return deputadost
 		/*return Deputado.getAll(10,619,173,500,374,324,458,437,174,359,479,500,5,320)*/
