@@ -60,7 +60,7 @@ class PostNaoEnviado {
 	
 	def afterUpdate() {
 		pendente = (tentativas) 
-		if (tentativas>=20) {
+		if (tentativas>=3) {
 			this.delete();
 		}
 	}
