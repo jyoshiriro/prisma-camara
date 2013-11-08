@@ -15,7 +15,7 @@
  ${st+1}. Com inicio às ${discurso.horaInicio}
  
  Sumário: 
- ${discurso.sumario.trim()}
+ ${discurso.sumario?discurso.sumario.trim():'(Não informado)'}
 
  Contatos: ${dep.contatos}.
  
