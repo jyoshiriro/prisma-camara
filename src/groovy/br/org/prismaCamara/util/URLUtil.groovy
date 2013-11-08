@@ -15,6 +15,7 @@ package br.org.prismaCamara.util
 import grails.plugins.rest.client.ErrorResponse
 import grails.plugins.rest.client.RestBuilder
 import br.org.prismaCamara.modelo.Parametro
+import br.org.prismaCamara.modelo.UrlCurta
 
 /**
  * Classe para tratamento de URL (principalmente para encurtá-las)
@@ -25,6 +26,10 @@ class URLUtil {
 	static Map cache = [:]
 	
 	static String getUrlCurta(String urlLonga) {
+		UrlCurta.getUrlCurta(urlLonga)	
+	}
+	
+	static String getUrlCurtaOld(String urlLonga) {
 		def curta = cache.get(urlLonga.encodeAsMD5())
 		if (curta)
 			return "http://goo.gl/${curta}"
