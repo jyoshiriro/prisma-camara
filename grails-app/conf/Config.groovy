@@ -23,7 +23,7 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
-grails.config.locations = [ "classpath:local-config.properties", "file:${userHome}/.grails/s2fb-config.properties"]
+grails.config.locations = [ "classpath:local-config.properties", "file:/home/tomcat7/.grails/s2fb-config.properties"]
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
