@@ -18,6 +18,7 @@ INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do site da 
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'URL do servico que retorna o XML os partidos', 'url_listagem_partidos', 'http://www.camara.gov.br/SitCamaraWS/Deputados.asmx/ObterPartidosCD');
 INSERT INTO parametro (version,descricao,sigla,valor) VALUES (0,'Diretório onde são armazenadas as miniaturas das imagens dos deputados.', 'dir_miniaturas', '/var/lib/tomcat7/shared/prisma-camara/tmp/');
 
--- Indice na tabela de despesas
+-- Indices
 CREATE INDEX idx_despesa ON despesa(data_emissao,deputado_id,txt_numero);
 CREATE INDEX idx_hash ON post_nao_enviado(hash,pendente);
+CREATE INDEX idx_urlonga ON url_curta(url_longa);
