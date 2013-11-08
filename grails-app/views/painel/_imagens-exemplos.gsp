@@ -3,7 +3,7 @@
 <h3 style="cursor: pointer;" onclick="$('#divExemplos').toggle()"><u>Exemplos de Postagens Face/Twitter</u></h3>
 <div id="divExemplos" style="display: none;">
 <p>
-É possível ver post reais em <a href="https://www.facebook.com/olhonacamaradeputados">nossa página oficial no Facebook</a> ou no 
+É possível ver postagens reais em <a href="https://www.facebook.com/olhonacamaradeputados">nossa página oficial no Facebook</a> ou no 
 <a href="https://twitter.com/olhonacamaradep">perfil oficial no Twitter</a>
 </p>
 	<p><i><b>Obs:</b> os dados exibidos nas imagens são reais</i></p>
