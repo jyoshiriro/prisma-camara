@@ -32,7 +32,7 @@ class ImagensUtil {
 	 * @return o array de bytes do arquivo ou <b>null</b> se o arquivo não existe
 	 */
 	static byte[] getImagemLocal(String nomeArquivo) {
-		def arquivo = new File(nomeArquivo)
+		def arquivo = new File("../${nomeArquivo}")
 		if (arquivo.exists()) {
 			arquivo.bytes
 		} else {
@@ -70,7 +70,7 @@ class ImagensUtil {
 		def bmini = bos.buf
 		
 		if (nomeArquivo) {
-			new File(nomeArquivo).bytes = bmini
+			new File("../${nomeArquivo}").bytes = bmini
 		}
 		
 		bmini
