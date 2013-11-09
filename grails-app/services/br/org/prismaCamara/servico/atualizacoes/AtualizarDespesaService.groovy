@@ -54,10 +54,7 @@ class AtualizarDespesaService extends AtualizadorEntidade {
 			log.error("Erro ao tentar ler o XML de Cota Parlamentar! ${e.message}")
 			e.printStackTrace()
 			return
-		} finally {
-			new File("${nomeArquivo}.zip").delete()
-			new File("${nomeArquivo}.xml").delete()		
-		}
+		} 
 		
 		for (mapDespesa in novasDespesas) {
 			try {
