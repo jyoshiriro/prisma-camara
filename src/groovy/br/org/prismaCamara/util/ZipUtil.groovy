@@ -15,6 +15,8 @@ package br.org.prismaCamara.util
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
+import org.apache.commons.io.IOUtils;
+
 
 /**
  * Classe Utilitária para compactar e descompactar uma {@link String}
@@ -53,6 +55,25 @@ class ZipUtil {
 		def descompactado = zipStream.text
 		zipStream.close()
 		descompactado
+	}
+	
+	
+	/**
+	 * Descompacta o arquivo "AnoAtual.zip" em uma pasta acima da de trabalho da app e
+	 * cria (sobrescrevendo) o "AnoAtual.xml"
+	 * @param conteudoZip Conteúdo do arquivo "AnoAtual.zip"
+	 * @return O conteúdo do arquivo "AnoAtual.xml"
+	 */
+	static byte[] descompactarAnoAtualZip(byte[] conteudoZip) {
+		new File("../AnoAtual.zip").bytes=conteudoZip
+		Process p = Runtime.getRuntime().exec("unzip -o -d ../ ../AnoAtual.zip")
+		int exitVal = p.waitFor()
+		def fis = new FileInputStream("../AnoAtual.xml")
+		def bis = new BufferedInputStream(fis)
+		def conteudoXml = IOUtils.toByteArray(bis)
+		bis.close()
+		fis.close()
+		return conteudoXml
 	}
 	
 	
