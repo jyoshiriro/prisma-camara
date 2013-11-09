@@ -25,7 +25,7 @@ class PostagemBiografiaDeputado extends Postagem {
 	 */
 	public String getTexto(Map params) {
 		if (!params.dep) 
-			params.dep = usuarioService.deputadoAleatorio.id
+			params.dep = usuarioService.deputadoAleatorio
 		
 		String p = r.render(template:"/postagens/biografia-deputado-${params.tipo}", model:params).toString()
 		p
