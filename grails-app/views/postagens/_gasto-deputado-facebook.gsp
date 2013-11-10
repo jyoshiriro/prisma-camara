@@ -18,11 +18,10 @@ Número do documento: ${despesa.txtNumero}
 Data da emissão: <g:formatDate date="${despesa.dataEmissao}" format="dd/MM/yyyy"/> 
 Valor solicitado: R${'$'}${despesa.valor}
 Valor glosa: R${'$'}${despesa.valorGlosa}
-Parcela: ${despesa.numParcela?:'(única)'} 
+Parcela: ${despesa.numParcela?:'(única)'}
+Mais detalhes em ${despesa.urlDetalhes}
 </g:each>
 
 Contatos: ${dep.contatos}.
-
-Mais detalhes em ${despesas.first().urlDetalhes}
 
 Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)

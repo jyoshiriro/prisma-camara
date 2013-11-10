@@ -1,6 +1,6 @@
 <g:each in="${despesas}" var="despesa" status="st">
 Novo gasto d<g:deputadoPrefix dep="${dep}" minusculo="true"/>: ${despesa.txtDescricao} <g:formatDate date="${despesa.dataEmissao}" format="d/M/yy"/>. R${'$'}${despesa.valor}
-${despesas.first().urlDetalhesCurta}
+${despesa.urlDetalhesCurta}
 <hr></g:each> Via http://goo.gl/Drr2jj
 <%--
  * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
