@@ -40,43 +40,49 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		try {
 			proximaData = Date.parse("dd/MM/yyyy", ultimoDiaS)
 		} catch (Exception e) {
-			proximaData = (new Date()-30) // caso ocorra algum problema ou seja a primeira vez, a data máxima a ser buscada é de 30 dias atrás
+			proximaData = (new Date()-15) // caso ocorra algum problema ou seja a primeira vez, a data máxima a ser buscada é de 15 dias atrás
 		}
 		return proximaData.clearTime()
 	}
 	
 	
     def atualizar() {
+		
 		Date ultimaAtualizacao = getUltimaAtualizacao()
-		Date proximaAtualizacao = new Date().clearTime()
+		Date proximaAtualizacao = (new Date(ultimaAtualizacao.time)+1).clearTime()
+		Date hojeSimples = new Date().clearTime()
 		
 		def urlT = null
-		GPathResult xmlr = null
-		try {
-			def quant = 0
-			while (quant==0 && proximaAtualizacao>ultimaAtualizacao) {
-				urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
-				try {
-					xmlr = getXML(urlT)
-					quant = xmlr.childNodes()?.size()
-				} catch (Exception e) {
-					log.error("A url ${urlT} não retornou XML válido: ${e.message}")
-				}
-				proximaAtualizacao--
-			}
-			if (quant==0) {
-				log.debug("Não há novas frequencias após ${ultimaAtualizacao}")
-				return
+		Map<Date,GPathResult> xmlrs = [:]
+		
+		while (proximaAtualizacao.time<=hojeSimples.time) {
+			urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
+			try {
+				def xmlr = getXML(urlT)
+				def quant = xmlr.childNodes()?.size()
+				if (quant>0)
+					xmlrs.put(proximaAtualizacao,xmlr)
+			} catch (Exception e) {
+				log.error("A url ${urlT} não retornou XML válido: ${e.message}")
+				throw e;
 			}
 			proximaAtualizacao++
-			
-		} catch (Exception e) {
-			log.error("A url ${urlT} não retornou XML válido: ${e.message}")
-			throw e;
 		}
+		if (xmlrs.empty) {
+			log.debug("Não há novas frequencias após ${ultimaAtualizacao}")
+			return
+		}
+			
+		Parametro.findBySigla('ultimo_dia_frequencia').valor=proximaAtualizacao.format("dd/MM/yyyy")
+		log.debug("Data da última atualização de frequencia atualizada para ${proximaAtualizacao}")
 		
-		log.debug("Chegaram ${xmlr.parlamentares.childNodes()?.size()} frequências dos deputados chegaram no XML de ${urlT}...")
+		log.debug("Chegaram frequencias de ${xmlrs?.size()} dias dos deputados no XML de ${urlT}...")
 
+		for (xmlrItMap in xmlrs) { 
+			def dataAtualizacaoAtual = xmlrItMap.key
+			def xmlr = xmlrItMap.value
+			log.debug("Chegaram ${xmlr.parlamentares.childNodes()?.size()} frequências dos deputados chegaram no XML para ${dataAtualizacaoAtual}...")
+			
 		for (parlemantar in xmlr.parlamentares.parlamentar) { 
 			
 			Deputado.withNewTransaction { tx ->
@@ -90,11 +96,11 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 				} 
 				else { // se o deputado está sendo observado
 				
-					def atributos = [dia:proximaAtualizacao, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
+					def atributos = [dia:dataAtualizacaoAtual, frequenciaDia:parlemantar.descricaoFrequenciaDia.toString(), justificativa:parlemantar.justificativa.toString()]
 					
 					atributos+=[deputado:deputadoA]
 					
-					FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==proximaAtualizacao}.find()
+					FrequenciaDia entidade = FrequenciaDia.where {deputado==deputadoA && dia==dataAtualizacaoAtual}.find()
 					
 					if (entidade) { // já existe o registro, atualize os dados
 						entidade.properties=atributos
@@ -135,7 +141,9 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			} // if de existencia de Deputado
 			
 			}
-		}
+		} // cada xmlr
+		
+		} // loop em xmlrs 
 
 		log.debug("Atualização de Frequencias de Deputados concluída com sucesso")
     }
