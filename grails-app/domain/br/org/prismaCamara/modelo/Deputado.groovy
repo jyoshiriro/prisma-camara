@@ -70,6 +70,7 @@ class Deputado {
 	static mapping = {
 		despesas(sort:'dataEmissao')
 		discursos(sort:'horaInicio')
+		frequenciasDia(sort:'dia',order:'desc')
 		sort('nomeParlamentar')
 	}
 	
