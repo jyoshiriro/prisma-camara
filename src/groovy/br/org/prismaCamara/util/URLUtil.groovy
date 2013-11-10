@@ -40,7 +40,7 @@ class URLUtil {
 	 */
 	static String getURLDetalhesCotaDeputado(String urlTemporaria) {
 		// teve que ser via comando de SO, pois com código Java ou Groovy os códigos de resposta não eram os mesmos, de jeito algum!
-		Process p = Runtime.getRuntime().exec("curl --head http://www.camara.gov.br/cota-parlamentar/consulta-cota-parlamentar?ideDeputado=74075")
+		Process p = Runtime.getRuntime().exec("curl --head ${urlTemporaria}")
 		p.waitFor()
 		def linhas = p.inputStream.text
 		def novaUrl = ""
