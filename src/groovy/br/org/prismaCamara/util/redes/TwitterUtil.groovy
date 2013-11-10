@@ -28,6 +28,7 @@ class TwitterUtil {
 	def grailsApplication
 
 	void postar(Usuario usuario, String conteudo) {
+		Thread.sleep(10500) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
 		try {
 			UsuarioTwitter utwitter = UsuarioTwitter.where{user==usuario}.find()
 	
@@ -56,7 +57,6 @@ class TwitterUtil {
 					post = post[0..139]
 				}
 				twitter.timelineOperations().updateStatus(post)
-				Thread.sleep(10500) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
 			}
 			
 			log.debug("Mensagem '${conteudo[0..79].trim()}' enviada com sucesso para ${usuario.username}")
