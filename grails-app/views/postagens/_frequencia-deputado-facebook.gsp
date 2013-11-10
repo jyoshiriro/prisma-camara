@@ -10,8 +10,8 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
-<g:set var="presente" value="${freq?.frequenciaDia.startsWith('P')}"/>
-Novo registro de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> na Câmara dos Deputados:
+Veja os recentes registros de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> na Câmara dos Deputados:
+<g:each in="${frequencias}" var="freq"><g:set var="presente" value="${freq?.frequenciaDia.startsWith('P')}"/><g:set var="qsessoes" value="${freq.frequenciasSessao?.size()}"/><g:set var="souma" value="${qsessoes==1}"/>
 
 • Dia <g:formatDate date="${freq.dia}"/> -> ${presente?'Presente':'Ausente'}. 
 <g:if test="${!presente}">
@@ -22,10 +22,10 @@ Novo registro de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> 
 <g:else>Como faltou, perdeu ${qsessoes} Sess${souma?'ão':'ões'}:</g:else>
 <g:each in="${freq.frequenciasSessao}" var="fs" status="st">
 ${st+1}. ${fs.descricao} <g:formatDate date="${fs.inicio}" format="HH:mm"/><g:if test="${presente}"> -> ${fs.frequencia?.startsWith('P')?'Presente':'Ausente'}</g:if>
-</g:each>
+</g:each></g:each>
 
-Contatos: ${dep.contatos}.
+Contatos: ${frequencias.first().deputado.contatos}.
 
-Mais detalhes em ${freq.urlDetalhes}
+Mais detalhes em ${frequencias.first().urlDetalhes}
 
 Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)
