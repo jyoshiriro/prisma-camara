@@ -8,6 +8,13 @@ class UrlCurta {
 	String urlLonga
 	String chaveCurta
 	
+	/**
+	 * Retorna a URL curta a partir de uma longa.<br>
+	 * Primeiro tenta-se recuperar a URL curta da tabela "url_curta". 
+	 * Caso não seja encontrada, submete-se para o gerador de URL curta do Google (Parâmetro 'url_shorturl').
+	 * @param urlLonga
+	 * @return
+	 */
 	static String getUrlCurta(String urlLonga) {
 		def curta = findByUrlLonga(urlLonga.encodeAsMD5())
 		if (curta)

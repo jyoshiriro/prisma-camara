@@ -12,9 +12,6 @@
  */
 package br.org.prismaCamara.util
 
-import grails.plugins.rest.client.ErrorResponse
-import grails.plugins.rest.client.RestBuilder
-import br.org.prismaCamara.modelo.Parametro
 import br.org.prismaCamara.modelo.UrlCurta
 
 /**
@@ -25,27 +22,35 @@ class URLUtil {
 
 	static Map cache = [:]
 	
+	/**
+	 * Retorna a URL curta a partir de uma longa, usando o "getUrlCurta()" de {@link UrlCurta}.  
+	 * @param urlLonga
+	 * @return
+	 */
 	static String getUrlCurta(String urlLonga) {
 		UrlCurta.getUrlCurta(urlLonga)	
 	}
 	
-	static String getUrlCurtaOld(String urlLonga) {
-		def curta = cache.get(urlLonga.encodeAsMD5())
-		if (curta)
-			return "http://goo.gl/${curta}"
-
-		def resp = new RestBuilder().post(Parametro.findBySigla('url_shorturl').valor){
-			contentType "application/json"
-			accept "application/json"
-			json longUrl: "${urlLonga}"
+	/**
+	 * Recupera a URL detalhes de cota de Deputado. 
+	 * Método necessário pois o site da Câmara faz um 302 quando se faz uma chamada à URL original gerando um nova parâmetro "nuDeputadoId" 
+	 * que não existe em nenhum lugar nos "dados abertos". 
+	 * @param urlTemporaria
+	 * @return
+	 */
+	static String getURLDetalhesCotaDeputado(String urlTemporaria) {
+		// teve que ser via comando de SO, pois com código Java ou Groovy os códigos de resposta não eram os mesmos, de jeito algum!
+		Process p = Runtime.getRuntime().exec("curl --head http://www.camara.gov.br/cota-parlamentar/consulta-cota-parlamentar?ideDeputado=74075")
+		p.waitFor()
+		def linhas = p.inputStream.text
+		def novaUrl = ""
+		linhas.eachLine {
+			if (it.toLowerCase().startsWith("location")) {
+				novaUrl = it.substring(it.indexOf(":")+2)
+				return
+			}
 		}
-		if (resp instanceof ErrorResponse) {
-			System.err.println("Erro ao tentar obter a URL curta de ${urlLonga}: ${resp.text}")
-			return urlLonga
-		}
-		def urlcurta = resp.json.id
-		cache.put(urlLonga.encodeAsMD5(),urlcurta.substring(urlcurta.lastIndexOf('/')+1)) 
-		urlcurta
+		novaUrl
 	}
 	
 }
