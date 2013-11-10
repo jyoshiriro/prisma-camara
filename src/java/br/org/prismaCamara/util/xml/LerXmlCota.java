@@ -103,6 +103,10 @@ public class LerXmlCota {
 					switch (i) {
 					
 						case 0: // validação de matrícula válida e mapeada
+							if (valor!=null && (valor.equals("") || valor.equals("0"))) {
+//								System.err.println("Despesa sem Deputado!!! "+ lerValor(i!=0, nomesAtributos.get(5), vnGeral));
+								System.err.println("Despesa sem Deputado!!! ");
+							}
 							if ((valor==null || valor.equals("") || valor.equals("0")) || (!mapDeputados.containsKey(Integer.valueOf(valor.toString().trim()))) ) {
 								vnGeral.toElement(VTDNav.PARENT);
 								continue loopDespesa;
