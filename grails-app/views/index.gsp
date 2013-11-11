@@ -11,7 +11,7 @@
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
  <%
- if (request?.getRequestURL()?.indexOf("localhost")>=0) {
+ if (request?.getRequestURL()?.indexOf("li649-187")>=0) {
 	 response.sendRedirect('http://olhonacamara.com.br/')
  }
  %>
