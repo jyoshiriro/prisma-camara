@@ -12,7 +12,7 @@
  --%>
  <%
  if (request?.getRequestURL()?.indexOf("localhost")>=0) {
-	 response.sendRedirect('http://olhonacamara.com.br/painel/ajuda')
+	 response.sendRedirect('http://olhonacamara.com.br/')
  }
  %>
 <sec:ifNotLoggedIn>
