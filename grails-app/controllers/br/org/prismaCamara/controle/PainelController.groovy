@@ -93,6 +93,11 @@ class PainelController {
 		redirect controller: 'logout'
 	}
 	
-	def ajuda() { }
+	def ajuda() { 
+		if (request?.getRequestURL()?.indexOf("li649-187")>=0) {
+			redirect(url:'http://olhonacamara.com.br/painel/ajuda')
+			return
+		}
+	}
 	
 }
