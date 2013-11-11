@@ -10,6 +10,11 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
+ <%
+ if (request?.getRequestURL()?.indexOf("localhost")>=0) {
+	 response.sendRedirect('http://olhonacamara.com.br/painel/ajuda')
+ }
+ %>
 <sec:ifNotLoggedIn>
 <!DOCTYPE html>
 <html>
