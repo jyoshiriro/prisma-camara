@@ -38,6 +38,8 @@ class Deputado {
 	Boolean ativo
 	String siglaPartido // manter por causa dos get e set
 	
+	Integer nuDeputadoId // campo que só existe devido a página de cotas parlamentares (não existe em nenhum XML dos Dados Abertos)
+	
 	Partido partido
 	
 	String campoPesquisa

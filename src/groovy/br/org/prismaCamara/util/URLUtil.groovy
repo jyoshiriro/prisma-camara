@@ -38,19 +38,19 @@ class URLUtil {
 	 * @param urlTemporaria
 	 * @return
 	 */
-	static String getURLDetalhesCotaDeputado(String urlTemporaria) {
+	static Integer getNuDeputadoId(String urlTemporaria) {
 		// teve que ser via comando de SO, pois com código Java ou Groovy os códigos de resposta não eram os mesmos, de jeito algum!
 		Process p = Runtime.getRuntime().exec("curl --head ${urlTemporaria}")
 		p.waitFor()
 		def linhas = p.inputStream.text
-		def novaUrl = ""
+		def nuDeputadoId = null
 		linhas.eachLine {
 			if (it.toLowerCase().startsWith("location")) {
-				novaUrl = it.substring(it.indexOf(":")+2)
+				nuDeputadoId = it.substring(it.lastIndexOf("=")+1).toInteger()
 				return
 			}
 		}
-		novaUrl
+		nuDeputadoId
 	}
 	
 }
