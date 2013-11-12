@@ -10,7 +10,7 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
-Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)
+Mensagem gerada pelo "Olho na Câmara" (http://olhonacamara.com.br)
 
 <g:deputadoPrefix dep="${dep}"/> proferiu ${discursos.size()} discurso${discursos.size()>1?'s':''} na Câmara em <g:formatDate date="${discursos.first().data}" format="dd/MM/yyyy"/>: 
 <g:each in="${discursos}" var="discurso" status="st">
