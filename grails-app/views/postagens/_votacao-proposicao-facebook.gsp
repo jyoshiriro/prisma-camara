@@ -10,6 +10,8 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
+Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)
+ 
 A Proposição ${prop.descricao} passou por uma nova votação em ${votacao.dataHoraVotacao.format("dd/MM/yy' às 'HH:mm")}
 
 Objeto da Votação: ${votacao.objVotacao}
@@ -21,6 +23,3 @@ Resumo: ${votacao.resumo}</g:if>
 </g:each>
 
 Mais detalhes em ${prop.urlDetalhes}
-
-
-Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)
