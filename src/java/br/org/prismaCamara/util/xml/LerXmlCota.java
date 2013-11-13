@@ -70,7 +70,7 @@ public class LerXmlCota {
 		
 		Map<Integer,Date> mapDeputados = new HashMap<Integer, Date>();
 		Calendar cLimite = Calendar.getInstance();
-		cLimite.add(Calendar.MONTH, -1);
+		cLimite.add(Calendar.MONTH, -2);
 		Date limiteInicial = cLimite.getTime(); 
 		for (Deputado dep:deputadosMapeados) {
 			mapDeputados.put(dep.getMatricula(), dep.getUltimoDiaGasto()!=null?dep.getUltimoDiaGasto():limiteInicial);
