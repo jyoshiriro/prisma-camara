@@ -12,6 +12,8 @@
  */
 package br.org.prismaCamara.util.redes
 
+import java.util.Map;
+
 import grails.plugins.rest.client.RestBuilder
 import groovy.util.logging.Log4j
 
@@ -31,11 +33,9 @@ class TwitterUtil {
 		try {
 			UsuarioTwitter utwitter = UsuarioTwitter.where{user==usuario}.find()
 	
-			Properties prop = new Properties()
-			def nomeArquivoConf = grailsApplication.config.grails.config.locations[1].substring(5)
-			prop.load(new ByteArrayInputStream(new File(nomeArquivoConf).bytes))
-			def consumerKey = prop["grails.plugins.springsecurity.twitter.consumerKey"]
-			def consumerSecret = prop["grails.plugins.springsecurity.twitter.consumerSecret"]
+			def chaves = chavesTwitter()
+			def consumerKey =  chaves.consumerKey
+			def consumerSecret = chaves.consumerSecret
 			
 			Twitter twitter = new TwitterTemplate(consumerKey,consumerSecret,utwitter.token,utwitter.tokenSecret)
 			def conteudos = []
@@ -67,12 +67,17 @@ class TwitterUtil {
 		} 
 	}
 	
-	static main(args) {
-		def resp = new RestBuilder().post('https://api.twitter.com/oauth/request_token'){
-			contentType "application/json"
-			accept "application/json"
-			json longUrl: "${urlLonga}"
-		}
-
+	/**
+	 * Retorna uma {@link Map} com "consumerKey" e "consumerSecret" da App "olho na câmara"
+	 * @return
+	 */
+	Map chavesTwitter() {
+		Properties prop = new Properties()
+		def nomeArquivoConf = grailsApplication.config.grails.config.locations[1].substring(5)
+		prop.load(new ByteArrayInputStream(new File(nomeArquivoConf).bytes))
+		def consumerKey = prop["grails.plugins.springsecurity.twitter.consumerKey"]
+		def consumerSecret = prop["grails.plugins.springsecurity.twitter.consumerSecret"]
+		[consumerKey:consumerKey,consumerSecret:consumerSecret]
 	}
+	
 }
