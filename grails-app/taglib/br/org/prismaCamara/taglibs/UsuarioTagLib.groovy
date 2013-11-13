@@ -37,6 +37,14 @@ class UsuarioTagLib {
 		out << tipo
 	}
 	
+	/**
+	 * Retorna um boleano verificando se o usuário já leu a mensagem inicial sobre a quantidade de mensagens
+	 */
+	def jaLeuMsgInicial = {
+		def usuario = Usuario.get(usuarioAtual?.id)
+		out << (usuario?.msgInicialLida)?'sim':''
+	}
+	
 	private Usuario getUsuarioAtual() {
 		Usuario usuario = null
 		if (SpringSecurityUtils.ifAllGranted('ROLE_USER')) {
