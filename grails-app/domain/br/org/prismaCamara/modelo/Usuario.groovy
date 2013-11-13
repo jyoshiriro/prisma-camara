@@ -29,6 +29,7 @@ class Usuario {
 	String tipoRede
 	boolean receberBiografias = true
 	Date dataNascimento
+	boolean msgInicialLida = false
 	
 	static hasMany = [usuarioPartidos:UsuarioPartido,usuarioDeputados:UsuarioDeputado,usuarioProposicoes:UsuarioProposicao]
 	
