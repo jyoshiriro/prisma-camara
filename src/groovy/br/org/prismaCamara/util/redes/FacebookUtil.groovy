@@ -12,12 +12,13 @@
  */
 package br.org.prismaCamara.util.redes
 
-import org.springframework.social.facebook.api.Facebook;
+import groovy.util.logging.Log4j
+
+import org.springframework.social.facebook.api.Facebook
 import org.springframework.social.facebook.api.impl.FacebookTemplate
 
-import groovy.util.logging.Log4j;
-import br.org.prismaCamara.modelo.Usuario;
-import br.org.prismaCamara.modelo.UsuarioFacebook;
+import br.org.prismaCamara.modelo.Usuario
+import br.org.prismaCamara.modelo.UsuarioFacebook
 
 @Log4j
 class FacebookUtil {
@@ -26,7 +27,9 @@ class FacebookUtil {
 		try {
 			UsuarioFacebook uface = UsuarioFacebook.where{user==usuario}.find()
 			Facebook facebook = new FacebookTemplate(uface.accessToken)
-			facebook.feedOperations().updateStatus(conteudo)
+			def nomeCompleto = "${facebook.userOperations().userProfile.firstName} ${facebook.userOperations().userProfile.lastName}"
+			String conteudoAssinado = "Olho na Câmara (http://olhonacamara.com.br) >> $nomeCompleto \n$conteudo"
+			facebook.feedOperations().updateStatus(conteudoAssinado)
 			Thread.sleep(1500) // evitar spam
 			log.debug("Mensagem '${conteudo[3..101].trim()}' enviada  com sucesso para ${usuario.username}")
 		} catch (Exception e) {
@@ -34,4 +37,5 @@ class FacebookUtil {
 			throw e
 		} 
 	}
+	
 }
