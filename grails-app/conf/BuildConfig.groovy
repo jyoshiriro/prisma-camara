@@ -90,7 +90,7 @@ grails.project.dependency.resolution = {
 		
 		compile ":spring-security-twitter:0.5.4"
 		
-		compile ":quartz:1.0.1"
+		compile ":quartz:1.0-RC13"
 		
 		compile ":quartz-monitor:0.3-RC2"
 		
