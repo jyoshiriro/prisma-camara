@@ -97,4 +97,10 @@ class PainelController {
 		
 	}
 	
+	def confirmarLeituraMsgInicial() {
+		Usuario usuario = getUsuarioAutenticado()
+		usuario.msgInicialLida=true
+		redirect(action:'')
+	}
+	
 }
