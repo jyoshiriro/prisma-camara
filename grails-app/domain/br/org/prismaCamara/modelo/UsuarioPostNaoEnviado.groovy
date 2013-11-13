@@ -15,5 +15,9 @@ package br.org.prismaCamara.modelo
 class UsuarioPostNaoEnviado {
 
 	static belongsTo = [postNaoEnviado:PostNaoEnviado, usuario:Usuario]
-	
+
+	static mapping = {
+		sort('usuario')
+		usuario(sort:'tipoRede')
+	}	
 }
