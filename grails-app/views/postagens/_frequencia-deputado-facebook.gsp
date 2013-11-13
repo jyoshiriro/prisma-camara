@@ -10,7 +10,7 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
-Mensagem gerada pelo "Olho na Câmara" (http://olhonacamara.com.br)
+(Mensagem gerada e enviada automaticamente)
 
 Veja os recentes registros de frequência d<g:deputadoPrefix dep="${dep}" minusculo="true"/> na Câmara dos Deputados:
 <g:each in="${frequencias}" var="freq"><g:set var="presente" value="${freq?.frequenciaDia.startsWith('P')}"/><g:set var="qsessoes" value="${freq.frequenciasSessao?.size()}"/><g:set var="souma" value="${qsessoes==1}"/>
