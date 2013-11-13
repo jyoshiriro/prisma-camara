@@ -19,6 +19,39 @@
 		<title>Painel</title>
 	</head>
 	<body>
+	
+	<g:if test="${!jaLeuMsgInicial}">
+	<!-- Modal -->
+			<div class="modal fade" style="overflow-y: auto;" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Instrução inicial</h4>
+						</div>
+						<div class="modal-body">
+							<p>Olá, <b><g:nomeUsuario/></b>. Como você é novo(a) por aqui, gostariamos de avisá-lo(a) que:</p>
+							<ol>
+							<li>Toda mensagem que receber será PRIVADA, ou seja, só você irá vê-la em sua rede social. Se quiser, pode compartilhá-la para que seus amigos a vejam também</li>
+							<li>Talvez amanhã ou em poucas horas você receba um volume um pouco grande de postagens na linha do tempo de sua rede social. Do segundo dia em diante você receberá menos mensagens</li>
+							<li>A quantidade de postagens que vai receber dependenderá de quantos deputados/partidos/proposições selecionar</li>
+							<li>Se quiser deixar de receber as mensagens basta ir em <b>"Meu Perfil"</b> e depois <b>"Quero Cancelar meu cadastro"</b></li>
+							</ol> 
+						</div>
+						<div class="modal-footer">
+							<g:link class="btn btn-primary" controller="painel" action="confirmarLeituraMsgInicial">Ok :)</g:link>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<r:script>
+				$("#myModal").modal({show:true});
+			</r:script>
+			<!-- /.modal -->
+	</g:if>
+			
 		<div class="container">
 			<h1>Meus Acompanhamentos</h1>
 			<br/>
