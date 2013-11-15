@@ -28,7 +28,7 @@ class FacebookUtil {
 			UsuarioFacebook uface = UsuarioFacebook.where{user==usuario}.find()
 			Facebook facebook = new FacebookTemplate(uface.accessToken)
 			def nomeCompleto = "${facebook.userOperations().userProfile.firstName} ${facebook.userOperations().userProfile.lastName}"
-			String conteudoAssinado = "http://olhonacamara.com.br >> $nomeCompleto \n$conteudo"
+			String conteudoAssinado = "http://olhonacamara.com.br >> $nomeCompleto $conteudo"
 			facebook.feedOperations().updateStatus(conteudoAssinado)
 			Thread.sleep(1500) // evitar spam
 			log.debug("Mensagem '${conteudo[3..101].trim()}' enviada  com sucesso para ${usuario.username}")
