@@ -62,7 +62,7 @@ abstract class PrepararPost {
 		}
 		
 		def hashTeste = PostNaoEnviado.getHashGerado(idEntidade,nomeTipoInformacao,usuario.tipoRede)
-		def post = PostNaoEnviado.findByHashAndPendente(hashTeste,false)
+		def post = PostNaoEnviado.findByHash(hashTeste)
 		try {
 			if (!post) {
 				post = new PostNaoEnviado(idEntidade:idEntidade,tipoInformacao:nomeTipoInformacao)
