@@ -12,11 +12,11 @@
  */
 package br.org.prismaCamara.job
 
-import br.org.prismaCamara.modelo.PostNaoEnviado;
-import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado;
-import br.org.prismaCamara.util.redes.FacebookUtil;
-import br.org.prismaCamara.util.redes.TwitterUtil;
-import groovy.util.logging.Log4j;
+import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.PostNaoEnviado
+import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado
+import br.org.prismaCamara.util.redes.FacebookUtil
+import br.org.prismaCamara.util.redes.TwitterUtil
 
 /**
  * Envia todas as postagens pendentes em {@link PostNaoEnviado} às redes sociais dos usuários.
@@ -50,7 +50,7 @@ class EnviarPostsJob {
 				log.debug("Postagem enviada com sucesso para ${usuario.username} - ${usuario.tipoRede}")
 			} catch (Exception e) {
 				log.error("Erro ao tentar enviar o post ${upost.id}: ${e.message}")
-				upost.postNaoEnviado.tentativas++
+				upost.tentativas++
 			}
 		}
 		
