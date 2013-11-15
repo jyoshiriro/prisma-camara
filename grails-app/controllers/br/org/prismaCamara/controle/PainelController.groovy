@@ -14,7 +14,16 @@ package br.org.prismaCamara.controle
 
 import grails.plugins.springsecurity.Secured
 import groovy.util.logging.Log4j
+
+import org.springframework.social.facebook.api.Facebook
+import org.springframework.social.facebook.api.impl.FacebookTemplate
+import org.springframework.social.twitter.api.Twitter
+import org.springframework.social.twitter.api.impl.TwitterTemplate
+
 import br.org.prismaCamara.modelo.Usuario
+import br.org.prismaCamara.modelo.UsuarioFacebook
+import br.org.prismaCamara.modelo.UsuarioTwitter
+import br.org.prismaCamara.util.redes.TwitterUtil
 
 
 @Log4j
@@ -74,7 +83,26 @@ class PainelController {
 	
 	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
 	def meuPerfil() {
-		[ nome : getUsuarioAutenticado().nome]
+		Usuario usuario = getUsuarioAutenticado()
+		def nomeCompleto = ''
+		
+		switch (usuario.tipoRede) {
+			case 'facebook':
+				UsuarioFacebook uface = UsuarioFacebook.where{user==usuario}.find()
+				Facebook redeobj = new FacebookTemplate(uface.accessToken)
+				nomeCompleto = "${redeobj.userOperations().userProfile.firstName} ${redeobj.userOperations().userProfile.lastName}"
+				break
+			case 'twitter':
+				UsuarioTwitter utw = UsuarioTwitter.where{user==usuario}.find()
+				def chaves = new TwitterUtil(grailsApplication:grailsApplication).chavesTwitter()
+				
+				def consumerKey =  chaves.consumerKey
+				def consumerSecret = chaves.consumerSecret
+				Twitter redeobj = new TwitterTemplate(consumerKey, consumerSecret,utw.token,utw.tokenSecret)
+				nomeCompleto = "${redeobj.userOperations().userProfile.name}"
+				break
+		}
+		[ nome : nomeCompleto]
 	}
 	
 	@Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
