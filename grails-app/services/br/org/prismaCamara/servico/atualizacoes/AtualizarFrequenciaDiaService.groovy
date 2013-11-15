@@ -55,7 +55,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 		def urlT = null
 		Map<Date,GPathResult> xmlrs = [:]
 		
-		while (proximaAtualizacao.time<=hojeSimples.time) {
+		while (proximaAtualizacao.time<hojeSimples.time) {
 			urlT = getUrlAtualizacao([data:proximaAtualizacao.format("dd/MM/yyyy")])
 			try {
 				def xmlr = getXML(urlT)
@@ -73,7 +73,7 @@ class AtualizarFrequenciaDiaService extends AtualizadorEntidade {
 			return
 		}
 			
-		Parametro.findBySigla('ultimo_dia_frequencia').valor=proximaAtualizacao.format("dd/MM/yyyy")
+		Parametro.findBySigla('ultimo_dia_frequencia').valor=(proximaAtualizacao-1).format("dd/MM/yyyy")
 		log.debug("Data da última atualização de frequencia atualizada para ${proximaAtualizacao}")
 		
 		log.debug("Chegaram frequencias de ${xmlrs?.size()} dias dos deputados no XML de ${urlT}...")
