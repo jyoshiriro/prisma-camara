@@ -19,6 +19,7 @@ class Voto {
 	static belongsTo = [votacao:Votacao]
 	
 	static mapping = {
+		deputado(sort:'nomeParlamentar')
 	}
 	
 	static constraints = {
