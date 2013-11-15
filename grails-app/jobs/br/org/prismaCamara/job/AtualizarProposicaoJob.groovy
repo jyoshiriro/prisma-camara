@@ -16,9 +16,9 @@ import groovy.util.logging.Log4j
 import br.org.prismaCamara.servico.atualizacoes.AtualizarProposicaoService
 
 /**
- * Job de atualização de cadastro de {@link Proposicao}. Executado todo Domingo, as 04:00:00
- * Essa atualização ocorre somente aos domingos de madrugada pois tende a ser a mais demorada, 
- * podendo fazer centenas de milhares de requisições, de acordo com a quantidade de proposições associadas a usuários
+ * Job de atualização de cadastro de {@link Proposicao}. Executado todo Sábado, as 01:00:00
+ * Essa atualização ocorre somente aos sábados de madrugada pois tende a ser a mais demorada, 
+ * podendo fazer centenas de milhares de requisições
  * @author jyoshiriro
  */
 @Log4j
@@ -29,13 +29,14 @@ class AtualizarProposicaoJob {
 	def concurrent = false
 	
 	static triggers = {
-      cron name: 'atualizacaoDespesasTrigger', cronExpression: "0 0 1 ? * SUN"
-//	  cron name: 'atualizacaoDeputadosTrigger', cronExpression: "59 0 0 * * ?"
+	  // todo sábado, a partir das 1h	
+	  // * horário de brasília+3
+      cron name: 'atualizacaoProposicaoTrigger', cronExpression: "0 0 4 ? * SAT"
 	}
 
 	def execute() {
 		try {
-			atualizarProposicaoService.atualizar()
+			//atualizarProposicaoService.atualizar()
 			log.debug("Atualização Geral dos registros de Cadastro de Proposições concluída com sucesso")
 		} catch (Exception e) {
 			log.error("Erro ao tentar a Atualização Geral dos registros de Cadastro de Proposições: ${e.message}")

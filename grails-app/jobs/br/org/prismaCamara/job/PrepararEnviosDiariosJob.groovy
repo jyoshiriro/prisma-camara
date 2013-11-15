@@ -26,6 +26,11 @@ import br.org.prismaCamara.servico.postagens.PrepararPostFrequenciaDiaService
 import br.org.prismaCamara.servico.postagens.PrepararPostVotacaoService;
 
 
+/**
+ * Cria as novas postagens ({@link PostNaoEnviado}) a serem enviadas.
+ * Executado diariamente, as 09:00:00
+ * @author jyoshiriro
+ */
 @Log4j
 class PrepararEnviosDiariosJob {
 	
@@ -38,7 +43,8 @@ class PrepararEnviosDiariosJob {
 	PrepararPostBiografiaService prepararPostBiografiaService
 		
     static triggers = {
-	  cron name: 'prepararPostsDiariosTrigger', cronExpression: "1 0 0 * * ?"
+	  // * horário de brasília+3
+	  cron name: 'prepararPostsDiariosTrigger', cronExpression: "0 0 12 ? * MON-FRI *"
       //cron name: 'prepararPostsFrequenciaTrigger', cronExpression: "0 0 8 * * ?"
     }
 

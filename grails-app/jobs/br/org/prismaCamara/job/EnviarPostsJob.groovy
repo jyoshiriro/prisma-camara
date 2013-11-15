@@ -18,12 +18,17 @@ import br.org.prismaCamara.util.redes.FacebookUtil;
 import br.org.prismaCamara.util.redes.TwitterUtil;
 import groovy.util.logging.Log4j;
 
-
+/**
+ * Envia todas as postagens pendentes em {@link PostNaoEnviado} às redes sociais dos usuários.
+ * Executado toda 3ª e 6ª, as 11:30:00
+ * @author jyoshiriro
+ */
 @Log4j
 class EnviarPostsJob {
 	
     static triggers = {
-      cron name: 'enviarPostsTrigger', cronExpression: "30 0 0 * * ?"
+	  // * horário de brasília+3
+      cron name: 'enviarPostsTrigger', cronExpression: "0 30 14 ? * TUE,FRI"
       //cron name: 'enviarPostsTrigger', cronExpression: "0 30 8 * * ?"
     }
 	

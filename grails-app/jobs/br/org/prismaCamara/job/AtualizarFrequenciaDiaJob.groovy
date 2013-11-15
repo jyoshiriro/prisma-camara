@@ -30,8 +30,9 @@ class AtualizarFrequenciaDiaJob {
 	def concurrent = false
 	
     static triggers = {
+		// * horário de brasília+3
+		cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "0 30 7 * * ?"
 //      cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "1 * * * * ?"
-	  cron name: 'atualizacaoFrequenciasTrigger', cronExpression: "0 30 4 * * ?"
     }
 
     def execute() {
