@@ -17,6 +17,7 @@ import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.PostNaoEnviado;
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.modelo.Votacao;
 import br.org.prismaCamara.servico.UsuarioService
 import br.org.prismaCamara.servico.postagens.PrepararPostBiografiaService;
 import br.org.prismaCamara.servico.postagens.PrepararPostDespesaService;
@@ -43,7 +44,7 @@ class PrepararEnviosDiariosJob {
 
     def execute() {
 		
-		def semBiografiaAtrasada = true
+		def semBiografiaAtrasada = (PostNaoEnviado.countByTipoInformacao('biografia')==0)
 
         def usuarios = Usuario.list() 
 		
@@ -71,8 +72,9 @@ class PrepararEnviosDiariosJob {
 			}
 			log.debug("Todas as postagens sobre Deputados de ${usuario.username} já preparadas!")
 
-			// posts relativos a Proposições			
-			def proposicoes = usuarioService.getProposicoesDeUsuario(usuario)
+			// posts relativos a Proposições	
+			// TODO: inverter a lógica aqui: Consultar simplesmente a entidade Votacoes e pegar só as proposições de lá		
+			def proposicoes = Votacao.executeQuery("select proposicao from Votacao")
 			for (proposicao in proposicoes) {
 				prepararPostVotacaoService.preparar(usuario, proposicao.id)
 				log.debug("Postagens a sobre votacao da proposição ${proposicao.descricao} de ${usuario.username} preparada!")
