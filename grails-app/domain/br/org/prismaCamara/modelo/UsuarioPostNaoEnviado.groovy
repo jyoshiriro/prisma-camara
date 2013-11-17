@@ -14,6 +14,18 @@ package br.org.prismaCamara.modelo
 
 class UsuarioPostNaoEnviado {
 
-	static belongsTo = [postNaoEnviado:PostNaoEnviado, usuario:Usuario]
+	Integer tentativas = 0 // a cada 3 tentativas de reenvio o post x usuário será excluído
 	
+	static belongsTo = [postNaoEnviado:PostNaoEnviado, usuario:Usuario]
+
+	static mapping = {
+		sort('usuario')
+		usuario(sort:'tipoRede')
+	}
+	
+	def afterUpdate() {
+		if (tentativas>=3) {
+			this.delete();
+		}
+	}
 }

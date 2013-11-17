@@ -132,5 +132,8 @@
 	<p>
 	Assim, acreditamos que informações, principalmente polêmicas e "estranhas" (como gastos altíssimos com gasolina, por exemplo), serão divulgadas de maneira "viral" pelas Redes Sociais, pois isso lhe é característico.
 	</p>
+	<p>
+	Nosso sonho é que, assim como os brasileiros acham normal receber piadas, gozações sobre times de futebol, correntes religiosas, desabafos, indiretas e mensagens motivacionais, passem a achar normal ver informações de gastos, frequências e discursos de deputados eleitos e sustentados por eles para poderem cobrar dos parlamentares e votarem melhor a cada eleição.
+	</p>
 			
 </div>

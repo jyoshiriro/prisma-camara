@@ -17,6 +17,7 @@ import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.PostNaoEnviado;
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.modelo.Votacao;
 import br.org.prismaCamara.servico.UsuarioService
 import br.org.prismaCamara.servico.postagens.PrepararPostBiografiaService;
 import br.org.prismaCamara.servico.postagens.PrepararPostDespesaService;
@@ -25,6 +26,11 @@ import br.org.prismaCamara.servico.postagens.PrepararPostFrequenciaDiaService
 import br.org.prismaCamara.servico.postagens.PrepararPostVotacaoService;
 
 
+/**
+ * Cria as novas postagens ({@link PostNaoEnviado}) a serem enviadas.
+ * Executado diariamente, as 09:00:00
+ * @author jyoshiriro
+ */
 @Log4j
 class PrepararEnviosDiariosJob {
 	
@@ -37,13 +43,14 @@ class PrepararEnviosDiariosJob {
 	PrepararPostBiografiaService prepararPostBiografiaService
 		
     static triggers = {
-	  cron name: 'prepararPostsDiariosTrigger', cronExpression: "1 0 0 * * ?"
+	  // * horário de brasília+3
+	  cron name: 'prepararPostsDiariosTrigger', cronExpression: "0 0 12 ? * MON-FRI *"
       //cron name: 'prepararPostsFrequenciaTrigger', cronExpression: "0 0 8 * * ?"
     }
 
     def execute() {
 		
-		def semBiografiaAtrasada = true
+		def semBiografiaAtrasada = (PostNaoEnviado.countByTipoInformacao('biografia')==0)
 
         def usuarios = Usuario.list() 
 		
@@ -71,8 +78,9 @@ class PrepararEnviosDiariosJob {
 			}
 			log.debug("Todas as postagens sobre Deputados de ${usuario.username} já preparadas!")
 
-			// posts relativos a Proposições			
-			def proposicoes = usuarioService.getProposicoesDeUsuario(usuario)
+			// posts relativos a Proposições	
+			// TODO: inverter a lógica aqui: Consultar simplesmente a entidade Votacoes e pegar só as proposições de lá		
+			def proposicoes = Votacao.executeQuery("select proposicao from Votacao")
 			for (proposicao in proposicoes) {
 				prepararPostVotacaoService.preparar(usuario, proposicao.id)
 				log.debug("Postagens a sobre votacao da proposição ${proposicao.descricao} de ${usuario.username} preparada!")

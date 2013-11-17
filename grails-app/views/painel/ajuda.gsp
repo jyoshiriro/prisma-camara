@@ -57,6 +57,8 @@
 				<a href="http://www2.camara.leg.br/transparencia/cota-para-exercicio-da-atividade-parlamentar/dados-abertos-cota-parlamentar"
 				target="_blank">Dados Abertos das Cotas Parlamentares</a> 
 				que só nos disponibilizam esse tipo de informação. Raramente outro tipo de gasto é disponibilizado lá.
+				</p>
+				<p>Pelo menos enviamos um link que leva a uma página no site da Câmara com todos os gastos do mês. Ademais, o gastos com Combustíveis costumam ser os mais altos para a maioria dos Deputados. 
 				<br><br>
 				</p>
 				

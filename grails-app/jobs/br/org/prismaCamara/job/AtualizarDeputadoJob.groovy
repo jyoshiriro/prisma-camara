@@ -16,7 +16,7 @@ import groovy.util.logging.Log4j
 import br.org.prismaCamara.servico.atualizacoes.AtualizarDeputadoService
 
 /**
- * Job de atualização de cadastro de {@link Deputado}. Executado Diariamente, as 01:00:00
+ * Job de atualização de cadastro de {@link Deputado}. Executado Diariamente, as 00:30:00
  * @author jyoshiriro
  */
 @Log4j
@@ -27,8 +27,10 @@ class AtualizarDeputadoJob {
 	def concurrent = false
 	
 	static triggers = {
+		// todo dia, as 0h30
+		// * horário de brasília+3
+		cron name: 'atualizacaoDeputadosTrigger', cronExpression: "0 30 3 * * ?"
 //      cron name: 'atualizacaoDeputadosTrigger', cronExpression: "1 * * * * ?"
-	  cron name: 'atualizacaoDeputadosTrigger', cronExpression: "0 0 1 * * ?"
 	}
 
 	def execute() {

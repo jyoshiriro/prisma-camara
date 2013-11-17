@@ -23,7 +23,6 @@ public class CaracteresUtil {
 		ms.put("Ö","Í");
 		ms.put("Ç","Ã");
 		ms.put("å","ÇÕ");
-//		ms.put("å","Õ");
 		ms.put("µ","Á");
 		ms.put("¢","ó");
 		ms.put("à","Ó");
@@ -36,6 +35,7 @@ public class CaracteresUtil {
 		ms.put("é", "Ú");
 		ms.put("S¶O", "SÃO");
 		ms.put("C¶N", "CÂM");
+		ms.put("¶NIA", "ÂNIA");
 		
 	}
 	

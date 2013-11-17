@@ -12,6 +12,8 @@
  */
 package br.org.prismaCamara.util.redes
 
+import java.util.Map;
+
 import grails.plugins.rest.client.RestBuilder
 import groovy.util.logging.Log4j
 
@@ -28,15 +30,12 @@ class TwitterUtil {
 	def grailsApplication
 
 	void postar(Usuario usuario, String conteudo) {
-		Thread.sleep(10500) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
 		try {
 			UsuarioTwitter utwitter = UsuarioTwitter.where{user==usuario}.find()
 	
-			Properties prop = new Properties()
-			def nomeArquivoConf = grailsApplication.config.grails.config.locations[1].substring(5)
-			prop.load(new ByteArrayInputStream(new File(nomeArquivoConf).bytes))
-			def consumerKey = prop["grails.plugins.springsecurity.twitter.consumerKey"]
-			def consumerSecret = prop["grails.plugins.springsecurity.twitter.consumerSecret"]
+			def chaves = chavesTwitter()
+			def consumerKey =  chaves.consumerKey
+			def consumerSecret = chaves.consumerSecret
 			
 			Twitter twitter = new TwitterTemplate(consumerKey,consumerSecret,utwitter.token,utwitter.tokenSecret)
 			def conteudos = []
@@ -57,21 +56,28 @@ class TwitterUtil {
 					post = post[0..139]
 				}
 				twitter.timelineOperations().updateStatus(post)
+				Thread.sleep(10300) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
 			}
 			
 			log.debug("Mensagem '${conteudo[0..79].trim()}' enviada com sucesso para ${usuario.username}")
 		} catch (Exception e) {
 			log.error("Erro ao postar mensagem para rede social ${usuario?.tipoRede} de ${usuario?.username}: ${e.message}")
+			Thread.sleep(10300) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
 			throw e
 		} 
 	}
 	
-	static main(args) {
-		def resp = new RestBuilder().post('https://api.twitter.com/oauth/request_token'){
-			contentType "application/json"
-			accept "application/json"
-			json longUrl: "${urlLonga}"
-		}
-
+	/**
+	 * Retorna uma {@link Map} com "consumerKey" e "consumerSecret" da App "olho na câmara"
+	 * @return
+	 */
+	Map chavesTwitter() {
+		Properties prop = new Properties()
+		def nomeArquivoConf = grailsApplication.config.grails.config.locations[1].substring(5)
+		prop.load(new ByteArrayInputStream(new File(nomeArquivoConf).bytes))
+		def consumerKey = prop["grails.plugins.springsecurity.twitter.consumerKey"]
+		def consumerSecret = prop["grails.plugins.springsecurity.twitter.consumerSecret"]
+		[consumerKey:consumerKey,consumerSecret:consumerSecret]
 	}
+	
 }

@@ -10,6 +10,8 @@
  * recebido uma cópia da GNU Affero General Public License, sob o título 'LICENCA.txt', junto com
  * este programa, se não, acesse http://www.gnu.org/licenses/
  --%>
+(Mensagem gerada e enviada automaticamente)
+
 Veja os recentes gastos da cota parlamentar d<g:deputadoPrefix dep="${dep}" minusculo="true"/>:
 <g:each in="${despesas}" var="despesa" status="st">
 ${st+1}. Despesa: ${despesa.txtDescricao}
@@ -23,5 +25,3 @@ Mais detalhes em ${despesa.urlDetalhes}
 </g:each>
 
 Contatos: ${dep.contatos}.
-
-Mensagem gerada pelo "Olho na Câmara" (http://goo.gl/Drr2jj)

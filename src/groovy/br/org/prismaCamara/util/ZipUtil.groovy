@@ -69,9 +69,7 @@ class ZipUtil {
 		Process p = Runtime.getRuntime().exec("unzip -o -d ../ ../AnoAtual.zip")
 		int exitVal = p.waitFor()
 		def fis = new FileInputStream("../AnoAtual.xml")
-		def bis = new BufferedInputStream(fis)
-		def conteudoXml = IOUtils.toByteArray(bis)
-		bis.close()
+		def conteudoXml = IOUtils.toByteArray(fis)
 		fis.close()
 		return conteudoXml
 	}

@@ -31,7 +31,8 @@ class AtualizarDiscursoJob {
 	def concurrent = false
 	
     static triggers = {
-	  cron name: 'atualizacaoDiscursosTrigger', cronExpression: "0 0 5 * * ?"
+	// * horário de brasília+3
+	  cron name: 'atualizacaoDiscursosTrigger', cronExpression: "0 0 8 * * ?"
 //      cron name: 'atualizacaoDiscursosTrigger', cronExpression: "1 * * * * ?"
     }
 

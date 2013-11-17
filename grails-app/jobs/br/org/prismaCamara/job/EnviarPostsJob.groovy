@@ -12,18 +12,23 @@
  */
 package br.org.prismaCamara.job
 
-import br.org.prismaCamara.modelo.PostNaoEnviado;
-import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado;
-import br.org.prismaCamara.util.redes.FacebookUtil;
-import br.org.prismaCamara.util.redes.TwitterUtil;
-import groovy.util.logging.Log4j;
+import groovy.util.logging.Log4j
+import br.org.prismaCamara.modelo.PostNaoEnviado
+import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado
+import br.org.prismaCamara.util.redes.FacebookUtil
+import br.org.prismaCamara.util.redes.TwitterUtil
 
-
+/**
+ * Envia todas as postagens pendentes em {@link PostNaoEnviado} às redes sociais dos usuários.
+ * Executado toda 3ª e 6ª, as 11:30:00
+ * @author jyoshiriro
+ */
 @Log4j
 class EnviarPostsJob {
 	
     static triggers = {
-      cron name: 'enviarPostsTrigger', cronExpression: "30 0 0 * * ?"
+	  // * horário de brasília+3
+      cron name: 'enviarPostsTrigger', cronExpression: "0 30 14 ? * TUE,FRI"
       //cron name: 'enviarPostsTrigger', cronExpression: "0 30 8 * * ?"
     }
 	
@@ -45,7 +50,7 @@ class EnviarPostsJob {
 				log.debug("Postagem enviada com sucesso para ${usuario.username} - ${usuario.tipoRede}")
 			} catch (Exception e) {
 				log.error("Erro ao tentar enviar o post ${upost.id}: ${e.message}")
-				upost.postNaoEnviado.tentativas++
+				upost.tentativas++
 			}
 		}
 		

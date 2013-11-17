@@ -27,8 +27,9 @@ class AtualizarPartidoJob {
 	def concurrent = false
 	
 	static triggers = {
+		// * horário de brasília+3
+		cron name: 'atualizacaoPartidosTrigger', cronExpression: "0 0 4 * * ?"
 //      cron name: 'atualizacaoDeputadosTrigger', cronExpression: "1 * * * * ?"
-	  cron name: 'atualizacaoPartidosTrigger', cronExpression: "0 0 1 * * ?"
 	}
 
 	def execute() {

@@ -43,9 +43,12 @@ class Despesa {
 	}
 
 	public String getUrlDetalhes() {
-		def urlOriginal = "${Parametro.findBySigla('url_gastos_site').valor}${deputado.ideCadastro}"
-		def urlFinal = URLUtil.getURLDetalhesCotaDeputado(urlOriginal)
+		if (!deputado.nuDeputadoId) {
+			def urlOriginal = "${Parametro.findBySigla('url_gastos_site').valor}${deputado.ideCadastro}"
+			deputado.nuDeputadoId=URLUtil.getNuDeputadoId(urlOriginal)
+		}
 		
+		def urlFinal = "${Parametro.findBySigla('url_gastos_site2').valor}${deputado.nuDeputadoId}"
 		urlFinal += "&mesAnoConsulta=${dataEmissao.format('MM-yyyy')}"
 		urlFinal
 	}

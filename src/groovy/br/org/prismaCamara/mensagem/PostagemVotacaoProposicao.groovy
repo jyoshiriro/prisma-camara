@@ -26,11 +26,12 @@ class PostagemVotacaoProposicao extends Postagem {
 		Proposicao prop = params.prop
 		
 		Votacao votacao = (prop.votacoes)?prop.votacoes.first():null
-		if (!votacao)
-			return null
+		/*if (!votacao)
+			return null*/
 		
-		if ( (!prop.ultimaVotacao) || (prop.ultimaVotacao.before(votacao.dataHoraVotacao)))
-			prop.ultimaVotacao=votacao.dataHoraVotacao
+		//if ( (!prop.ultimaVotacao) || (prop.ultimaVotacao.before(votacao.dataHoraVotacao)))
+		// alterado em 13/11, pois já vêm proposições só das Votações 
+		prop.ultimaVotacao=votacao.dataHoraVotacao
 		
 		// montando Mapa de tipos de votos e seus deputados
 		def mvotos = [:] // ex: ['sim':['ze ruela','ze buduia','maria bigodenha'], 'nao':'tiririca']
@@ -44,9 +45,10 @@ class PostagemVotacaoProposicao extends Postagem {
 		}
 		
 		// ordenando por nomes de deputados
-		mvotos.each {
+		// alterado no mapeamento
+		/*mvotos.each {
 			it.value=it.value.sort{d1,d2 -> d1.nomeParlamentar<=>d2.nomeParlamentar}
-		}
+		}*/
 		
 		// ordenando por quantidade de cada tipo de voto (descrescente)
 		mvotos = mvotos.sort{v1,v2 -> v2.value.size()<=>v1.value.size()}

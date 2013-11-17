@@ -56,8 +56,7 @@ class Discurso {
 		Writable template = new SimpleTemplateEngine().createTemplate(texto).make(valores)
 		def urllonga = template.toString()
 		
-		def urlcurta = URLUtil.getUrlCurta(urllonga)
-		urlcurta
+		urllonga
 	}
 
 }
