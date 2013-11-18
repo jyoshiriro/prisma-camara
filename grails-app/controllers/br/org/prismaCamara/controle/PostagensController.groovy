@@ -80,4 +80,12 @@ class PostagensController {
 		flash.postagem2 = post.getTexto([prop:proposicao,tipo:Postagem.TIPO_TWITTER])
 		render(view:'index',model:[proposicoes:proposicoes,deputados:deputados])
 	}	
+	
+	def mensagemTodos() {
+		
+	}
+	
+	def enviarMensagemTodos(String mensagem, String tipo) {
+		redirect(controller:"${tipo}Post", action:'mensagemTodos', params:[mensagem:mensagem])
+	}
 }

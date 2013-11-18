@@ -24,6 +24,7 @@ import br.org.prismaCamara.modelo.UsuarioFacebook;
 class FacebookPostController {
 
 	def springSecurityService
+	def usuarioService
 	
 	@Secured(['ROLE_USER'])
 	def timeline = {
@@ -43,13 +44,17 @@ class FacebookPostController {
 		redirect(controller:'postagens')
 	}
 	
-	def postarNoMuralUsuarioId2 = {
-		Usuario usuario = Usuario.get(2)
-		UsuarioFacebook usuarioFacebook = UsuarioFacebook.where{user==usuario}.find()
-		Facebook facebook = new FacebookTemplate(usuarioFacebook.accessToken)
-		facebook.feedOperations().updateStatus("Post Automático.")
-		log.debug "Mensagem postada automáticamente no mural do usuário ${usuario.username}"
-		redirect(view: '/')
+	def mensagemTodos(String mensagem) {
+		
+		for (usuario in [Usuario.get(47)]) {
+//		for (usuario in Usuario.findAllByTipoRede('facebook')) {
+			UsuarioFacebook usuarioFacebook = UsuarioFacebook.where{user==usuario}.find()
+			Facebook facebook = new FacebookTemplate(usuarioFacebook.accessToken)
+			facebook.feedOperations().updateStatus(mensagem)
+			log.debug "Mensagem postada automáticamente no mural do usuário ${usuario.username}"
+		}
+		flash.message = 'Postagens enviadas com sucesso!' 
+		forward(controller:'postagens', action:'mensagemTodos', params:[mensagem:mensagem])
 	}
 	
 	
