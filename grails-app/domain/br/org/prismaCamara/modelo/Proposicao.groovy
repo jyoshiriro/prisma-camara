@@ -69,6 +69,10 @@ class Proposicao {
 		campoPesquisa maxSize: 4096
 	}
 	
+	static mapping = {
+		votacoes(sort:'dataHoraVotacao',order:'desc')
+	}
+	
 	public String getDescricao() {
 		"${tipoProposicao.sigla} ${numero}/${ano}"
 	}
