@@ -52,8 +52,9 @@ class TwitterUtil {
 			for (postc in conteudos) {
 				def post = postc[0..postc.size()-2]
 				if (post.size()>140) {
-					log.error("Uma mensagem para o twitter tinha mais de 140 letras e foi truncada: \n${conteudo}\n\n")
-					post = post[0..139]
+					log.error("Uma mensagem para o twitter tinha mais de 140 letras e foi ignorada: \n${conteudo}\n\n")
+					continue
+					//post = post[0..139]
 				}
 				twitter.timelineOperations().updateStatus(post)
 				Thread.sleep(10300) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
