@@ -63,7 +63,7 @@ environments {
     		password = "123456"
             pooled = true
             properties {
-               maxActive = 20
+               maxActive = 30
                minEvictableIdleTimeMillis=1800000
                timeBetweenEvictionRunsMillis=1800000
                numTestsPerEvictionRun=3
