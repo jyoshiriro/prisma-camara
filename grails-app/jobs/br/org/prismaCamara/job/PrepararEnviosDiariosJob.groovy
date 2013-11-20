@@ -17,6 +17,8 @@ import br.org.prismaCamara.modelo.Deputado;
 import br.org.prismaCamara.modelo.PostNaoEnviado;
 import br.org.prismaCamara.modelo.Usuario
 import br.org.prismaCamara.modelo.UsuarioDeputado
+import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado;
+import br.org.prismaCamara.modelo.UsuarioProposicao;
 import br.org.prismaCamara.modelo.Votacao;
 import br.org.prismaCamara.servico.UsuarioService
 import br.org.prismaCamara.servico.postagens.PrepararPostBiografiaService;
@@ -50,17 +52,19 @@ class PrepararEnviosDiariosJob {
 
     def execute() {
 		
-		def semBiografiaAtrasada = (PostNaoEnviado.countByTipoInformacao('biografia')==0)
-
         def usuarios = Usuario.list() 
 		
 		for (usuario in usuarios) {
 			def deputados = usuarioService.getDeputadosDeUsuario(usuario,true)
 
 			// recebe biografias aleatórias?
-			if (semBiografiaAtrasada && usuario.receberBiografias) {
+			def possuiBiografiaAtrasada = UsuarioPostNaoEnviado.executeQuery("""
+				select count(up) from UsuarioPostNaoEnviado up where up.usuario=? and up.postNaoEnviado.tipoInformacao='biografia'
+			""",[usuario]).first()[0] 
+			
+			if ((!possuiBiografiaAtrasada) && usuario.receberBiografias) {
 				prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
-				semBiografiaAtrasada = false
+				possuiBiografiaAtrasada = false
 				log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
 			}
 			
@@ -78,16 +82,17 @@ class PrepararEnviosDiariosJob {
 			}
 			log.debug("Todas as postagens sobre Deputados de ${usuario.username} já preparadas!")
 
-			// posts relativos a Proposições	
-			// TODO: inverter a lógica aqui: Consultar simplesmente a entidade Votacoes e pegar só as proposições de lá		
-			def proposicoes = Votacao.executeQuery("select proposicao from Votacao")
-			for (proposicao in proposicoes) {
+		}
+		
+        // Consultar só as proposições que possuem votações, pois as que não são acompanhadas por ninguem não possuem votações atualizadas		
+        def proposicoes = Votacao.executeQuery("select proposicao from Votacao")
+		for (proposicao in proposicoes) {
+			for (usuario in UsuarioProposicao.executeQuery("select up.usuario from UsuarioProposicao up where up.proposicao=?",[proposicao])) {
 				prepararPostVotacaoService.preparar(usuario, proposicao.id)
 				log.debug("Postagens a sobre votacao da proposição ${proposicao.descricao} de ${usuario.username} preparada!")
 			}
-			log.debug("Todas as postagens sobre Proposições de ${usuario.username} já preparadas!")
-			
 		}
+        log.debug("Todas as postagens sobre Proposições já preparadas!")
 		
 		
 		log.debug("Todas as postagens de todos os usuários já preparadas!")
