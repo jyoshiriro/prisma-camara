@@ -14,6 +14,7 @@ package br.org.prismaCamara.job
 
 import groovy.util.logging.Log4j
 import br.org.prismaCamara.modelo.PostNaoEnviado
+import br.org.prismaCamara.modelo.Usuario;
 import br.org.prismaCamara.modelo.UsuarioPostNaoEnviado
 import br.org.prismaCamara.util.redes.FacebookUtil
 import br.org.prismaCamara.util.redes.TwitterUtil
@@ -50,13 +51,23 @@ class EnviarPostsJob {
 				log.debug("Postagem enviada com sucesso para ${usuario.username} - ${usuario.tipoRede}")
 			} catch (Exception e) {
 				log.error("Erro ao tentar enviar o post ${upost.id}: ${e.message}")
-				upost.tentativas++
+				if (++upost.tentativas==2) {
+					log.error('Como já é a terceira tentativa para ${usuario.username} (${usuario.nome}), este usuário será excluído após a rotina de envios de hoje')
+				}
+				
 			}
 		}
-		
+    	
+    	// excluindo os usuários cujas tentativas de envio sem sucesso já foram 2 ou mais
+    	Usuario.executeUpdate("""
+    			delete from Usuario u where u.id in 
+    			(select up.usuario.id from UsuarioPostNaoEnviado up where tentativas>=2)
+    			""")
+
+		// excluindo os Posts que não possuem mais nenhuma referência em Usuário x Post		
 		PostNaoEnviado.executeUpdate("""
-        delete from PostNaoEnviado p where p.id not in 
-		(select up.postNaoEnviado.id from UsuarioPostNaoEnviado up)
+	        delete from PostNaoEnviado p where p.id not in 
+			(select up.postNaoEnviado.id from UsuarioPostNaoEnviado up)
 		""")
 		
 		log.debug("Envio de postagens concluído com sucesso")
