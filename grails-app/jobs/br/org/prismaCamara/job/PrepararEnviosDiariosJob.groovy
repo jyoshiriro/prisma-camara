@@ -58,14 +58,15 @@ class PrepararEnviosDiariosJob {
 			def deputados = usuarioService.getDeputadosDeUsuario(usuario,true)
 
 			// recebe biografias aleatórias?
-			def possuiBiografiaAtrasada = UsuarioPostNaoEnviado.executeQuery("""
-				select count(up) from UsuarioPostNaoEnviado up where up.usuario=? and up.postNaoEnviado.tipoInformacao='biografia'
-			""",[usuario]).first()[0] 
-			
-			if ((!possuiBiografiaAtrasada) && usuario.receberBiografias) {
-				prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
-				possuiBiografiaAtrasada = false
-				log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
+			if (usuario.receberBiografias) {
+				def possuiBiografiaAtrasada = UsuarioPostNaoEnviado.executeQuery("""
+					select up from UsuarioPostNaoEnviado up where up.usuario=? and up.postNaoEnviado.tipoInformacao='biografia'
+				""",[usuario]) 
+				
+				if (!possuiBiografiaAtrasada) {
+					prepararPostBiografiaService.preparar(usuario, usuarioService.deputadoAleatorio.id)
+					log.debug("Postagens com mini-biografia de deputado aleatório de ${usuario.username} preparadas!")
+				}
 			}
 			
 			// posts relativos a Deputados
