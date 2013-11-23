@@ -1,7 +1,7 @@
 <g:each in="${despesas}" var="despesa" status="st">
-Novo gasto d<g:deputadoPrefix dep="${dep}" minusculo="true"/>: ${despesa.txtDescricao} <g:formatDate date="${despesa.dataEmissao}" format="d/M/yy"/>. R${'$'}${despesa.valor}
-${despesa.urlDetalhesCurta}
-<hr></g:each> Via http://goo.gl/Drr2jj
+Gasto d<g:deputadoPrefix dep="${dep}" minusculo="true"/>: ${despesa.txtDescricao} <g:formatDate date="${despesa.dataEmissao}" format="d/M/yy"/>. R${'$'}${despesa.valor}
+${despesa.urlDetalhesCurta} http://goo.gl/Drr2jj
+<hr></g:each> 
 <%--
  * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
  * Este arquivo é parte do programa Olho na Câmara.
