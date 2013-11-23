@@ -57,8 +57,9 @@ class PrepararEnviosDiariosJob {
 		for (usuario in usuarios) {
 			def deputados = usuarioService.getDeputadosDeUsuario(usuario,true)
 
-			// recebe biografias aleatórias?
-			if (usuario.receberBiografias) {
+			
+			// recebe biografias aleatórias e é dia 15?
+			if (new Date().calendarDate.dayOfMonth==15 && usuario.receberBiografias) {
 				def possuiBiografiaAtrasada = UsuarioPostNaoEnviado.executeQuery("""
 					select up from UsuarioPostNaoEnviado up where up.usuario=? and up.postNaoEnviado.tipoInformacao='biografia'
 				""",[usuario]) 
