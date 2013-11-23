@@ -20,7 +20,6 @@ class FrequenciaDia {
 	Date dia
 	String frequenciaDia
 	String justificativa
-	boolean enviado = false
 		
 	Deputado deputado
 	
