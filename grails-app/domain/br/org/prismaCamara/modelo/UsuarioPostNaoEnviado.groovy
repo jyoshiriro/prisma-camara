@@ -23,9 +23,4 @@ class UsuarioPostNaoEnviado {
 		usuario(sort:'tipoRede')
 	}
 	
-	def afterUpdate() {
-		if (tentativas>=3) {
-			this.delete();
-		}
-	}
 }
