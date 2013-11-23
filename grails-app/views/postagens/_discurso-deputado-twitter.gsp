@@ -1,8 +1,8 @@
 <g:each in="${discursos}" var="discurso" status="st">
 Discurso d<g:deputadoPrefix dep="${dep}" minusculo="true"/> em <g:formatDate date="${discursos.first().data}" format="dd/MM"/> ${discurso.horaInicio[0..4]}
-${discurso.sumario?(discurso.sumario?.size()>=37?discurso.sumario[0..38]+"...":discurso.sumario):'(Não informado)'}
-${discurso.urlDetalhes}
-<hr></g:each>Via http://goo.gl/Drr2jj
+${discurso.sumario?(discurso.sumario?.size()>=32?discurso.sumario[0..33]+"...":discurso.sumario):'(Não informado)'}
+${discurso.urlDetalhes} Via http://goo.gl/Drr2jj
+<hr></g:each>
 <%--
  * Copyright 2013 de José Yoshiriro (jyoshiriro@gmail.com) e Raimundo Norberto (raimundonorberto@gmail.com)
  * Este arquivo é parte do programa Olho na Câmara.
