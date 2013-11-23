@@ -30,6 +30,7 @@ class TwitterUtil {
 	def grailsApplication
 
 	void postar(Usuario usuario, String conteudo) {
+		
 		try {
 			UsuarioTwitter utwitter = UsuarioTwitter.where{user==usuario}.find()
 	
@@ -39,16 +40,22 @@ class TwitterUtil {
 			
 			Twitter twitter = new TwitterTemplate(consumerKey,consumerSecret,utwitter.token,utwitter.tokenSecret)
 			def conteudos = []
-			def ctemp = ''
-			conteudo.eachLine {
-				def linha = it
-			    if (linha=='<hr>') {
-			        conteudos+=ctemp
-			        ctemp=''
-			    } else {
-			        ctemp+=linha+"\n"
-			    }
+			
+			if (conteudo.count('<hr>')>1) {
+				def ctemp = ''
+				conteudo.eachLine {
+					def linha = it
+				    if (linha=='<hr>') {
+				        conteudos+=ctemp
+				        ctemp=''
+				    } else {
+				        ctemp+=linha+"\n"
+				    }
+				}
+			} else {
+				conteudos+=conteudo[0..conteudo.indexOf('<hr>')]
 			}
+			
 			for (postc in conteudos) {
 				def post = postc[0..postc.size()-2]
 				if (post.size()>140) {
@@ -61,11 +68,13 @@ class TwitterUtil {
 			}
 			
 			log.debug("Mensagem '${conteudo[0..79].trim()}' enviada com sucesso para ${usuario.username}")
+			
 		} catch (Exception e) {
 			log.error("Erro ao postar mensagem para rede social ${usuario?.tipoRede} de ${usuario?.username}: ${e.message}")
 			Thread.sleep(10300) // evitar spam https://dev.twitter.com/docs/rate-limiting/1
 			throw e
 		} 
+		
 	}
 	
 	/**
