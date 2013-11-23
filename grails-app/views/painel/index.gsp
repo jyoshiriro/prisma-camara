@@ -31,7 +31,7 @@
 						<div class="modal-body">
 							<p>Olá, <b><g:nomeUsuario/></b>. Como você é novo(a) por aqui, gostariamos de avisá-lo(a) que:</p>
 							<ol>
-							<li>Toda mensagem que receber será PRIVADA, ou seja, só você irá vê-la em sua rede social. Se quiser, pode compartilhá-la para que seus amigos a vejam também</li>
+							<li>Se for usuário do Facebook, toda mensagem que receber será PRIVADA, ou seja, só você irá vê-la em sua rede social. Se quiser, pode compartilhá-la para que seus amigos a vejam também</li>
 							<li>Talvez amanhã ou em poucas horas você receba um volume um pouco grande de postagens na linha do tempo de sua rede social. Do segundo dia em diante você receberá menos mensagens</li>
 							<li>A quantidade de postagens que vai receber dependenderá de quantos deputados/partidos/proposições selecionar</li>
 							</ol> 
