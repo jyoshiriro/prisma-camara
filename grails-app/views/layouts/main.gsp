@@ -95,7 +95,7 @@ class="botao-rede">
 		para o <b>Hackathon 2013 da Câmara dos Deputados</b>.
 		</p>
 		<p>
-Versão <i>0.2 Beta</i>. Código Licenciado na 
+Versão <i>0.3 Beta</i>. Código Licenciado na 
 <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU AFFERO GENERAL PUBLIC LICENSE v3.0</a>.
 </p>
 </div>
