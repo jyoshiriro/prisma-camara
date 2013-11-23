@@ -73,15 +73,17 @@ abstract class PrepararPost {
 				UsuarioPostNaoEnviado upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
 				upost.save(failOnError:true, flush:true)
 				
-				log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} ainda não existia... salva agora")
+				log.debug("Postagem da entidade de id ${idEntidade} do tipo ${nomeTipoInformacao} ainda não existia... salva agora")
 				return true
 			} 
-			UsuarioPostNaoEnviado upost = UsuarioPostNaoEnviado.findByUsuarioAndPostNaoEnviado(usuario,post)
-			if (!upost) {
-				upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
+			def cUpost = UsuarioPostNaoEnviado.countByUsuarioAndPostNaoEnviado(usuario,post)
+			if (!cUpost) {
+				UsuarioPostNaoEnviado upost = new UsuarioPostNaoEnviado(usuario:usuario, postNaoEnviado:post)
 				upost.save(failOnError:true, flush:true)
+				log.debug("Postagem para ${usuario.id} do tipo ${nomeTipoInformacao} ainda não existia... salva agora")
+			} else {
+				log.debug("Postagem para ${usuario.id} do tipo ${nomeTipoInformacao} JÁ existia")
 			}
-			log.debug("Postagem de ${usuario.id} em ${nomeTipoInformacao} JÁ existia... recuperada")
 			return true
 		} catch (Exception e) {
 			log.error("Erro ao preparara a Postagem de ${usuario.id} em ${nomeTipoInformacao}: ${e.message}")
