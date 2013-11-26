@@ -30,10 +30,10 @@ class FacebookUtil {
 			def nomeCompleto = "${facebook.userOperations().userProfile.firstName} ${facebook.userOperations().userProfile.lastName}"
 			String conteudoAssinado = "http://olhonacamara.com.br >> $nomeCompleto $conteudo"
 			facebook.feedOperations().updateStatus(conteudoAssinado)
-			Thread.sleep(1500) // evitar spam
+			Thread.sleep(9500) // evitar spam
 			log.debug("Mensagem '${conteudo[3..101].trim()}' enviada  com sucesso para ${usuario.username}")
 		} catch (Exception e) {
-			Thread.sleep(1500) // evitar spam
+			Thread.sleep(9500) // evitar spam
 			log.error("Erro ao postar mensagem para rede social ${usuario.tipoRede} de ${usuario.username}: ${e.message}")
 			throw e
 		} 
