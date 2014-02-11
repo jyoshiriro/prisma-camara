@@ -26,6 +26,7 @@ class Comissao {
 	static constraints = {
 		nome(maxSize:512)
 		sigla(maxSize:30)
+		
 	}
 	
 	String getDescricao() {
