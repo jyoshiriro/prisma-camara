@@ -36,6 +36,7 @@ class ImagensUtil {
 		if (arquivo.exists()) {
 			arquivo.bytes
 		} else {
+		    println "bla bla bla"
 			null
 		}
 	}
